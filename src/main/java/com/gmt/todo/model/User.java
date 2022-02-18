@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
@@ -19,6 +20,8 @@ public class User {
 	private boolean active;
 	private String roles;
 	private String otp;
+	@Transient
+	private String currentPassword;
 	
 	public User(User user) {
 		this.id=user.getId();
@@ -30,6 +33,14 @@ public class User {
 		this.otp=user.getOtp();
 	}
 	
+	public String getCurrentPassword() {
+		return currentPassword;
+	}
+
+	public void setCurrentPassword(String currentPassword) {
+		this.currentPassword = currentPassword;
+	}
+
 	public Long getId() {
 		return id;
 	}
