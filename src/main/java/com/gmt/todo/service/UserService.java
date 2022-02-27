@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -111,7 +109,7 @@ public class UserService {
 			reqJson.put("requestingApplication", "TODO");
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbiIsImV4cCI6MTY0NTU3NTM1NSwiaWF0IjoxNjQ0Njg2MzIyfQ.X9wwkjxAH3suUvqD28-0Ap8yEXqPr_Ve4W4tdFDtHqA");
+			headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbiIsImV4cCI6MTY0Njg2OTE0MywiaWF0IjoxNjQ1OTgwMTEwfQ.lsh43pYBTtUx-MLs2OEwW1NITw6JNk6jrScMaip4wco");
 			UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("https://send-email-sb.herokuapp.com/sendEmail");
 			UriComponents uriComponents = builder.build();
 			HttpEntity<String> request = new HttpEntity<String>(reqJson.toString(),headers);
