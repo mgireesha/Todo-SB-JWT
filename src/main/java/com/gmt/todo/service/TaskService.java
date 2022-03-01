@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.TodoUserDetails;
+import com.gmt.todo.repository.TaskStepRepository;
 import com.gmt.todo.repository.TodoTaskRepository;
 
 @Service
@@ -21,12 +22,17 @@ public class TaskService {
 	@Autowired
 	private TodoTaskRepository todoTaskRepository;
 	
+	@Autowired
+	private TaskStepRepository taskStepRepository;
+	
 	@Lazy
 	@Autowired
 	private ListService listService;
 	
 	public TodoTask getTaskByTaskId(Long taskId) {
-		return todoTaskRepository.getByTaskId(taskId);
+		TodoTask task = todoTaskRepository.getByTaskId(taskId);
+		task.setTaskSteps(taskStepRepository.getByTaskIdOrderByStepId(taskId));
+		return task;
 	}
 	
 	public TodoTask getTaskByTaskName(String taskName) {

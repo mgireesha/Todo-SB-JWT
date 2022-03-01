@@ -2,12 +2,14 @@ package com.gmt.todo.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class TodoTask {
@@ -32,7 +34,15 @@ public class TodoTask {
 	private long listId;
 	private String listName;
 	private String uriRef;
+	@Transient
+	private List<TaskStep> taskSteps;
 	
+	public List<TaskStep> getTaskSteps() {
+		return taskSteps;
+	}
+	public void setTaskSteps(List<TaskStep> taskSteps) {
+		this.taskSteps = taskSteps;
+	}
 	public String getUriRef() {
 		return uriRef;
 	}
@@ -195,7 +205,8 @@ public class TodoTask {
 				+ ", remindMe=" + remindMe + ", remindTime=" + remindTime + ", note=" + note + ", isCompleted="
 				+ isCompleted + ", dateCreated=" + dateCreated + ", dateCompleted=" + dateCompleted + ", dueDate="
 				+ dueDate + ", isRepeat=" + isRepeat + ", isImportant=" + isImportant + ", userId=" + userId
-				+ ", listId=" + listId + ", listName=" + listName + ", uriRef=" + uriRef + "]";
+				+ ", listId=" + listId + ", listName=" + listName + ", uriRef=" + uriRef + ", taskSteps=" + taskSteps
+				+ "]";
 	}
 	
 	
