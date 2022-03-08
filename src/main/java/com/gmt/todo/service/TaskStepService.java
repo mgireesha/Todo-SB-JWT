@@ -40,6 +40,11 @@ public class TaskStepService {
 	public TaskStep updateStep(TaskStep taskStep, String stepAction) {
 		TaskStep taskStepD = taskStepRepository.getByStepId(taskStep.getStepId());
 		if("complete".equalsIgnoreCase(stepAction)) {
+			if(taskStep.isCompleted()) {
+				taskStepD.setDateCompleted(LocalDate.now());
+			}else {
+				taskStepD.setDateCompleted(null);
+			}
 			taskStepD.setCompleted(taskStep.isCompleted());
 		}
 		if("stepName".equalsIgnoreCase(stepAction)) {
