@@ -101,6 +101,8 @@ public class TaskService {
 			taskD.setCompleted(task.isCompleted());
 			if(task.isCompleted()) {
 				taskD.setDateCompleted(LocalDate.now());
+			}else {
+				taskD.setDateCompleted(null);
 			}
 		}
 		if(null!=action && "note".equals(action)) {
