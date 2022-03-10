@@ -109,7 +109,7 @@ public class UserService {
 			reqJson.put("requestingApplication", "TODO");
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbiIsImV4cCI6MTY0Njg2OTE0MywiaWF0IjoxNjQ1OTgwMTEwfQ.lsh43pYBTtUx-MLs2OEwW1NITw6JNk6jrScMaip4wco");
+			headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbiIsImV4cCI6MTY0NzgzMTg0MiwiaWF0IjoxNjQ2OTQyODA5fQ.C1kko5H7XUT-nrE_q863WeSeW4pUSR0QHPifjxPQGlk");
 			UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("https://send-email-sb.herokuapp.com/sendEmail");
 			UriComponents uriComponents = builder.build();
 			HttpEntity<String> request = new HttpEntity<String>(reqJson.toString(),headers);
