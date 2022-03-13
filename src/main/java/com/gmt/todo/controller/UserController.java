@@ -25,13 +25,23 @@ public class UserController {
 	
 	private static final String WRONG_PASSWORD = "WRONG_PASSWORD";
 	
+	private static final String USER_EXISTS = "USER_EXISTS";
+	
+	private static final String  USER_AVAILABLE = "USER_AVAILABLE";
+	
 	@Autowired
 	private UserService userService;
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/signup")
 	public TResponse signup(@RequestBody User user) {
 		TResponse resp = new TResponse();
 		try {
+			Optional<User> userOpt = userService.getUserByUserName(user.getUserName());
+			if(userOpt.isPresent()) {
+				resp.setStatus(USER_EXISTS);
+				resp.setError(user.getUserName());
+				return resp;
+			}
 			user = userService.resgisterUser(user);
 			if (null != user) {
 				resp.setStatus(SUCCESS);
@@ -137,5 +147,19 @@ public class UserController {
 	@RequestMapping("/ManageUsers")
 	public List<User> manageUsers() {
 		return userService.getAllUsers();
+	}
+	
+	@RequestMapping("/user/checkUsername/{userName}")
+	public TResponse checkUserName(@PathVariable String userName){
+		TResponse resp = new TResponse();
+		Optional<User> userOp = userService.getUserByUserName(userName);
+		if(userOp.isPresent()) {
+			resp.setStatus(USER_EXISTS);
+			resp.setError(userName);
+		}else {
+			resp.setStatus(USER_AVAILABLE);
+			resp.setError(userName);
+		}
+		return resp;
 	}
 }
