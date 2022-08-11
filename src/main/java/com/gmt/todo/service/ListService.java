@@ -55,9 +55,10 @@ public class ListService {
 		return (List<TodoList>) todolistRepository.saveAll(todoList);
 	}
 	public TodoList updateList(TodoList list, Long listId) {
-		TodoList listD = todolistRepository.getByListId(listId);
-		listD.setListName(list.getListName());
-		listD = todolistRepository.save(listD);
+		//TodoList listD = todolistRepository.getByListId(listId);
+		//listD.setListName(list.getListName());
+		//listD = todolistRepository.save(listD);
+		TodoList listD = todolistRepository.save(list);
 		return listD;
 	}
 	

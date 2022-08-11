@@ -96,40 +96,77 @@ public class TaskService {
 	
 	public TodoTask updateTask(TodoTask task, Long taskId, String action) {
 		TodoTask taskD = todoTaskRepository.getByTaskId(taskId);
-		if(null!=action && "complete".equals(action)) {
-			taskD.setCompleted(task.isCompleted());
-			if(task.isCompleted()) {
-				taskD.setDateCompleted(LocalDate.now());
-			}else {
-				taskD.setDateCompleted(null);
-			}
+		switch (action) {
+			case "note":
+				taskD.setNote(task.getNote());
+				break;
+			case "uri-ref":
+				taskD.setUriRef(task.getUriRef());
+				break;
+			case "important":
+				taskD.setImportant(task.isImportant());
+				break;
+			case "taskName":
+				taskD.setTaskName(task.getTaskName());
+				break;
+			case "remindMe":
+				taskD.setRemindMe(task.isRemindMe());
+				taskD.setRemindTime(null);
+				break;
+			case "remindMeDate":
+				taskD.setRemindMe(task.isRemindMe());
+				taskD.setRemindTime(task.getRemindTime());
+				break;
+			case "dueDate":
+				taskD.setDueDate(task.getDueDate());
+				break;
+			case "complete":
+				taskD.setCompleted(task.isCompleted());
+				if(task.isCompleted()) {
+					taskD.setDateCompleted(LocalDate.now());
+				}else {
+					taskD.setDateCompleted(null);
+				}
+				break;
+			default:
+				break;
 		}
-		if(null!=action && "note".equals(action)) {
-			taskD.setNote(task.getNote());
-		}
-		if(null!=action && "uri-ref".equals(action)) {
-			taskD.setUriRef(task.getUriRef());
-		}
-		if(null!=action && "important".equals(action)) {
-			taskD.setImportant(task.isImportant());
-		}
-		if(null!=action && "taskName".equals(action)) {
-			taskD.setTaskName(task.getTaskName());
-		}
+
+		// if(null!=action && "complete".equals(action)) {
+		// 	taskD.setCompleted(task.isCompleted());
+		// 	if(task.isCompleted()) {
+		// 		taskD.setDateCompleted(LocalDate.now());
+		// 	}else {
+		// 		taskD.setDateCompleted(null);
+		// 	}
+		// }
+		// if(null!=action && "note".equals(action)) {
+		// 	taskD.setNote(task.getNote());
+		// }
+		// if(null!=action && "uri-ref".equals(action)) {
+		// 	taskD.setUriRef(task.getUriRef());
+		// }
+		// if(null!=action && "important".equals(action)) {
+		// 	taskD.setImportant(task.isImportant());
+		// }
+		// if(null!=action && "taskName".equals(action)) {
+		// 	taskD.setTaskName(task.getTaskName());
+		// }
 		
-		if(null!=action && "remindMe".equals(action)) {
-			taskD.setRemindMe(task.isRemindMe());
-			taskD.setRemindTime(null);
-		}
+		// if(null!=action && "remindMe".equals(action)) {
+		// 	taskD.setRemindMe(task.isRemindMe());
+		// 	taskD.setRemindTime(null);
+		// }
 		
-		if(null!=action && "remindMeDate".equals(action)) {
-			taskD.setRemindMe(task.isRemindMe());
-			taskD.setRemindTime(task.getRemindTime());
-		}
+		// if(null!=action && "remindMeDate".equals(action)) {
+		// 	taskD.setRemindMe(task.isRemindMe());
+		// 	taskD.setRemindTime(task.getRemindTime());
+		// }
 		
-		if(null!=action && "dueDate".equals(action)) {
-			taskD.setDueDate(task.getDueDate());
-		}
+		// if(null!=action && "dueDate".equals(action)) {
+		// 	taskD.setDueDate(task.getDueDate());
+		// }
+		
 		/*
 		 * if(task.isCompleted() || task.isImportant()) {
 		 * taskD.setImportant(task.isImportant());

@@ -1,6 +1,5 @@
 package com.gmt.todo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import com.gmt.todo.model.TResponse;
 import com.gmt.todo.model.TaskStep;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
-import com.gmt.todo.repository.TaskStepRepository;
 import com.gmt.todo.service.ListService;
 import com.gmt.todo.service.TaskService;
 import com.gmt.todo.service.TaskStepService;
@@ -35,9 +33,6 @@ public class TaskController {
 	@Autowired
 	private ListService listService;
 
-	@Autowired
-	private TaskStepRepository taskStepRepository;
-	
 	@RequestMapping(method = RequestMethod.POST, value = "/task/")
 	public TResponse addNewTask(@RequestBody TodoTask task) {
 		TResponse resp = new TResponse();

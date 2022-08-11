@@ -20,10 +20,12 @@ public class TodoList {
 	private LocalDate dateCreated;
 	private long groupId;
 	private String groupName;
+	private String sortedtasks;
 	@Transient
 	private List<TodoTask> taskList;
 	@Transient
 	private Long taskCount;
+
 	public long getListId() {
 		return listId;
 	}
@@ -74,6 +76,12 @@ public class TodoList {
 	public void setTaskCount(Long taskCount) {
 		this.taskCount = taskCount;
 	}
+	public String getSortedtasks() {
+		return sortedtasks;
+	}
+	public void setSortedtasks(String sortedtasks) {
+		this.sortedtasks = sortedtasks;
+	}
 	public TodoList(long listId, String listName, String userId, List<TodoTask> taskList) {
 		this.listId = listId;
 		this.listName = listName;
@@ -110,9 +118,11 @@ public class TodoList {
 	}
 	@Override
 	public String toString() {
-		return "TodoList [listId=" + listId + ", listName=" + listName + ", userId=" + userId + ", dateCreated="
-				+ dateCreated + ", groupId=" + groupId + ", groupName=" + groupName + ", taskList=" + taskList + "]";
+		return "TodoList [dateCreated=" + dateCreated + ", groupId=" + groupId + ", groupName=" + groupName
+				+ ", listId=" + listId + ", listName=" + listName + ", sortedtasks=" + sortedtasks + ", taskCount="
+				+ taskCount + ", taskList=" + taskList + ", userId=" + userId + "]";
 	}
+	
 	
 	
 }
