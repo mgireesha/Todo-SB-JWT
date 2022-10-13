@@ -94,12 +94,17 @@ public class UserService {
 	        user = save(user);
 			final String BODY = String.join(
 	                System.getProperty("line.separator"),
-	                "<h3>Hi <i style='color:#7f10a2'>"+user.getName()+"</i></h3>",
-	                "<h4>Your password reset request has been initiated</h4>",
-	                "<h4>Use OTP :"+otp+"</h4>",
-	                System.getProperty("line.separator"),
-	                "<h4>Regars,</h4>",
-	                "<h4>Team Todo App</h4>"
+					"<div style='width: 100%;background-color: lightgrey;display: flex;justify-content: center;padding: 30px;'>",
+        				"<div style='width: 40%;background-color: #fff;'>",
+            				"<div style='padding: 10px;'>",
+                				"<h3><i style='color:#7f10a2'>Hi "+user.getName()+"</i></h3>",
+                				"<h4>Your password reset request has been initiated</h4>",
+                				"<h4>Use OTP :"+otp+"</h4>",
+                				"<h4>Regars,</h4>",
+                				"<h4>Team Todo App</h4>",
+            				"</div>",
+        				"</div>",
+    				"</div>"
 	            );
 		
 			JSONObject reqJson = new JSONObject();
