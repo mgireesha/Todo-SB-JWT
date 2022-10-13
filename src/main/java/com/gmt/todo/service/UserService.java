@@ -94,8 +94,8 @@ public class UserService {
 	        user = save(user);
 			final String BODY = String.join(
 	                System.getProperty("line.separator"),
-					"<div style='width: 100%;background-color: #35855c7a;display: flex;justify-content: center;padding: 30px;font-family: cursive;'>",
-        				"<div style='width: 40%;background-color: #cf2b587d;margin-left:15%;'>",
+					"<div style='width: 65%;background-color: #35855c7a;display: flex;justify-content: center;padding: 30px;font-family: cursive;box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;'>",
+        				"<div style='width: 65%;background-color: #cf2b587d;margin-left:15%;box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px;'>",
             				"<div style='padding: 10px;'>",
                 				"<h3><i style='color:#7f10a2'>Hi "+user.getName()+"</i></h3>",
                 				"<h4>Your password reset request has been initiated</h4>",
