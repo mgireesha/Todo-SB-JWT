@@ -25,20 +25,22 @@ public class HomeController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private TodoUserDetailsService todoUserDetailsService;
-	
+
 	@Autowired
 	private JwtUtil jwtTokenUtil;
-	
+
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
+			throws Exception {
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), 
-					authenticationRequest.getPassword()));
+			authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
+							authenticationRequest.getPassword()));
 		} catch (BadCredentialsException e) {
-			return ResponseEntity.ok(new AuthenticationResponse("","failed","Incorrect username or password"));
+			return ResponseEntity.ok(new AuthenticationResponse("", "failed", "Incorrect username or password"));
 		}
 		final UserDetails userDetails = todoUserDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
@@ -46,12 +48,11 @@ public class HomeController {
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 
-	
 	@RequestMapping("/accessDenied")
 	public ModelAndView accessDenied() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("accessDenied");
 		return mv;
 	}
-	
+
 }
