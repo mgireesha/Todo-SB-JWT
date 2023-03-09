@@ -14,7 +14,7 @@ COPY target/*.jar app.jar
 #RUN npm run build
 
 # Expose port 3000
-EXPOSE 8085
+EXPOSE 8087
 
 # Define the entry point for the container
 ENTRYPOINT ["java","-jar","/app.jar"]
