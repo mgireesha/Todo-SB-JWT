@@ -91,7 +91,7 @@ export function handleAPIError(error){
 
 export function getServiceURI(){
     //return "https://todo-ms-rc-sb.herokuapp.com"
-    //return "http://localhost:8087";
+    return "http://localhost:8087";
     return "";
 } 
 

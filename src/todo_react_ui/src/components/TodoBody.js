@@ -20,27 +20,26 @@ export const TodoBody = () => {
     const showTasks = useSelector(state => state.task.showTasks);
     const showLists = useSelector(state => state.list.showLists);
     useEffect(()=>{
-        document.getElementById('main-body-div').style.height 
-			= (window.innerHeight - 40)+"px";
-        document.getElementById('list-item-main-comb').style.minHeight
-			= (window.innerHeight - 60 - document.getElementById('list-item-add').offsetHeight)+"px";
-		document.getElementById('list-item-main-comb').style.maxHeight
-			= (window.innerHeight - 60 - document.getElementById('list-item-add').offsetHeight)+"px";
-		if(document.getElementById('task-item-main')!==null){
-			document.getElementById('task-item-main').style.minHeight
-				= (window.innerHeight - 135 - document.getElementById('list-item-add').offsetHeight)+"px";
-			document.getElementById('task-item-main').style.maxHeight
-				= (window.innerHeight - 135 - document.getElementById('list-item-add').offsetHeight)+"px";
-        }
+        //document.getElementById('main-body-div').style.height = (window.innerHeight - 40)+"px";
+        //document.getElementById('list-item-main-comb').style.minHeight
+		//	= (window.innerHeight - 60 - document.getElementById('list-item-add').offsetHeight)+"px";
+		//document.getElementById('list-item-main-comb').style.maxHeight
+		//	= (window.innerHeight - 60 - document.getElementById('list-item-add').offsetHeight)+"px";
+		// if(document.getElementById('task-item-main')!==null){
+		// 	document.getElementById('task-item-main').style.minHeight
+		// 		= (window.innerHeight - 135 - document.getElementById('list-item-add').offsetHeight)+"px";
+		// 	document.getElementById('task-item-main').style.maxHeight
+		// 		= (window.innerHeight - 135 - document.getElementById('list-item-add').offsetHeight)+"px";
+        // }
     },[])
 
     useEffect(()=>{
-		if(showTaskDetls && document.getElementById('task-detail-main')!==null){
-			document.getElementById('task-detail-main').style.minHeight
-			= (window.innerHeight - 50 - document.getElementById('task-detail-delete').offsetHeight)+"px";
-			document.getElementById('task-detail-main').style.maxHeight
-			= (window.innerHeight - 50 - document.getElementById('task-detail-delete').offsetHeight)+"px";
-		}
+		// if(showTaskDetls && document.getElementById('task-detail-main')!==null){
+		// 	document.getElementById('task-detail-main').style.minHeight
+		// 	= (window.innerHeight - 50 - document.getElementById('task-detail-delete').offsetHeight)+"px";
+		// 	document.getElementById('task-detail-main').style.maxHeight
+		// 	= (window.innerHeight - 50 - document.getElementById('task-detail-delete').offsetHeight)+"px";
+		// }
 	},[showTaskDetls])
 
     useEffect(()=>{

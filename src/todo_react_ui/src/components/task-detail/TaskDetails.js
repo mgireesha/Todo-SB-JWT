@@ -262,7 +262,7 @@ export const TaskDetails = () => {
 		<div className="col-sm-3 task-detail-div" id="task-detail-div">
 		{/* <img alt="back" src={whiteLeftArrow} style={{width:1.5+'em'}} onClick={()=>onMobileGoback(task.listId)} /> */}
 		{isMobileDevice &&
-			<BsArrowLeftSquare onClick={onMobileGoback} className='login-back-arrow' style={{marginLeft:10}} />
+			<BsArrowLeftSquare onClick={()=>onMobileGoback(task.listId)} className='login-back-arrow' style={{marginLeft:10}} />
 		}
 			<div className="task-detail-main" id="task-detail-main">
 				<div className="row task-item-detail-name" id="task-item-detail-name">

@@ -94,10 +94,10 @@ export const TaskItem = ({ taskObj, todoList, onSetShowConfirmPopup, revLst }) =
 
 
 	return (
-		<div className="row" style={{ margin: 10 }} key={"task-item" + taskObj.taskId} draggable={!taskObj.completed}>
+		<div className="row task-item-row" key={"task-item" + taskObj.taskId} draggable={!taskObj.completed}>
 			<div className={taskDetail !== null && taskDetail.taskId === taskObj.taskId ? "task-item selected-task" : "task-item"} id={taskObj.taskId}
 				key={"task-item-" + taskObj.taskId} onClick={(event) => ToggleShowtaskDetls(event, taskObj.taskId)}>
-				<div className="col-sm-11" style={{ padding: 10, paddingLeft: 0, width: 92 + '%' }}>
+				<div className="task-item-task-label" style={{ padding: 10, paddingLeft: 0}}>
 					<input type="checkbox" id={"task-chkbx-" + taskObj.taskId} className={"task-item-chkbx task-chkbx-" + taskObj.taskId}
 						onChange={(event) => completeTask(event, 'complete', taskObj)} checked={taskObj.completed} />
 					<label className={taskObj.completed ? "task-item-label strike-line" : "task-item-label"} >{taskObj.taskName}</label>
@@ -131,7 +131,7 @@ export const TaskItem = ({ taskObj, todoList, onSetShowConfirmPopup, revLst }) =
 						</div>
 					</div>
 				</div>
-				<div className="col-sm-1 task-item-delete" id={"task-item-delete-" + taskObj.taskId} onClick={(event) => onSetShowConfirmPopup(event, true, taskObj)} title="Delete Task">
+				<div className="task-item-delete" id={"task-item-delete-" + taskObj.taskId} onClick={(event) => onSetShowConfirmPopup(event, true, taskObj)} title="Delete Task">
 					<img alt="delete task" id={"task-item-delete-img-" + taskObj.taskId} src={deleteGrey2026} style={{ height: 1.8 + 'em' }} />
 				</div>
 			</div>

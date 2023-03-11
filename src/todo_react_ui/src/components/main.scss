@@ -12,12 +12,26 @@ body{
 	font-weight: 500;
 }
 
+#app-main-div{
+    width: 100%;
+    height: 100%;
+}
+
+#todo-header{
+    height: 3em;
+}
+
+#main-body-div{
+    height: calc(100vh - 3.5em);
+}
+
 .list-div{
 	background-color: #403a3a;
     margin-left: 5px;
     margin-right: 3px;
     border-radius: 4px;
     /* font-family: cursive; */
+    position: relative;
 }
 
 .task-div{
@@ -25,14 +39,16 @@ body{
 	   background-color: #df2f68;
 	   background-color:#403a3a;
 	    border-radius: 4px;
+        position: relative;
 }
 
 .list-item-main-comb{
-	max-height: 32.1em;
+	max-height: calc(100vh - 3.5em - 3.5em - 10px);
     overflow-y: auto;
     min-height: 32.1em;
     overflow-x:hidden; 
 }
+
 .list-item{
 	/* background-color: darkkhaki;
 	margin: 10px;
@@ -150,11 +166,8 @@ body{
 
 .list-item-add-div{
 	background-color: darkkhaki;
-	margin: 0px;
-	/* margin-right: 10px;
-	margin-left: 5px; */
-	padding: 5px;
-	height: 2.6em;
+	padding: 8px;
+	// height: 2.6em;
 	border-radius: 4px; 
 	cursor: pointer;
 }
@@ -164,16 +177,18 @@ body{
 }
 
 .list-item-add{
-	margin: 5px;
+	position: absolute;
+    bottom: 10px;
+    right: 15px;
+    left: 15px;
 }
 .list-item-add-field{
-	background-color: darkkhaki;
+	background-color: #c2b622;
+    border: 1px solid #7d7b7b;
 	margin: 0px;
-	/* margin-right: 10px;
-	margin-left: 5px; */
 	padding: 5px;
-	/* height: 3em; */
-	border-radius: 4px; 
+	border-radius: 4px;
+
 }
 .list-add-txt-div{
 	padding-left: 0;
@@ -223,41 +238,28 @@ body{
     padding-left: 2px;
 }
 #task-item-main{
-	 max-height: 20em;
-	 min-height: 27em;
+    max-height: calc(100vh - 3.5em - 3.125em - 5.5em);
     overflow-y: auto;
 }
 
+.task-item-row{
+    margin:10px;
+    margin-top: 0;
+}
+
 .task-item{
-    /* padding: 10px;
-    background-color: beige;
-    margin: 10px;
-    font-family: cursive;
-    display:inline-block;
-    margin-right: 0;
-    border-radius: 5px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0; */
-    
-    /* padding: 10px; */
     background-color: beige;
     border-radius: 5px;
     display: flex;
-    /* margin: 10px; */
-    width: 98%;
+    //width: 98%;
     padding-right: 0;
 }
+
+.task-item-task-label{
+    width: 95%;
+}
+
 .task-item-delete{
-	/* display: inline;
-	margin:10px;
-    margin-left: 0;
-    border-radius: 5px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    margin-right: 0;
-    background-color: beige;
-    text-align: center;
-    padding: 15px; */
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     text-align: center;
@@ -269,16 +271,16 @@ body{
 }
 
 .task-add-main{
-    
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    right: 30px;
 }
 
 .task-item-add-div{
-	 padding: 10px;
+	padding: 10px;
     background-color: beige;
-/*     margin: 10px; */
-   /*  font-family: cursive; */
     border-radius: 5px;
-/*     margin-right : 4em; */
 }
 .task-item-add-div, .task-item-add-div *:hover{
 	cursor: pointer;
@@ -436,6 +438,16 @@ color: grey;
   background: #555; 
 }
 
+/* Track */
+.list-item-main-comb::-webkit-scrollbar-track{
+    margin-top: 16px;
+    margin-bottom: 3px;
+}
+
+#task-item-main::-webkit-scrollbar-track {
+    margin: 0;
+}
+
 /*Date*/
 /* Removes the clear button from date inputs */
 input[type="date"]::-webkit-clear-button {
@@ -509,24 +521,22 @@ task-add-due-date, focus {
 }
 
 .task-item-add-field{
-	position: absolute;
-    top: 80vh;
-    width: 62%;
+	// position: absolute;
+    // top: 80vh;
+    // width: 62%;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
 .task-detail-div{
+    position: relative;
 	background-color: #403a3a;
     margin-left: 5px;
     margin-right: 3px;
     border-radius: 4px;
-    /* overflow-y: auto; */
-    /* font-family: cursive */
 }
 
 .task-detail-main{
-	min-height: 32em;
-    max-height: 32em;
+    max-height: calc(100vh - 3.5em - 5.5em);
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -569,12 +579,11 @@ task-add-due-date, focus {
     /* background-color: #00ab75;
     color: #fff; */
 }
-.task-detail-main{
-	min-height: 32em;
-	max-height: 32em;
-}
 .task-detail-delete{
-	    border-top: 1px solid #6c6868;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+	border-top: 1px solid #6c6868;
 }
 
 .selected-task-delete{
@@ -1157,3 +1166,12 @@ task-add-due-date, focus {
   }
 /* Code for file tag in import contacts div   >>> Start */
 //File - end
+
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+    .list-div{
+        width: 97%;
+        margin-left: 6px;
+    }
+}
