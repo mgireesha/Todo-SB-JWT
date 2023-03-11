@@ -51,6 +51,7 @@ export const Login = ({lError}) => {
 	document.cookie="jToken=;";
 	const authenticate = async() => {
 		setLoginError("");
+		document.cookie="jToken=;";
 		const username= document.getElementById('username');
 		const password = document.getElementById('password');
 		if(!validateReqFld(username) || !validateReqFld(password)){
