@@ -38,7 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/", "/static/**", "/todo/authenticate", "/todo/signup", "/todo/init-reset-pwd",
+				.antMatchers("/", "/manifest.json", "/static/**", "/todo/authenticate", "/todo/signup",
+						"/todo/init-reset-pwd",
 						"/todo/reset-pwd", "/todo/change-pwd", "/todo/user/checkUsername/{userName}")
 				.permitAll()
 				.antMatchers("/todo/ManageUsers").hasRole("ADMIN")
