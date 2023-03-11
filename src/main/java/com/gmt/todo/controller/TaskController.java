@@ -20,16 +20,16 @@ import com.gmt.todo.service.TaskService;
 import com.gmt.todo.service.TaskStepService;
 
 @RestController
-@CrossOrigin 
+@CrossOrigin
 @RequestMapping("/todo")
 public class TaskController {
-	
+
 	@Autowired
 	private TaskService taskService;
-	
+
 	@Autowired
 	private TaskStepService taskStepService;
-	
+
 	@Autowired
 	private ListService listService;
 
@@ -46,14 +46,14 @@ public class TaskController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/task/{taskId}/")
 	public TodoTask getTaskByTaskId(@PathVariable String taskId) {
 		return taskService.getTaskByTaskId(Long.parseLong(taskId));
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/task/{taskId}/{action}")
-	public TResponse updateTask(@RequestBody TodoTask task,@PathVariable String taskId, @PathVariable String action) {
+	public TResponse updateTask(@RequestBody TodoTask task, @PathVariable String taskId, @PathVariable String action) {
 		TResponse resp = new TResponse();
 		try {
 			task = taskService.updateTask(task, Long.parseLong(taskId), action);
@@ -66,7 +66,7 @@ public class TaskController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/task/{taskId}")
 	public TResponse deleteTask(@PathVariable String taskId) {
 		TResponse resp = new TResponse();
@@ -80,40 +80,40 @@ public class TaskController {
 		}
 		return resp;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.GET, value = "task/getTasksByListId/{listId}")
 	public Map<String, List> getTodoTasksByListId(@PathVariable String listId) {
 		Map<String, List> tasksMap = taskService.getTasksByListId(Long.parseLong(listId));
-		Long before = System.currentTimeMillis();
+		// Long before = System.currentTimeMillis();
 		for (Map.Entry<String, List> lists : tasksMap.entrySet()) {
-			if(!lists.getKey().equals("todoList")) {
-				for(TodoTask task : (List<TodoTask>)lists.getValue()) {
+			if (!lists.getKey().equals("todoList")) {
+				for (TodoTask task : (List<TodoTask>) lists.getValue()) {
 					task.setTaskSteps(taskStepService.getTaskStepsByTaskId(task.getTaskId()));
 				}
 			}
 		}
-		Long after = System.currentTimeMillis();
-		System.out.println("Time taken: "+(after-before));
+		// Long after = System.currentTimeMillis();
+		// System.out.println("Time taken: "+(after-before));
 		return tasksMap;
 	}
-	
+
 	@RequestMapping("task/getUserTasks")
-	public List<TodoTask> getAllTasksForUser(){
+	public List<TodoTask> getAllTasksForUser() {
 		return taskService.getAllTasksForUser();
 	}
-	
+
 	@RequestMapping("/task/getListsOfUsers/{taskId}")
-	public List<TodoList> getListsOfUser(@PathVariable String taskId){
+	public List<TodoList> getListsOfUser(@PathVariable String taskId) {
 		TodoTask task = taskService.getTaskByTaskId(Long.parseLong(taskId));
 		return listService.getListByUserId(task.getUserId());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/task/moveTask/{taskId}/{listId}")
 	public TResponse moveTask(@PathVariable String taskId, @PathVariable String listId) {
 		TResponse resp = new TResponse();
 		try {
-			TodoTask task =  taskService.getTaskByTaskId(Long.parseLong(taskId));
+			TodoTask task = taskService.getTaskByTaskId(Long.parseLong(taskId));
 			TodoList todoList = listService.getListById(Long.parseLong(listId));
 			task.setListId(todoList.getListId());
 			task.setListName(todoList.getListName());
@@ -127,13 +127,13 @@ public class TaskController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/task/{taskId}/taskStep/")
-	public TResponse addTaskStep(@PathVariable String taskId, @RequestBody TaskStep taskStep){
+	public TResponse addTaskStep(@PathVariable String taskId, @RequestBody TaskStep taskStep) {
 		TResponse resp = new TResponse();
 		try {
 			TodoTask task = taskService.getTaskByTaskId(Long.parseLong(taskId));
-			if(taskStep.getTaskId()==0){
+			if (taskStep.getTaskId() == 0) {
 				taskStep.setTaskId(Long.parseLong(taskId));
 			}
 			taskStep = taskStepService.addNewStep(taskStep);
@@ -147,16 +147,16 @@ public class TaskController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/task/{taskId}/taskStep/")
-	public List<TaskStep> getTaskStepByTaskId(@PathVariable String taskId){
+	public List<TaskStep> getTaskStepByTaskId(@PathVariable String taskId) {
 		return taskStepService.getTaskStepsByTaskId(Long.parseLong(taskId));
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/task/taskStep/{stepAction}/")
 	public TResponse updateTaskStep(@PathVariable String stepAction, @RequestBody TaskStep taskStep) {
 		TResponse resp = new TResponse();
 		try {
-			taskStep = taskStepService.updateStep(taskStep,stepAction);
-			System.out.println("taskStep :"+taskStep);
+			taskStep = taskStepService.updateStep(taskStep, stepAction);
+			System.out.println("taskStep :" + taskStep);
 			resp.setTodoTask(taskService.getTaskByTaskId(taskStep.getTaskId()));
 			resp.setStatus("success");
 		} catch (Exception e) {
@@ -165,7 +165,7 @@ public class TaskController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/task/taskStep/{stepId}")
 	public TResponse deleteTaskStepById(@PathVariable String stepId) {
 		TResponse resp = new TResponse();
