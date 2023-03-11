@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { getAuth } from '../utils/GlobalFuns';
 //const baseURL = 'https://todo-ms-rc-sb.herokuapp.com';
-const baseURL = 'http://localhost:8087';
-//const baseURL = '';
+//const baseURL = 'http://localhost:8087';
+const baseURL = '';
 const iAxios = axios.create({
     baseURL:baseURL,
     headers:{
