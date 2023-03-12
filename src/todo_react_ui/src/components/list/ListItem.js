@@ -28,7 +28,7 @@ export const ListItem =({list,onSetShowConfirmPopup}) => {
 		}
 		if(currentACTSel!==listId.toString()){
 			document.getElementById('currentACTSel').value=listId;
-			document.getElementById('list-item-act-sel-'+listId).style.height='3em';
+			document.getElementById('list-item-act-sel-'+listId).style.height='5em';
 			document.getElementById('list-item-act-sel-'+listId).style.right= 0;
 					//	= window.innerWidth - document.getElementById('list-item-'+listId).getBoundingClientRect().right-2+'px';
 		}
