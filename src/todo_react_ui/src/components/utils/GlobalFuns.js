@@ -90,7 +90,7 @@ export function handleAPIError(error){
 
 
 export function getServiceURI(){
-    return "http://localhost:8087";
+    //return "http://localhost:8087";
     return "";
 } 
 

@@ -1,26 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.df7faed0.css",
-    "main.js": "/static/js/main.f51c739d.js",
+    "main.css": "/static/css/main.88994ec1.css",
+    "main.js": "/static/js/main.2c5dfe99.js",
     "static/js/787.a465e5c6.chunk.js": "/static/js/787.a465e5c6.chunk.js",
     "static/media/todo-bg-720.png": "/static/media/todo-bg-720.b58dd2211c5fd9f0627f.png",
-    "static/media/bell-blue.png": "/static/media/bell-blue.d481aefa0ed6cbfda416.png",
-    "static/media/dot-blue.png": "/static/media/dot-blue.d815459577738a108aab.png",
-    "static/media/white-left-arrow.png": "/static/media/white-left-arrow.7dec1f251a94fb404cbb.png",
-    "static/media/calender-blue.png": "/static/media/calender-blue.acb3cb5e40e468251496.png",
-    "static/media/move-blue_20x18.png": "/static/media/move-blue_20x18.e28aff3db8dfbb9f4162.png",
     "static/media/gear-grey-200.png": "/static/media/gear-grey-200.07abc2a2a39291febd78.png",
-    "static/media/note-blue-s1.png": "/static/media/note-blue-s1.3e66a119cb225a7da796.png",
     "static/media/delete-red-20x27.png": "/static/media/delete-red-20x27.81e71c53c6e3ac71bdec.png",
     "static/media/delete-grey-20x26.png": "/static/media/delete-grey-20x26.f5215c9a7f4e278d4dad.png",
-    "static/media/Alarm-blue-bb-20x21.png": "/static/media/Alarm-blue-bb-20x21.df2e920d15a5a01522a5.png",
     "index.html": "/index.html",
-    "main.df7faed0.css.map": "/static/css/main.df7faed0.css.map",
-    "main.f51c739d.js.map": "/static/js/main.f51c739d.js.map",
+    "main.88994ec1.css.map": "/static/css/main.88994ec1.css.map",
+    "main.2c5dfe99.js.map": "/static/js/main.2c5dfe99.js.map",
     "787.a465e5c6.chunk.js.map": "/static/js/787.a465e5c6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.df7faed0.css",
-    "static/js/main.f51c739d.js"
+    "static/css/main.88994ec1.css",
+    "static/js/main.2c5dfe99.js"
   ]
 }
