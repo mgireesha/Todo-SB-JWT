@@ -15,7 +15,6 @@ import {TaskSteps} from './TaskSteps.js';
 
 import { days, dueDateColor, monthsI } from '../utils/GlobalFuns';
 
-import whiteLeftArrow from '../../images/white-left-arrow.png';
 import { convertDateT } from '../utils/GlobalFuns';
 import { deleteTask, fetTaskList, moveTask, setShowTasks, setTaskDetailShow, updateTask } from '../redux/task/taskActions';
 import { UPDATE_TASK_SUCCESS } from '../redux/task/taskActionTypes';
@@ -235,6 +234,7 @@ export const TaskDetails = () => {
 			task.remindMe = false;
 			task.remindTime = null;
 		}else if(action==="uri-ref"){
+			if(event.target.value==="")return;
 			task.uriRef = event.target.value;
 		}else if(action==="removeUriRef"){
 			action = "uri-ref";

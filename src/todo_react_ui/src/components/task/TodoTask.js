@@ -7,11 +7,9 @@ import {TaskCompletedCounter} from './TaskCompletedCounter.js';
 import {ConfirmPopup} from '../ConfirmPopup.js';
 import {AddTask} from './AddTask.js';
 
-import whiteLeftArrow from '../../images/white-left-arrow.png';
-import { createTask, deleteTask, setShowTasks } from '../redux/task/taskActions.js';
+import { deleteTask, setShowTasks } from '../redux/task/taskActions.js';
 import { fethUserLists, setShowLists, updateList } from "../redux/list/listActions.js";
 import { FETCH_TASK_SUCCESS } from '../redux/task/taskActionTypes.js';
-import { getDateFormat } from '../utils/GlobalFuns.js';
 import { BsArrowLeftSquare } from 'react-icons/bs';
 
 export const TodoTask = () => {

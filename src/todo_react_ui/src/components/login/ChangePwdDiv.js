@@ -1,6 +1,5 @@
 import { React } from 'react';
 
-import whiteLeftArrow from '../../images/white-left-arrow.png';
 import {BsArrowLeftSquare} from 'react-icons/bs';
 import { PasswordField } from './PasswordField';
 

@@ -21,6 +21,14 @@ body{
     height: 3em;
 }
 
+#todo-header a{
+    text-decoration: none;
+}
+
+#todo-header .todo-header-label:hover{
+    color: rgb(174, 174, 141);
+}
+
 #main-body-div{
     height: calc(100vh - 3.5em);
 }
@@ -259,6 +267,15 @@ body{
     width: 95%;
 }
 
+.task-item-task-img{
+    color: rgb(87, 125, 181);
+}
+
+.task-item-dot-img{
+    color: rgb(101, 101, 226);
+    margin: 0 5px;
+}
+
 .task-item-delete{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -298,7 +315,6 @@ body{
     border-radius: 50%;
     vertical-align: middle;
     border: 1px solid #ddd;
-    -webkit-appearance: none;
     outline: none;
 }
 
@@ -536,18 +552,32 @@ task-add-due-date, focus {
 }
 
 .task-detail-main{
+    height: calc(100vh - 3.5em - 5.5em);
     max-height: calc(100vh - 3.5em - 5.5em);
     overflow-y: auto;
     overflow-x: hidden;
 }
 .task-item-detail-elem{
+    display: flex;
+    align-items: baseline;
+    column-gap: 15px;
 	background-color: #2e2729;
     color: beige;
     margin-top: 1.5em;
     border-radius: 5px;
-    padding: 10px;
+    padding: 10px 15px 15px 10px;
     margin: 10px;
 }
+
+.task-item-detail-remindMe{
+    padding-bottom: 0;
+}
+
+.task-item-detail-note, .task-item-detail-uri{
+    flex-direction: column;
+    row-gap: 10px;
+}
+
 .task-item-detail-name{
 	background-color: #2e2729;
     color: beige;
@@ -595,28 +625,18 @@ task-add-due-date, focus {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
-.task-detail-dueDate-img{
-	height: 1.2em;
-}
-.task-detail-remind-img{
-	height: 1.5em;
+
+.task-detail-remind-img, .task-detail-move-img, .task-detail-note-img{
+    color: #4747fd;
+    font-size: 24px;
 }
 
-.task-detail-remind-div, .task-detail-dueDate-div{
-	padding: 0;
-    padding-top: 6px;
-}
-.task-detail-remind-del{
+.task-detail-remind-del, .task-detail-dueDate-del{
 	text-align: center;
 	border-radius: 4px;
 	color: #b5b3b3;
-}
-
-.task-detail-dueDate-del{
-	text-align: center;
-	border-radius: 4px;
-	color: #b5b3b3;
-	padding: 6px;
+    padding: 5px 10px;
+    margin-left: auto;
 }
 /* .task-detail-dueDate-del, .task-detail-dueDate-del *:hover,.task-detail-remind-del>label, .task-detail-remind-del:hover{
 	cursor: pointer;
@@ -629,8 +649,13 @@ task-add-due-date, focus {
 	height: 1.4em;
 	transform: rotate(-20deg);
 }
+
 .task-detail-remind-lbl-sld{
 	color: #363beb;
+    display: block;
+}
+label#task-detail-remind-lbl{
+    display: block;
 }
 .task-detail-font-size{
     font-size: 13px;
@@ -639,9 +664,15 @@ task-add-due-date, focus {
 .task-detail-note-lbl{
 	padding: 0;
 }
+
 .task-detail-note-txt{
+    display: flex;
+    align-items: center;
+}
+.task-detail-note-txt textarea{
 	background-color: rgb(64, 58, 58);
     margin: 5px;
+    padding: 5px;
     border-radius: 3px;
     color: #d3d3c4;
     resize: vertical;
@@ -654,6 +685,22 @@ task-add-due-date, focus {
     color: beige !important;
 }
 
+.task-item-detail-uri svg{
+    color: #4747fd;
+    font-size: 22px;
+}
+
+.task-item-detail-uri .task-detail-note-txt{
+    column-gap: 15px;
+    width: 100%;
+}
+
+.task-item-detail-uri a{
+    cursor: pointer;
+    width: 100%;
+    max-width: 12.5em;
+    overflow: hidden;
+}
 
 .task-delete-label:hover{
 	font-style: italic;
@@ -811,10 +858,6 @@ task-add-due-date, focus {
 .ui-widget-overlay{
 	background-color: rgb(42 42 42) !important;
 }
-.task-detail-move-img{
-	height: 1.2em;
-	margin-top: 5px;
-}
 
 .task-item-detail-move, .task-item-detail-move > label, .task-item-detail-move *:hover, .sel-move-row, .sel-move-row *:hover{
 	cursor: pointer !important;
@@ -840,9 +883,11 @@ task-add-due-date, focus {
     height: 0;
 }
 .task-detail-sel-close{
-	padding: 10px;
+	padding: 8px;
     text-align: center;
     border-radius: 5px;
+    margin-left: auto;
+
 }
 .task-detail-sel-close:hover{
     background-color: #403a3a;
@@ -1108,9 +1153,9 @@ task-add-due-date, focus {
   } */
 
 //File - start
-.t-main-container{
-    //padding-left: 10em;
-}
+// .t-main-container{
+//     //padding-left: 10em;
+// }
 .file-input-div{
     // display: flex;
     // justify-content: center;
@@ -1123,9 +1168,9 @@ task-add-due-date, focus {
     margin-left: 20%;
     margin-top: 1%;
 }
-.file-input{
+// .file-input{
     
-}
+// }
 
 /* Code for file tag in import contacts div   >>> Start */
 .file-input-wrapper {
@@ -1175,19 +1220,19 @@ task-add-due-date, focus {
         margin-left: 6px;
     }
     
-    .task-add-main, .task-detail-delete, .list-item-add{
-        bottom: 3em;
-    }
+    // .task-add-main, .task-detail-delete, .list-item-add{
+    //     bottom: 3em;
+    // }
 
-    .list-item-main-comb {
-        max-height: calc(100vh - 3.5em - 3.5em - 10px - 2em);
-    }
+    // .list-item-main-comb {
+    //     max-height: calc(97vh - 3.5em - 3.5em - 10px - 2em);
+    // }
 
-    #task-item-main {
-        max-height: calc(100vh - 3.5em - 3.125em - 5.5em - 3em);
-    }
+    // #task-item-main {
+    //     max-height: calc(100vh - 3.5em - 3.125em - 5.5em - 3em);
+    // }
 
-    .task-detail-main {
-        max-height: calc(100vh - 3.5em - 5.5em - 2em);
-    }
+    // .task-detail-main {
+    //     max-height: calc(100vh - 3.5em - 5.5em - 2em);
+    // }
 }

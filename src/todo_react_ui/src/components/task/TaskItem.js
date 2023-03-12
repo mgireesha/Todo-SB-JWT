@@ -1,11 +1,12 @@
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 
-import calBlue from '../../images/calender-blue.png';
-import dotBlue from '../../images/dot-blue.png';
-import bellBlue from '../../images/bell-blue.png';
-import noteBlueS1 from '../../images/note-blue-s1.png';
 import deleteGrey2026 from '../../images/delete-grey-20x26.png';
+import { IoCalendarOutline } from 'react-icons/io5';
+import { TbBellFilled } from 'react-icons/tb';
+import { CgNotes } from 'react-icons/cg';
+import { RxDotFilled } from 'react-icons/rx';
+import { ImLink } from 'react-icons/im';
 
 import Nbsp from '../Nbsp.js';
 import { convertDateT, dueDateColor } from '../utils/GlobalFuns';
@@ -64,34 +65,22 @@ export const TaskItem = ({ taskObj, todoList, onSetShowConfirmPopup, revLst }) =
 
 	var timer;
 	const draggableItms = document.querySelectorAll('[draggable]');
-	//console.log('draggableItms',draggableItms)
 	draggableItms.forEach(drg=>{
 		drg.addEventListener('dragend',(event)=>{
 			clearTimeout(timer)
 			let tgtId = event.target.firstChild.id;
 			
-			//let target = event.target;
 			event.preventDefault();
 			event.stopPropagation();
 			event.stopImmediatePropagation();
-			//event.cancelBubble()
-			//event.target.style.opacity = 1;
-			//console.log('dragend',event.x,event.y);
 			let el = document.elementFromPoint(event.x,event.y);
-			//console.log(el.classList);
 			let count = 0;
 			while(el!==null && (!el.classList.contains('task-item') && count<10)){
 				el = el.parentElement;count++;
 			}
-			//if(el)console.log('el.id',el.id);console.log('event.target',tgtId)
-			//timer = setTimeout(() => {
 				if(el)revLst(tgtId,el.id)
-			//}, 600);
-			
-			
 		})
 	})
-
 
 	return (
 		<div className="row task-item-row" key={"task-item" + taskObj.taskId} draggable={!taskObj.completed}>
@@ -108,25 +97,29 @@ export const TaskItem = ({ taskObj, todoList, onSetShowConfirmPopup, revLst }) =
 									<Nbsp /><label style={{ fontSize: 10 }}>
 										{comptdSteps.length + '/' + taskObj.taskSteps.length}
 									</label>
-									<img alt="." src={dotBlue} style={{ height: 0.2 + 'em', margin: 5 }} />
+									<RxDotFilled key='rem date dot' className='task-item-dot-img'  />
 								</div>
 							}
 							{todoList.listName === "Important" && <div className="tc-row tc-tn-row">
 								<label style={{ fontSize: 12 }}><Nbsp />{taskObj.listName}<Nbsp /></label>
-								<img alt="." src={dotBlue} style={{ height: 0.2 + 'em', margin: 5 }} />
+								<RxDotFilled key='rem date dot' className='task-item-dot-img'  />
 							</div>}
 							<div className="tc-row tc-dd-row" style={{ display: taskObj.dueDate !== null ? 'inline' : 'none' }}>
-								<img key='due date' alt="due date" src={calBlue} style={{ height: 0.8 + 'em' }} />
+								<IoCalendarOutline key='due date' className='task-item-task-img' />
 								<label style={{ fontSize: 12, color: taskObj.completed ? '' : dueDateColor(taskObj.dueDate) }}><Nbsp />{taskObj.dueDate !== null && convertDateT(taskObj.dueDate)}</label>
-								<img alt="." src={dotBlue} style={{ height: 0.2 + 'em', margin: 5 }} />
+								<RxDotFilled key='due date dot' className='task-item-dot-img'  />
 							</div>
 							<div className="tc-row tc-rem-row" style={{ display: taskObj.remindTime !== null ? 'inline' : 'none' }}>
-								<img key='remind time' alt="remind time" src={bellBlue} style={{ height: 0.8 + 'em' }} />
+								<TbBellFilled key='rem date' className='task-item-task-img'/>
 								<label style={{ fontSize: 12 }}><Nbsp />{taskObj.remindTime !== null && convertDateT(taskObj.remindTime)}</label>
-								<img alt="." src={dotBlue} style={{ height: 0.2 + 'em', margin: 5 }} />
+								<RxDotFilled key='rem date dot' className='task-item-dot-img'  />
 							</div>
 							<div className="tc-row tc-note-row" style={{ display: taskObj.note !== null && taskObj.note !== "" ? 'inline' : 'none' }}>
-								<img key='note' alt="note" src={noteBlueS1} style={{ height: 0.8 + 'em' }} title={taskObj.note} />
+								<CgNotes key='note' className='task-item-task-img' title={taskObj.note} />
+								<RxDotFilled key='rem date dot' className='task-item-dot-img'  />
+							</div>
+							<div className="tc-row tc-note-row" style={{ display: taskObj.uriRef !== null && taskObj.uriRef !== "" ? 'inline' : 'none' }}>
+								<ImLink key='uriRef' className='task-item-task-img' />
 							</div>
 						</div>
 					</div>

@@ -73,10 +73,10 @@ export const Login = ({lError}) => {
 		const response = await fetch(`${getServiceURI()}/todo/authenticate`,settings);
 		const data = await response.json();
 		if(data.jwt){
-			setTimeout(()=>{
+			//setTimeout(()=>{
 				document.cookie="jToken=Bearer "+data.jwt+"; path=/";
 				window.location.replace("/");
-			},1000)
+			//},1000)
 		}else{
 			setLoginError(data.error); 
 			setOpacity(1);

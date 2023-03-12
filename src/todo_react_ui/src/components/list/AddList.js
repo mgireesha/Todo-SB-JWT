@@ -25,8 +25,8 @@ export const AddList = ({onAddList}) => {
 	},[phase,dispatch])
 	return (
 		<div className="list-item-add" id="list-item-add">
-			{!showListAdd ? <AddListLabel onTogglAddListField={TogglAddListField} /> : null}
-			{ showListAdd ? <AddListFiled onAddList={onAddList} /> : null}
+			{ showListAdd && <AddListFiled onAddList={onAddList} />}
+			{!showListAdd && <AddListLabel onTogglAddListField={TogglAddListField} />}
 		</div>
 	);
 }
