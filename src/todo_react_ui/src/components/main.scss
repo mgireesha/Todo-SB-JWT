@@ -302,6 +302,22 @@ body{
 .task-item-add-div, .task-item-add-div *:hover{
 	cursor: pointer;
 }
+
+.item-add-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 0px;
+    color: beige;;
+    background-color: #2e2729;
+    border-radius: 50%;
+    width: 20px;
+    text-align: center;
+    padding-bottom: 2px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
 .task-item-delete > img, .task-item-delete:hover{
 	cursor: pointer;
 }
@@ -627,7 +643,7 @@ task-add-due-date, focus {
 }
 
 .task-detail-remind-img, .task-detail-move-img, .task-detail-note-img{
-    color: #4747fd;
+    color: #4343a6;
     font-size: 24px;
 }
 
@@ -668,6 +684,7 @@ label#task-detail-remind-lbl{
 .task-detail-note-txt{
     display: flex;
     align-items: center;
+    column-gap: 15px;
 }
 .task-detail-note-txt textarea{
 	background-color: rgb(64, 58, 58);
@@ -676,6 +693,7 @@ label#task-detail-remind-lbl{
     border-radius: 3px;
     color: #d3d3c4;
     resize: vertical;
+    width: 70vw;
 }
 .task-detail-label-text{
 	width: 80%;
@@ -686,7 +704,7 @@ label#task-detail-remind-lbl{
 }
 
 .task-item-detail-uri svg{
-    color: #4747fd;
+    color: #4343a6;
     font-size: 22px;
 }
 
@@ -700,6 +718,7 @@ label#task-detail-remind-lbl{
     width: 100%;
     max-width: 12.5em;
     overflow: hidden;
+    font-size: 13px;
 }
 
 .task-delete-label:hover{
@@ -1078,16 +1097,16 @@ label#task-detail-remind-lbl{
 
 .middle-span, .task-detail-div, .task-div, .list-div{
 
-    animation: slideIn 500ms ease-in;
+    animation: slideIn 400ms ease-in;
 }
 
 
 @keyframes slideIn {
     0%{
-        transform:  translateX(250px);
+        transform:  translateX(70px);
     }
     80%{
-        transform:  translateX(-30px);
+        transform:  translateX(-10px);
     }
     100%{
         

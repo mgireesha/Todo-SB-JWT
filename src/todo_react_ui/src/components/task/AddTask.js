@@ -5,6 +5,7 @@ import { setIsMobileDevice, setShowListAdd } from '../redux/list/listActions';
 import { createTask, setShowTaskAdd } from '../redux/task/taskActions';
 import { TodoDatePicker } from '../TodoDatePicker';
 import { getDateFormat } from '../utils/GlobalFuns';
+import { CloseSmall } from '../utils/CloseSmall';
 
 export const AddTask = ({todoList}) => {
 	const dispatch = useDispatch();
@@ -90,6 +91,7 @@ export const AddTask = ({todoList}) => {
 						<input type="hidden" name="listName" id="listName" value="To do" />
 						<input type="hidden" name="listId" id="listId" value="271" />
 					</div>
+					<CloseSmall cssClass="item-add-close" closeFun = {()=>dispatch(setShowTaskAdd(false))}/>
 				</div>
 			}
 		</div>

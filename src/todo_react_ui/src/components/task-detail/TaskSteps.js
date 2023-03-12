@@ -107,7 +107,7 @@ export const TaskSteps = ({todoList}) => {
                             </div>
                     )}
                     {!showAddNxtFld && <div className='task-step-elem' style={{borderBottom:'none'}} onClick={(event)=>onSetShowAddNxtFld(event,true)}>
-                        <span className='link-look' style={{textDecoration: 'none',color:'#577db5'}} >+ Next Step</span>
+                        <span className='link-look' style={{textDecoration: 'none',color:'#4343a6'}} >+ Next Step</span>
                     </div>}
                 </div>
             <div>
