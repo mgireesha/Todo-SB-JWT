@@ -1,13 +1,16 @@
 import { React, useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateListOrder } from '../redux/list/listActions.js';
+import { UPDATE_LIST_SUCCESS } from '../redux/list/listActionTypes.js';
 import { createFilteredListOrderFromArry, createListOrderFromList, getChangedListOrder, syncListOrderArr } from '../utils/GlobalFuns.js';
 import { ListItem} from './ListItem.js';
 
 export const ListGroup =({lists, groupName,onDeleteList,onAddListToArchive,onSetShowConfirmPopup, userListsKeys}) => {
 	const dispatch = useDispatch();
 	const listOrder = useSelector(state => state.list.listOrder);
-	const [orderedLists, setOrderedLists] = useState([]);
+	const listPhase = useSelector(state => state.list.phase);
+	const [orderedLists, setOrderedLists] = useState(lists);
+	const [isListUpdated, setIsListUpdated] = useState(false);
 	useEffect(()=>{
 		if(groupName==="common" && listOrder!=="" && listOrder!==null && listOrder!==undefined){
 			let listOrderArr = listOrder.split(",").filter(listId => {return listId!==''});
@@ -29,7 +32,14 @@ export const ListGroup =({lists, groupName,onDeleteList,onAddListToArchive,onSet
 		}else{
 			setOrderedLists(lists);
 		}
-	},[lists, listOrder, groupName, userListsKeys]);
+		setIsListUpdated(false);
+	},[lists, listOrder, userListsKeys,isListUpdated]);
+
+	useEffect(()=>{
+		if(listPhase===UPDATE_LIST_SUCCESS){
+			setIsListUpdated(true);
+		}
+	},[listPhase])
 
 	const changeListOrder = (list, action) => {
 		const tempOrderedLists = [...orderedLists];

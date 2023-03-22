@@ -92,7 +92,7 @@ export function handleAPIError(error){
 
 
 export function getServiceURI(){
-    //return "http://localhost:8087";//COMMENT THIS BEFORE COMMITTING
+    return "http://localhost:8087";//COMMENT THIS BEFORE COMMITTING
     return "";
 } 
 
