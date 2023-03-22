@@ -36,8 +36,8 @@ export const TodoBody = () => {
             dispatch(fethUserLists(true));
         }else{
             dispatch(fethUserLists(false));
-            dispatch(fetchListOrder())
         }
+        dispatch(fetchListOrder());
     },[dispatch]);
 
     return(
