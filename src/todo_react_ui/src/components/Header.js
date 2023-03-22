@@ -28,6 +28,7 @@ export const Header = () => {
 			{isAuthenticated && 
 				<Select styles={headerLinksSelectStyles} 
 					options={options}
+					defaultValue = {{ value: '/#/logout', label: 'Logout' }}
 					onChange={handleChange}
 					classNamePrefix="header-links"
 				/>
