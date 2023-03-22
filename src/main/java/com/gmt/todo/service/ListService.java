@@ -7,13 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.model.User;
 import com.gmt.todo.repository.TodolistRepository;
+import com.gmt.todo.utils.TODO_CONSTANTS;
 
 @Service
 public class ListService {
@@ -22,10 +25,12 @@ public class ListService {
 	private TaskService taskService;
 
 	@Autowired
+	private UserService userService;
+
+	@Autowired
 	private TodolistRepository todolistRepository;
 
 	public List<TodoList> getAllLists() {
-		// System.out.println(todolistRepository.getByUserIdByOrderByGroupId("aditya"));
 		return (List<TodoList>) todolistRepository.findAll();
 	}
 
@@ -120,5 +125,22 @@ public class ListService {
 		todoList.setTaskCount(Long.valueOf(taskService.getByListId(todoList.getListId()).size()));
 		todoList = save(todoList);
 		return todoList;
+	}
+
+	public String updateLIstOrder(String userName, String listOrderObj) {
+		try {
+			JSONObject listOrder = new JSONObject(listOrderObj);
+			User user = userService.getByUserName(userName);
+			user.setListOrder(listOrder.getString("listOrder"));
+			userService.save(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return TODO_CONSTANTS.FAILED;
+		}
+		return TODO_CONSTANTS.SUCCESS;
+	}
+
+	public String getUserListOrder(String username) {
+		return userService.getUserListOrder(username);
 	}
 }

@@ -2,7 +2,7 @@ import { CREATE_LIST_START, CREATE_LIST_SUCCESS,
         FETCH_LISTS_START, FETCH_LISTS_SUCCESS,
         DELETE_LIST_START, DELETE_LIST_SUCCESS, 
         UPDATE_LIST_START, UPDATE_LIST_SUCCESS, UPDATE_LIST_WIDTH,
-        SET_LIST_COUNTER, SET_MOBILE_DEVICE, SET_SHOW_LISTS, SET_SHOW_LIST_ADD, ADD_LIST_ARCHIVE_START, ADD_LIST_ARCHIVE_SUCCESS
+        SET_LIST_COUNTER, SET_MOBILE_DEVICE, SET_SHOW_LISTS, SET_SHOW_LIST_ADD, ADD_LIST_ARCHIVE_START, ADD_LIST_ARCHIVE_SUCCESS, SET_LIST_ORDER, UPDATE_LIST_ORDER_START, UPDATE_LIST_ORDER_SUCCESS, FETCH_LIST_ORDER_START, FETCH_LIST_ORDER_SUCCESS
     } from "./listActionTypes";
 
 export const fethUserLists = (isMobileDevice) => ({
@@ -46,9 +46,10 @@ export const deleteListSucc = (list) => ({
     list
 })
 
-export const addListToArchive = (list) => ({
+export const addListToArchive = (list, listOrder) => ({
     type:ADD_LIST_ARCHIVE_START,
-    list
+    list,
+    listOrder
 })
 
 export const addListToArchiveSucc = (list) => ({
@@ -80,6 +81,30 @@ export const setListCounter = (list,action) => ({
     type:SET_LIST_COUNTER,
     list,
     action
+})
+
+export const setListOrder = (listOrder) => ({
+    type:SET_LIST_ORDER,
+    listOrder
+})
+
+export const fetchListOrder = () => ({
+    type: FETCH_LIST_ORDER_START
+})
+
+export const fetchListOrderSucc = (listOrder) => ({
+    type: FETCH_LIST_ORDER_SUCCESS,
+    listOrder
+})
+
+export const updateListOrder = (listOrder) => ({
+    type: UPDATE_LIST_ORDER_START,
+    listOrder
+})
+
+export const updateListOrderSucc = (response) => ({
+    type: UPDATE_LIST_ORDER_SUCCESS,
+    response
 })
 
 export const addListToUserLists = (userLists,userListsKeys,list) => {

@@ -19,18 +19,18 @@ public class TodoUserDetails implements UserDetails {
 	private String password;
 	private boolean active;
 	private List<GrantedAuthority> authorities;
-	
+
 	public TodoUserDetails(User user) {
-		this .userName = user.getUserName();
+		this.userName = user.getUserName();
 		this.password = user.getPassWord();
 		this.active = user.isActive();
 		this.authorities = Arrays.stream(user.getRoles().split(","))
-		  .map(SimpleGrantedAuthority::new) .collect(Collectors.toList());
+				.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
-	
+
 	public TodoUserDetails() {
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;

@@ -50,6 +50,14 @@ public class UserService {
 		return userRepository.findByUserName(username);
 	}
 
+	public User getByUserName(String userName) {
+		return userRepository.getByUserName(userName);
+	}
+
+	public String getUserListOrder(String userName) {
+		return userRepository.getUserListOrder(userName);
+	}
+
 	public User save(User user) {
 		return userRepository.save(user);
 	}

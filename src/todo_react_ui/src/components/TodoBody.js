@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { TodoList } from "./list/TodoList";
 import { TodoTask } from "./task/TodoTask";
 import { TaskDetails } from "./task-detail/TaskDetails";
-import { fethUserLists, setIsMobileDevice } from "./redux/list/listActions";
+import { fetchListOrder, fethUserLists, setIsMobileDevice } from "./redux/list/listActions";
 import { LOADING } from "./redux/todoActionTypes";
 
 import { disableDiv, isMobile } from "./utils/GlobalFuns";
@@ -36,6 +36,7 @@ export const TodoBody = () => {
             dispatch(fethUserLists(true));
         }else{
             dispatch(fethUserLists(false));
+            dispatch(fetchListOrder())
         }
     },[dispatch]);
 

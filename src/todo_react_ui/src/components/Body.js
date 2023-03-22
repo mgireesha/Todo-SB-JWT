@@ -121,7 +121,6 @@ export const Body = ({getAuth, disableDiv, enableDiv, getServiceURI}) => {
 	} 
 	
 	const  isMobile = () => {
-		console.log("Hi")
     		return ( ( window.innerWidth <= 760 ) 
     					//&& ( window.innerHeight <= 600 ) 
     			);

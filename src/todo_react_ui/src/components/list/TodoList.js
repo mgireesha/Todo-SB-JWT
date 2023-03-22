@@ -12,6 +12,7 @@ import { FETCH_TASK_LIST_SUCCESS } from '../redux/task/taskActionTypes.js';
 
 export const TodoList = () => {
 	const dispatch = useDispatch();
+	
 	const[showArchived,setShowArchived] = useState(false);
 	const userLists = useSelector(state => state.list.userLists);
 	const userListsKeys = useSelector(state => state.list.userListsKeys);
@@ -30,7 +31,6 @@ export const TodoList = () => {
 	const listDivWidth = useSelector(state => state.list.listDivWidth);
 	const [showConfirmPopup,setShowConfirmPopup] = useState(false);
 	const [selctdList,setSelctdList] = useState(null);
-
 	
 	const onSetShowArchived = () =>{
 		if(showArchived){
@@ -57,7 +57,7 @@ export const TodoList = () => {
 				tempListLength = 1;
 			}
 			let archHeight;
-			archHeight = 2.3+(2.5*tempListLength);
+			archHeight = 2.3+(2.6*tempListLength);
 			document.getElementById('list-item-archive').style.height=archHeight+"em";
 		}
 		
@@ -118,6 +118,7 @@ export const TodoList = () => {
 								groupName={uList[0].groupName} 
 								onDeleteList={deleteList}
 								onSetShowConfirmPopup={onSetShowConfirmPopup}
+								userListsKeys={userListsKeys} // Required inside Listgroup to trigger useEffect
 								/>
 					)}
 				</div>
