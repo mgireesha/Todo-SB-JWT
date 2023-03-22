@@ -3,12 +3,14 @@ import { getAuth } from './utils/GlobalFuns';
 import Select from 'react-select';
 import { headerLinksSelectStyles } from './utils/utils';
 import { useState } from 'react';
+import { useSelector} from 'react-redux';
 export const Header = () => {
+	const userListsKeys = useSelector(state => state.list.userListsKeys);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+	
 	useEffect(()=>{
 		setIsAuthenticated(getAuth()!==""?true:false);
-	},[])
+	},[userListsKeys])
 	const handleChange = (selectedOption) => {
 		if(selectedOption.label === "Logout"){
 			setIsAuthenticated(false);
