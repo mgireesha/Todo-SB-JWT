@@ -172,14 +172,15 @@ export const TaskDetails = () => {
 		}
 	}, [showRemDateSel]);
 
-	const updateTDDate = async (event, task, when, tdElem) => {
+	const updateTDDate = async (customDate, task, when, tdElem) => {
 		let remindTime;
 		if(when==="pick"){
-			if(tdElem==="remindMeDate"){
+			/*if(tdElem==="remindMeDate"){
 				remindTime = document.getElementById('pick-td-rem-date').value;
 			}else{
 				remindTime = document.getElementById('pick-td-dd-date').value;
-			}
+			}*/
+			remindTime = customDate;
 		}else{
 			remindTime = getDateTime(when);
 		}

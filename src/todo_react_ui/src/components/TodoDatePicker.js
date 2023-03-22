@@ -15,12 +15,12 @@ export const TodoDatePicker = (props) => {
                 showTimeInput showMonthDropdown showYearDropdown dropdownMode="select"
                 open={isOpen}
                 onFocus={()=>setIsOpen(true)} onClick={()=>setIsOpen(true)} 
-                onClickOutside={()=>setIsOpen(false)} shouldCloseOnSelect={false} 
+                onClickOutside={()=>setIsOpen(false)} shouldCloseOnSelect={false}
             >
                 <button className="btn btn-sm btn-outline-secondary" 
                     style={{position:'absolute',bottom:'11px',right:'9px'}}
-                    onClick={()=>{setIsOpen(false);document.querySelector('.react-datepicker__portal').style.display='none'}}
-                >Close</button>
+                    onClick={()=>{setIsOpen(false);props.initiDateUpdate();/*document.querySelector('.react-datepicker__portal').style.display='none'*/}}
+                >Select</button>
             </ReactDatePicker>
             <BsCalendar2Week className='date-picker-calender-icon' onClick={()=>setIsOpen(true)} />
         </div>
