@@ -34,3 +34,41 @@ export const headerLinksSelectStyles = ({
         top:'-5em'
       }),
   });
+
+
+  export const getCookieDetails = () => {
+    const cookies = document.cookie;
+    const cookieArr = cookies.split(";");
+    const cookieDetails = {};
+    let cookieArr1;
+    cookieArr.forEach((cookie => {
+        if(cookie!==""){
+            cookieArr1 = cookie.split("=");
+            cookieDetails[cookieArr1[0].trim()] = cookieArr1[1].trim();
+        }
+    }))
+    return cookieDetails;
+}
+
+export const setCookies = (name, value) => {
+    const date = new Date();
+    const expires = new Date(date);
+    expires.setDate(expires.getDate()+5);
+    document.cookie=name+"="+value+"; expires="+expires+"; path=/";
+}
+
+export const getCookieValue = (name) => {
+    const cookies = document.cookie;
+    const cookieArr = cookies.split(";");
+    let cookieArr1;
+    let cookieValue;
+    cookieArr.forEach((cookie => {
+        if(cookie!==""){
+            cookieArr1 = cookie.split("=");
+            if(cookieArr1[0].trim() ===name){
+                cookieValue = cookieArr1[1].trim();
+            }
+        }
+    }))
+    return cookieValue;
+}

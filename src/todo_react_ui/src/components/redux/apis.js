@@ -45,6 +45,14 @@ export const updateListAPI = (payload) => {
     return iAxios.put(`/todo/list/${payload.list.listId}/`,payload.list).then(response => response);
 }
 
+export const fetchListOrderAPI = () => {
+    return iAxios.get(`/todo/list/get-list-order/`).then(response => response);
+}
+
+export const updateListOrderAPI = (payload) => {
+    return iAxios.put(`/todo/list/update-list-order/`,{"listOrder":payload.listOrder}).then(response => response);
+}
+
 export const deleteTaskAPI = (payload) => {
     return iAxios.delete(`/todo/task/${payload.task.taskId}/`).then(response => response);
 }

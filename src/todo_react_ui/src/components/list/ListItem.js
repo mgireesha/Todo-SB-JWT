@@ -6,7 +6,7 @@ import {MdSettings} from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { fetTaskList, setTaskDetailShow } from '../redux/task/taskActions.js';
 
-export const ListItem =({list,onSetShowConfirmPopup}) => {
+export const ListItem =({list,onSetShowConfirmPopup, changeListOrder}) => {
 	const dispatch = useDispatch();
 	
 	const onshowTask = (event,listId) => {
@@ -28,7 +28,7 @@ export const ListItem =({list,onSetShowConfirmPopup}) => {
 		}
 		if(currentACTSel!==listId.toString()){
 			document.getElementById('currentACTSel').value=listId;
-			document.getElementById('list-item-act-sel-'+listId).style.height='5em';
+			document.getElementById('list-item-act-sel-'+listId).style.height=list.groupName==='archived'?'3em':'5em';
 			document.getElementById('list-item-act-sel-'+listId).style.right= 0;
 					//	= window.innerWidth - document.getElementById('list-item-'+listId).getBoundingClientRect().right-2+'px';
 		}
@@ -47,7 +47,7 @@ export const ListItem =({list,onSetShowConfirmPopup}) => {
 				{list.listName==="Important" && <input type="hidden" id="hdn-inp-Important" value={list.listId} />}
 			</div>
 			<input type="hidden" id="currentACTSel" />
-			{list.groupName!=="default" && <ListActionSel list={list}  onSetShowConfirmPopup={onSetShowConfirmPopup} />}
+			{list.groupName!=="default" && <ListActionSel list={list}  onSetShowConfirmPopup={onSetShowConfirmPopup} changeListOrder={changeListOrder} />}
 			
 	</div>
 	);

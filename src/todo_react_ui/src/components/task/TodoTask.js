@@ -57,7 +57,6 @@ export const TodoTask = () => {
 		// }
 		setTasIdLst(tempIdLst)
 	},[taskList,todoList])
-	//console.log('taskIdLst',taskIdLst)
 	const onMobileGoback = () => {
 		dispatch(fethUserLists(isMobileDevice));
 		dispatch(setShowTasks(false))
@@ -110,9 +109,6 @@ export const TodoTask = () => {
 		// tempLst[cIndex] = parseInt(init);
 		// tempLst[iIndex] = parseInt(cmpt);
 		// tempLst[cIndexNxt] = parseInt(init);
-		//console.log('tempLst 92',tempLst)
-		
-		//console.log('tempLst 94',tempLst)
 		const cIndex = tempLst.indexOf(parseInt(cmpt));
 		tempLst=tempLst.filter(l=>{return l!==parseInt(init)})
 		tempLst.splice(cIndex,0,parseInt(init))
