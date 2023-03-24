@@ -696,6 +696,7 @@ label#task-detail-remind-lbl{
     display: flex;
     align-items: center;
     column-gap: 15px;
+    width: 100%;
 }
 .task-detail-note-txt textarea{
 	background-color: rgb(64, 58, 58);
@@ -704,7 +705,7 @@ label#task-detail-remind-lbl{
     border-radius: 3px;
     color: #d3d3c4;
     resize: vertical;
-    width: 70vw;
+    width: 100%;
 }
 .task-detail-label-text{
 	width: 80%;
