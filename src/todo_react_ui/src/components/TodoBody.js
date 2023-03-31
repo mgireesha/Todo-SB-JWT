@@ -10,6 +10,7 @@ import { LOADING } from "./redux/todoActionTypes";
 import { disableDiv, isMobile } from "./utils/GlobalFuns";
 import { enableDiv } from "./utils/GlobalFuns";
 import { setShowTasks, setTaskDetailShow } from "./redux/task/taskActions";
+import { fetchHeaderLinks } from "./redux/common/commonActions";
 
 export const TodoBody = () => {
 
@@ -37,6 +38,7 @@ export const TodoBody = () => {
         }else{
             dispatch(fethUserLists(false));
         }
+        dispatch(fetchHeaderLinks());
         dispatch(fetchListOrder());
     },[dispatch]);
 

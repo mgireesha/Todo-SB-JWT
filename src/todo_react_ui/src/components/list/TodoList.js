@@ -9,6 +9,7 @@ import { createList, deleteList, setShowLists } from '../redux/list/listActions.
 import { fetTaskList, setShowTasks, setTaskDetailShow } from '../redux/task/taskActions.js';
 import { ADD_LIST_ARCHIVE_SUCCESS, DELETE_LIST_SUCCESS } from '../redux/list/listActionTypes.js';
 import { FETCH_TASK_LIST_SUCCESS } from '../redux/task/taskActionTypes.js';
+import { fetchHeaderLinks } from '../redux/common/commonActions.js';
 
 export const TodoList = () => {
 	const dispatch = useDispatch();
@@ -31,6 +32,10 @@ export const TodoList = () => {
 	const listDivWidth = useSelector(state => state.list.listDivWidth);
 	const [showConfirmPopup,setShowConfirmPopup] = useState(false);
 	const [selctdList,setSelctdList] = useState(null);
+
+	useEffect(()=> {
+		dispatch(fetchHeaderLinks());
+	},[userLists])
 	
 	const onSetShowArchived = () =>{
 		if(showArchived){

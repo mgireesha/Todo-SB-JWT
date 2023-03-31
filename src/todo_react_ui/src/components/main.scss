@@ -65,6 +65,10 @@ body{
 	margin-right: 0;
     display: flex;
     color: black;
+
+    label{
+        word-break: break-all;
+    }
 }
 
 .list-item-act-sel{
@@ -246,6 +250,7 @@ body{
 	padding-right: 5px;
     padding-bottom: 2px;
     padding-left: 2px;
+    word-break: break-all;
 }
 
 .task-list-name-header:hover{
@@ -276,6 +281,8 @@ body{
 
 .task-item-task-label{
     width: 95%;
+    align-items: center;
+    display: flex;
 }
 
 .task-item-task-img{
@@ -405,7 +412,7 @@ body{
  .task-item-label {
 	 width: 80%;
 	 cursor: text;
-	 /* font-family: cursive; */
+	 word-break: break-all;
 	 margin-left: 10px;
 }
 #task-detail-label{
@@ -731,6 +738,7 @@ label#task-detail-remind-lbl{
     max-width: 12.5em;
     overflow: hidden;
     font-size: 13px;
+    word-break: break-all;
 }
 
 .task-delete-label:hover{
