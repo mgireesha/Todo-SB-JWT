@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gmt.todo.service.JwtUtil;
 import com.gmt.todo.model.AuthenticationRequest;
 import com.gmt.todo.model.AuthenticationResponse;
+import com.gmt.todo.model.TResponse;
 import com.gmt.todo.service.TodoUserDetailsService;
+import com.gmt.todo.service.UserService;
 
 @RestController
 @CrossOrigin
@@ -31,6 +33,9 @@ public class HomeController {
 
 	@Autowired
 	private JwtUtil jwtTokenUtil;
+
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
@@ -53,6 +58,11 @@ public class HomeController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("accessDenied");
 		return mv;
+	}
+
+	@RequestMapping("/header-links")
+	public TResponse getHeaderLinks() {
+		return userService.getHeaderLinks();
 	}
 
 }

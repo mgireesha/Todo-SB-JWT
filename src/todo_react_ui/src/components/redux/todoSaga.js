@@ -1,4 +1,5 @@
 import {all} from 'redux-saga/effects'
+import { onFetchHeaderLinks } from './common/commonSaga';
 import { onAddListToArchive, onCreateList, onDeleteList, onFetchListOrder, onFetchUserLists, onUpdateList, onUpdateListOrder } from './list/listSaga';
 import { onCreateTask, onCreateTaskStep, onDeleteTask, onDeleteTaskStep, onFetchTask, onFetchTaskList, onMoveTask, onUpdateTask, onUpdateTaskStep } from './task/taskSaga';
 
@@ -19,6 +20,7 @@ export function* todoSaga() {
         onUpdateTaskStep(),
         onDeleteTaskStep(),
         onFetchListOrder(),
-        onUpdateListOrder()
+        onUpdateListOrder(),
+        onFetchHeaderLinks()
      ])
 }

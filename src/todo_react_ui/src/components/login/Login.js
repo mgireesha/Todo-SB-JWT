@@ -10,8 +10,10 @@ import { ResetPwdOtpDiv } from './ResetPwdOtpDiv.js';
 import { disableDiv, enableDiv, getAuth, getServiceURI } from '../utils/GlobalFuns.js';
 import { LoaderColored } from '../loader/loaderColored.js';
 import { setCookies } from '../utils/utils.js';
+import { useDispatch } from 'react-redux';
 
 export const Login = ({lError}) => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [loginError,setLoginError] = useState("");
 	const [showLForm,setShowLForm] = useState("signin");
@@ -33,6 +35,7 @@ export const Login = ({lError}) => {
 		if(document.getElementById('body-signin')!==undefined){
 			document.getElementById('body-signin').style.height=window.innerHeight+'px';
 		}
+		
 	},[]);
 	
 	const validateReqFld = (elem) => {
@@ -75,7 +78,11 @@ export const Login = ({lError}) => {
 		const data = await response.json();
 		if(data.jwt){
 				setCookies("jToken","Bearer "+data.jwt);
-				navigate("/todo/");
+				window.location.replace("/todo");
+				// setTimeout(function(){
+				// 	dispatch(fetchHeaderLinks());
+				// 	navigate("/todo/");
+				// },3000);
 		}else{
 			setLoginError(data.error); 
 			setOpacity(1);

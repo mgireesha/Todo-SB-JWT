@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import {ConfirmPopup} from './ConfirmPopup.js';
+import { fetchHeaderLinks } from "./redux/common/commonActions.js";
 import { disableDiv, enableDiv, getAuth, getServiceURI } from "./utils/GlobalFuns.js";
 
 export const ManageUsers = () => {
+    const dispatch = useDispatch();
     const [users,setUsers] = useState([]);
 
     const [showConfirmPopup,setShowConfirmPopup] = useState(false);
@@ -29,6 +32,7 @@ export const ManageUsers = () => {
             setUsers(data);
         }
         fetchUsers();
+        dispatch(fetchHeaderLinks());
     },[]);
 
     const deleteUser = async(userId) => {

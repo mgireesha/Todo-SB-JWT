@@ -2,7 +2,11 @@ package com.gmt.todo.service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,13 +19,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.gmt.todo.model.TResponse;
 import com.gmt.todo.model.TodoList;
+import com.gmt.todo.model.TodoMessage;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.model.User;
@@ -41,6 +49,9 @@ public class UserService {
 	@Lazy
 	@Autowired
 	private TaskService taskService;
+
+	@Autowired
+	private TodoMessageService todoMessageService;
 
 	public List<User> getAllUsers() {
 		return (List<User>) userRepository.findAll();
@@ -142,6 +153,42 @@ public class UserService {
 			e.printStackTrace();
 		}
 		return responseObj;
+	}
+
+	public TResponse getHeaderLinks() {
+		TResponse response = new TResponse();
+		Map<String, String> headerLinksResp = new HashMap<String, String>();
+		try {
+			TodoUserDetails userDetails = (TodoUserDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			Collection roleCollection = userDetails.getAuthorities();
+			Iterator roleIterator = roleCollection.iterator();
+			SimpleGrantedAuthority role = null;
+			while (roleIterator.hasNext()) {
+				role = (SimpleGrantedAuthority) roleIterator.next();
+			}
+			List<TodoMessage> headerLinks = todoMessageService.getByType(TODO_CONSTANTS.HEADER_LINKS);
+			for (TodoMessage message : headerLinks) {
+				if (!message.isEnabled()) {
+					continue;
+				}
+				if (message.getName().equals(TODO_CONSTANTS.MANAGE_USERS)) {
+					if (role.getAuthority().equals(TODO_CONSTANTS.ROLE_ADMIN_USER)) {
+						headerLinksResp.put(TODO_CONSTANTS.MANAGE_USERS, message.getValue());
+					}
+				} else {
+					headerLinksResp.put(message.getName(), message.getValue());
+				}
+			}
+			response.setKVResponse(headerLinksResp);
+			response.setStatus(TODO_CONSTANTS.SUCCESS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e.getMessage());
+			response.setStatus(TODO_CONSTANTS.FAILED);
+		}
+
+		return response;
 	}
 
 }

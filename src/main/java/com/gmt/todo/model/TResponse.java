@@ -1,11 +1,23 @@
 package com.gmt.todo.model;
 
+import java.util.Map;
+
 public class TResponse {
 	private String status;
 	private String error;
 	private TodoTask todoTask;
 	private TodoList todoList;
 	private User user;
+	private TodoMessage message;
+	private Map<String, String> KVResponse;
+
+	public Map<String, String> getKVResponse() {
+		return KVResponse;
+	}
+
+	public void setKVResponse(Map<String, String> kVResponse) {
+		KVResponse = kVResponse;
+	}
 
 	public TodoList getTodoList() {
 		return todoList;
@@ -22,7 +34,7 @@ public class TResponse {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public TodoTask getTodoTask() {
 		return todoTask;
 	}
@@ -63,13 +75,23 @@ public class TResponse {
 		this.status = status;
 		this.todoTask = todoTask;
 	}
+
 	public TResponse() {
 
 	}
-	
+
 	@Override
 	public String toString() {
-		return "TResponse [status=" + status + ", todoTask=" + todoTask + "]";
+		return "TResponse [status=" + status + ", error=" + error + ", todoTask=" + todoTask + ", todoList=" + todoList
+				+ ", user=" + user + ", message=" + message + ", KVResponse=" + KVResponse + "]";
 	}
-	
+
+	public TodoMessage getMessage() {
+		return message;
+	}
+
+	public void setMessage(TodoMessage message) {
+		this.message = message;
+	}
+
 }

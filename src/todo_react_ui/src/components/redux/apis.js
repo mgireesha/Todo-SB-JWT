@@ -76,3 +76,7 @@ export const deleteTaskStepAPI = (payload) => {
 export const archiveListAPI = (payload) => {
     return iAxios.put(`/todo/list/archiveList/${payload.list.listId}`).then(response => response);
 }
+
+export const fetchHeaderLinksAPI = () => {
+    return iAxios.get(`/todo/header-links`).then(response => response);
+}
