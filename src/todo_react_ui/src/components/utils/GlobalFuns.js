@@ -4,6 +4,11 @@ export const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 export const monthsI = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 
+export function getServiceURI(){
+    //return "http://localhost:8087";//COMMENT THIS BEFORE COMMITTING
+    return "";
+} 
+
 export function getAuth() {
     let cookies = document.cookie;
     let cookiesArr = cookies.split(';');
@@ -89,12 +94,6 @@ export function handleAPIError(error){
         }
     }
 }
-
-
-export function getServiceURI(){
-    //return "http://localhost:8087";//COMMENT THIS BEFORE COMMITTING
-    return "";
-} 
 
 export const isMobile = () => {
         return ( ( window.innerWidth <= 760 ) 
