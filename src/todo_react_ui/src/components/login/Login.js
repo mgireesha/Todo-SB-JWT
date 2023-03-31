@@ -75,7 +75,7 @@ export const Login = ({lError}) => {
 		const data = await response.json();
 		if(data.jwt){
 				setCookies("jToken","Bearer "+data.jwt);
-				navigate("/");
+				navigate("/todo/");
 		}else{
 			setLoginError(data.error); 
 			setOpacity(1);
