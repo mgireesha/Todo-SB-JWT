@@ -78,7 +78,7 @@ export const Login = ({lError}) => {
 		const data = await response.json();
 		if(data.jwt){
 				setCookies("jToken","Bearer "+data.jwt);
-				window.location.replace("/todo");
+				window.location.replace("/#/todo");
 				// setTimeout(function(){
 				// 	dispatch(fetchHeaderLinks());
 				// 	navigate("/todo/");
