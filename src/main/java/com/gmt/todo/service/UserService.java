@@ -155,6 +155,7 @@ public class UserService {
 		return responseObj;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public TResponse getHeaderLinks() {
 		TResponse response = new TResponse();
 		Map<String, String> headerLinksResp = new HashMap<String, String>();

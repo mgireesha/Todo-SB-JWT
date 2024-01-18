@@ -81,7 +81,7 @@ public class TaskController {
 		return resp;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "task/getTasksByListId/{listId}")
 	public Map<String, List> getTodoTasksByListId(@PathVariable String listId) {
 		Map<String, List> tasksMap = taskService.getTasksByListId(Long.parseLong(listId));

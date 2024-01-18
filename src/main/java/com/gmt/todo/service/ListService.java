@@ -89,6 +89,7 @@ public class ListService {
 		return todolistRepository.getMaxId() + 1;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Map<String, List<TodoList>> getGroupedListByUserId(String userName) {
 		Map<String, List<TodoList>> listRet = new HashMap<String, List<TodoList>>();
 		List<String> groups = todolistRepository.getByUserIdGroupByGroupName(userName);

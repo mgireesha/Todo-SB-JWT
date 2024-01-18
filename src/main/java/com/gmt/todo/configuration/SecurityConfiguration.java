@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import com.gmt.todo.filter.JwtRequestFilter;
 import com.gmt.todo.service.TodoUserDetailsService;
@@ -37,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.authorizeRequests(requests -> requests
 				.antMatchers("/", "/manifest.json", "/static/**", "/todo-logo-200.png", "/logo192.png",
 						"/todo/authenticate", "/todo/signup", "/todo/init-reset-pwd",
 						"/todo/reset-pwd", "/todo/change-pwd", "/todo/user/checkUsername/{userName}",
@@ -45,16 +46,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.antMatchers("/todo/ManageUsers").hasRole("ADMIN")
 				.antMatchers("/todo/**").hasAnyRole("USER", "ADMIN")
-				.anyRequest().authenticated()
-				.and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and().cors()
-				.and().csrf()
-				.disable();
+				.anyRequest().authenticated()).sessionManagement(management -> management
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.cors(withDefaults()).csrf(csrf -> csrf
+						.disable());
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
 		return NoOpPasswordEncoder.getInstance();

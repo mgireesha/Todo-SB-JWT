@@ -10,8 +10,8 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gmt</groupId>
-	<artifactId>gmt-todo-jwt</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>g-todo</artifactId>
+	<version>1.0.0</version>
 	<name>Todo_SB_Jwt</name>
 	<description>Todo jwt Service</description>
 	<properties>
