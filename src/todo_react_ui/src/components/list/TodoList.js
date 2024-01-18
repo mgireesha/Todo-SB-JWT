@@ -9,9 +9,11 @@ import { createList, deleteList, setShowLists } from '../redux/list/listActions.
 import { fetTaskList, setShowTasks, setTaskDetailShow } from '../redux/task/taskActions.js';
 import { ADD_LIST_ARCHIVE_SUCCESS, DELETE_LIST_SUCCESS } from '../redux/list/listActionTypes.js';
 import { FETCH_TASK_LIST_SUCCESS } from '../redux/task/taskActionTypes.js';
+import { fetchHeaderLinks } from '../redux/common/commonActions.js';
 
 export const TodoList = () => {
 	const dispatch = useDispatch();
+	
 	const[showArchived,setShowArchived] = useState(false);
 	const userLists = useSelector(state => state.list.userLists);
 	const userListsKeys = useSelector(state => state.list.userListsKeys);
@@ -31,6 +33,9 @@ export const TodoList = () => {
 	const [showConfirmPopup,setShowConfirmPopup] = useState(false);
 	const [selctdList,setSelctdList] = useState(null);
 
+	useEffect(()=> {
+		dispatch(fetchHeaderLinks());
+	},[userLists])
 	
 	const onSetShowArchived = () =>{
 		if(showArchived){
@@ -57,7 +62,7 @@ export const TodoList = () => {
 				tempListLength = 1;
 			}
 			let archHeight;
-			archHeight = 2.3+(2.5*tempListLength);
+			archHeight = 2.3+(2.6*tempListLength);
 			document.getElementById('list-item-archive').style.height=archHeight+"em";
 		}
 		
@@ -118,6 +123,7 @@ export const TodoList = () => {
 								groupName={uList[0].groupName} 
 								onDeleteList={deleteList}
 								onSetShowConfirmPopup={onSetShowConfirmPopup}
+								userListsKeys={userListsKeys} // Required inside Listgroup to trigger useEffect
 								/>
 					)}
 				</div>

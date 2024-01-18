@@ -5,6 +5,7 @@ import { setShowTaskAdd } from '../redux/task/taskActions.js';
 import {AddListFiled} from './AddListField.js';
 import {AddListLabel} from './AddListLabel.js';
 import { CREATE_LIST_SUCCESS } from '../redux/list/listActionTypes.js';
+import { CloseSmall } from '../utils/CloseSmall.js';
 
 export const AddList = ({onAddList}) => {
 	
@@ -25,8 +26,13 @@ export const AddList = ({onAddList}) => {
 	},[phase,dispatch])
 	return (
 		<div className="list-item-add" id="list-item-add">
-			{!showListAdd ? <AddListLabel onTogglAddListField={TogglAddListField} /> : null}
-			{ showListAdd ? <AddListFiled onAddList={onAddList} /> : null}
+			{ showListAdd && 
+				<>
+					<AddListFiled onAddList={onAddList} />
+					<CloseSmall cssClass="item-add-close" closeFun = {()=>dispatch(setShowListAdd(false))}/>
+				</>
+			}
+			{!showListAdd && <AddListLabel onTogglAddListField={TogglAddListField} />}
 		</div>
 	);
 }

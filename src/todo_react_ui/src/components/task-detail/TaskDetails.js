@@ -15,7 +15,6 @@ import {TaskSteps} from './TaskSteps.js';
 
 import { days, dueDateColor, monthsI } from '../utils/GlobalFuns';
 
-import whiteLeftArrow from '../../images/white-left-arrow.png';
 import { convertDateT } from '../utils/GlobalFuns';
 import { deleteTask, fetTaskList, moveTask, setShowTasks, setTaskDetailShow, updateTask } from '../redux/task/taskActions';
 import { UPDATE_TASK_SUCCESS } from '../redux/task/taskActionTypes';
@@ -173,14 +172,15 @@ export const TaskDetails = () => {
 		}
 	}, [showRemDateSel]);
 
-	const updateTDDate = async (event, task, when, tdElem) => {
+	const updateTDDate = async (customDate, task, when, tdElem) => {
 		let remindTime;
 		if(when==="pick"){
-			if(tdElem==="remindMeDate"){
+			/*if(tdElem==="remindMeDate"){
 				remindTime = document.getElementById('pick-td-rem-date').value;
 			}else{
 				remindTime = document.getElementById('pick-td-dd-date').value;
-			}
+			}*/
+			remindTime = customDate;
 		}else{
 			remindTime = getDateTime(when);
 		}
@@ -235,6 +235,7 @@ export const TaskDetails = () => {
 			task.remindMe = false;
 			task.remindTime = null;
 		}else if(action==="uri-ref"){
+			if(event.target.value==="")return;
 			task.uriRef = event.target.value;
 		}else if(action==="removeUriRef"){
 			action = "uri-ref";
@@ -262,7 +263,7 @@ export const TaskDetails = () => {
 		<div className="col-sm-3 task-detail-div" id="task-detail-div">
 		{/* <img alt="back" src={whiteLeftArrow} style={{width:1.5+'em'}} onClick={()=>onMobileGoback(task.listId)} /> */}
 		{isMobileDevice &&
-			<BsArrowLeftSquare onClick={onMobileGoback} className='login-back-arrow' style={{marginLeft:10}} />
+			<BsArrowLeftSquare onClick={()=>onMobileGoback(task.listId)} className='login-back-arrow' style={{marginLeft:10}} />
 		}
 			<div className="task-detail-main" id="task-detail-main">
 				<div className="row task-item-detail-name" id="task-item-detail-name">

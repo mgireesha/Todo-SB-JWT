@@ -20,33 +20,34 @@ import com.gmt.todo.service.ListService;
 import com.gmt.todo.service.PersistCSVSerice;
 
 @RestController
-@CrossOrigin 
+@CrossOrigin
 @RequestMapping("/todo")
 public class ListController {
-	
+
 	@Autowired
 	private ListService listService;
-	
+
 	@Autowired
 	private PersistCSVSerice persistCSVSerice;
-	
+
 	@RequestMapping("/list/listAll")
 	public List<TodoList> getAllLists() {
 		return listService.getAllLists();
 	}
-	
+
 	@RequestMapping(value = "/list/listAllByUser/", method = RequestMethod.GET)
 	public Map<String, List<TodoList>> getAllListsByUser() {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return listService.getGroupedListByUserId(userDetails.getUsername());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/list/")
 	public TResponse addNewList(@RequestBody TodoList todoList) {
 		TResponse resp = new TResponse();
 		try {
-			TodoUserDetails userDetails = (TodoUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			todoList = listService.addNewList(todoList,userDetails);
+			TodoUserDetails userDetails = (TodoUserDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			todoList = listService.addNewList(todoList, userDetails);
 			resp.setStatus("success");
 			resp.setTodoList(todoList);
 		} catch (Exception e) {
@@ -55,12 +56,12 @@ public class ListController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping("/list/{listId}")
 	public TodoList getAllListById(@PathVariable String listId) {
 		return listService.getListById(Long.parseLong(listId));
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/list/{listId}")
 	public TResponse updateList(@RequestBody TodoList list, @PathVariable String listId) {
 		TResponse resp = new TResponse();
@@ -74,7 +75,7 @@ public class ListController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/list/archiveList/{listId}")
 	public TResponse archiveList(@PathVariable String listId) {
 		TResponse resp = new TResponse();
@@ -83,7 +84,7 @@ public class ListController {
 		resp.setTodoList(todoList);
 		return resp;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/list/{listId}")
 	public TResponse deleteList(@PathVariable String listId) {
 		TResponse resp = new TResponse();
@@ -98,10 +99,24 @@ public class ListController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping("/addNewDefaultList")
 	public List<TodoList> addNewDefaultList() {
 		return persistCSVSerice.addNewDefaultList();
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/list/get-list-order/")
+	public String getLIstOrder() {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return listService.getUserListOrder(userDetails.getUsername());
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/list/update-list-order/")
+	public TResponse updateLIstOrder(@RequestBody String listOrderObj) {
+		TResponse resp = new TResponse();
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		resp.setStatus(listService.updateLIstOrder(userDetails.getUsername(), listOrderObj));
+		return resp;
 	}
 
 }

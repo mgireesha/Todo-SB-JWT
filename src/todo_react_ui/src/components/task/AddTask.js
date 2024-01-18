@@ -5,6 +5,7 @@ import { setIsMobileDevice, setShowListAdd } from '../redux/list/listActions';
 import { createTask, setShowTaskAdd } from '../redux/task/taskActions';
 import { TodoDatePicker } from '../TodoDatePicker';
 import { getDateFormat } from '../utils/GlobalFuns';
+import { CloseSmall } from '../utils/CloseSmall';
 
 export const AddTask = ({todoList}) => {
 	const dispatch = useDispatch();
@@ -36,7 +37,7 @@ export const AddTask = ({todoList}) => {
 			// }
 			//const taskItemMainW = taskItemMain.offsetWidth.subString;
 
-			taskItemAddField.style.width = (taskItemMain.offsetWidth - 44)+'px';
+			//taskItemAddField.style.width = (taskItemMain.offsetWidth - 44)+'px';
 		}
 		//showTaskAdd?taskAddMain.style.marginTop=20:taskAddMain.style.marginTop=0;
 	},[taskDetailShow,showTaskAdd])
@@ -67,16 +68,16 @@ export const AddTask = ({todoList}) => {
 	return (
 		<div className="task-add-main" id='task-add-main'>
 			{!showTaskAdd &&
-				<div className="row" id="task-item-add-div" style={{ margin: 10 }} onClick={()=>TogglAddTaskField(true)}>
-					<div className="task-item-add-div" style={{ width: 97.5 + '%' }}>
+				<div id="task-item-add-div" onClick={()=>TogglAddTaskField(true)}>
+					<div className="task-item-add-div">
 						<label className="col-sm-11">Add New Task </label>
 						<label className="col-sm-1">+</label>
 					</div>
 				</div>
 			}
 			{showTaskAdd &&
-				<div className="task-item-add-div task-item-add-field" style={{ margin: 10,/*width:95+'%' */}} id="task-item-add-field" >
-					<div className="row" style={{padding:5}}>
+				<div className="task-item-add-div task-item-add-field" id="task-item-add-field" >
+					<div className="row">
 						<div className="col-sm-8" style={{marginTop:5}}>
 							<input type="text" placeholder="Enter task name" id="task-item-add-txt" className="form-control" required />
 						</div>
@@ -90,6 +91,7 @@ export const AddTask = ({todoList}) => {
 						<input type="hidden" name="listName" id="listName" value="To do" />
 						<input type="hidden" name="listId" id="listId" value="271" />
 					</div>
+					<CloseSmall cssClass="item-add-close" closeFun = {()=>dispatch(setShowTaskAdd(false))}/>
 				</div>
 			}
 		</div>

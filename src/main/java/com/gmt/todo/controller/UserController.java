@@ -20,15 +20,15 @@ import com.gmt.todo.service.UserService;
 public class UserController {
 
 	private static final String FAILED = "failed";
-	
+
 	private static final String SUCCESS = "success";
-	
+
 	private static final String WRONG_PASSWORD = "WRONG_PASSWORD";
-	
+
 	private static final String USER_EXISTS = "USER_EXISTS";
-	
-	private static final String  USER_AVAILABLE = "USER_AVAILABLE";
-	
+
+	private static final String USER_AVAILABLE = "USER_AVAILABLE";
+
 	@Autowired
 	private UserService userService;
 
@@ -37,7 +37,7 @@ public class UserController {
 		TResponse resp = new TResponse();
 		try {
 			Optional<User> userOpt = userService.getUserByUserName(user.getUserName());
-			if(userOpt.isPresent()) {
+			if (userOpt.isPresent()) {
 				resp.setStatus(USER_EXISTS);
 				resp.setError(user.getUserName());
 				return resp;
@@ -80,19 +80,20 @@ public class UserController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/reset-pwd")
 	public TResponse resetPassword(@RequestBody User user) {
 		TResponse resp = new TResponse();
 		try {
 			Optional<User> userOpt = userService.getUserByUserName(user.getUserName());
-			//userOpt.orElseThrow(()-> new UsernameNotFoundException("User Not Found : "+user.getUserName()));
+			// userOpt.orElseThrow(()-> new UsernameNotFoundException("User Not Found :
+			// "+user.getUserName()));
 			User tempUser = userOpt.map(User::new).get();
-			if(tempUser.getOtp().equals(user.getOtp())) {
+			if (tempUser.getOtp().equals(user.getOtp())) {
 				tempUser.setPassWord(user.getPassWord());
 				user = userService.save(tempUser);
 				resp.setStatus(SUCCESS);
-			}else {
+			} else {
 				resp.setStatus("otpNotFound");
 				resp.setError("Unable to reset password. Verify otp again.");
 			}
@@ -104,20 +105,20 @@ public class UserController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/change-pwd")
 	public TResponse changePassword(@RequestBody User user) {
 		TResponse resp = new TResponse();
 		try {
-			String userName=user.getUserName();
+			String userName = user.getUserName();
 			Optional<User> userOpt = userService.getUserByUserName(user.getUserName());
-			userOpt.orElseThrow(()-> new UsernameNotFoundException("User Not Found : "+userName));
+			userOpt.orElseThrow(() -> new UsernameNotFoundException("User Not Found : " + userName));
 			User tempUser = userOpt.map(User::new).get();
-			if(tempUser.getPassWord().equals(user.getCurrentPassword())) {
+			if (tempUser.getPassWord().equals(user.getCurrentPassword())) {
 				tempUser.setPassWord(user.getPassWord());
 				user = userService.save(tempUser);
 				resp.setStatus(SUCCESS);
-			}else {
+			} else {
 				resp.setStatus(WRONG_PASSWORD);
 				resp.setError("Current password is worong, try again.");
 			}
@@ -129,8 +130,7 @@ public class UserController {
 		}
 		return resp;
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/user/{userId}")
 	public TResponse deleteUser(@PathVariable String userId) {
 		TResponse resp = new TResponse();
@@ -143,20 +143,20 @@ public class UserController {
 		}
 		return resp;
 	}
-	
+
 	@RequestMapping("/ManageUsers")
 	public List<User> manageUsers() {
 		return userService.getAllUsers();
 	}
-	
+
 	@RequestMapping("/user/checkUsername/{userName}")
-	public TResponse checkUserName(@PathVariable String userName){
+	public TResponse checkUserName(@PathVariable String userName) {
 		TResponse resp = new TResponse();
 		Optional<User> userOp = userService.getUserByUserName(userName);
-		if(userOp.isPresent()) {
+		if (userOp.isPresent()) {
 			resp.setStatus(USER_EXISTS);
 			resp.setError(userName);
-		}else {
+		} else {
 			resp.setStatus(USER_AVAILABLE);
 			resp.setError(userName);
 		}

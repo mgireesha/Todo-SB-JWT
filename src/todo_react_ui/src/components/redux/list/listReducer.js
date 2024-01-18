@@ -5,7 +5,7 @@ import { ADD_LIST_ARCHIVE_START, ADD_LIST_ARCHIVE_SUCCESS,
             FETCH_LISTS_START, FETCH_LISTS_SUCCESS,
             UPDATE_LIST_START, UPDATE_LIST_SUCCESS, UPDATE_LIST_WIDTH,
             DELETE_LIST_START, DELETE_LIST_SUCCESS, 
-            SET_LIST_COUNTER, SET_MOBILE_DEVICE, SET_SHOW_LISTS, SET_SHOW_LIST_ADD,
+            SET_LIST_COUNTER, SET_MOBILE_DEVICE, SET_SHOW_LISTS, SET_SHOW_LIST_ADD, SET_LIST_ORDER, FETCH_LIST_ORDER_START, FETCH_LIST_ORDER_SUCCESS, UPDATE_LIST_ORDER_START, UPDATE_LIST_ORDER_SUCCESS,
         } from "./listActionTypes"
 
 export const initialState = {
@@ -15,6 +15,7 @@ export const initialState = {
     showLists:true,
     listDivWidth:'',
     isMobileDevice:false,
+    listOrder:'',
     phase:INIT
 }
 
@@ -85,6 +86,28 @@ const listReducer = (state = initialState, action) => {
                 userListsKeys:archRes.userListsKeys,
                 phase:ADD_LIST_ARCHIVE_SUCCESS
             }
+        case FETCH_LIST_ORDER_START:
+            return{
+                ...state,
+                phase:LOADING
+            }
+        case FETCH_LIST_ORDER_SUCCESS:
+            return{
+                ...state,
+                listOrder: action.listOrder,
+                phase:FETCH_LIST_ORDER_SUCCESS
+            }
+        case UPDATE_LIST_ORDER_START:
+            return{
+                ...state,
+                listOrder: action.listOrder,
+                //phase:LOADING
+            }
+        case UPDATE_LIST_ORDER_SUCCESS:
+            return{
+                ...state,
+                phase:UPDATE_LIST_ORDER_SUCCESS
+            }
         case SET_SHOW_LIST_ADD:
             return{
                 ...state,
@@ -104,6 +127,11 @@ const listReducer = (state = initialState, action) => {
             return{
                 ...state,
                 showLists:action.showLists
+            }
+        case SET_LIST_ORDER:
+            return{
+                ...state,
+                listOrder:action.listOrder
             }
         default:
             return {

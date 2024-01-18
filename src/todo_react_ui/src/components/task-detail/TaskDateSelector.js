@@ -24,6 +24,12 @@ export const TaskDateSelector = ({onUpdateTDDate,tdElem,task,getLTH}) => {
 		dateTId = "pick-td-dd-date";
 	}
 
+	const initiDateUpdate = () => {
+		if(remindDate!==null){
+			onUpdateTDDate(remindDate,task,"pick",tdElem);
+		}
+	}
+
 	return (
 		<div className="row task-item-detail-elem task-detail-remind-sel" id={divId} style={{ zIndex: 1000 }}>
 			<div className="row sel-remind-row" onClick={(event)=>onUpdateTDDate(event,task,'lth',tdElem)}>
@@ -43,7 +49,7 @@ export const TaskDateSelector = ({onUpdateTDDate,tdElem,task,getLTH}) => {
 				<div className="col-sm-7">
 					<TodoDatePicker setDate={setRemindDate} date={remindDate} placeholderText="Select due date" 
 						withPortal={true} popperClassName='date-picker-popper1'
-					
+						initiDateUpdate = {initiDateUpdate}
 						/>
 				</div>
 			</div>

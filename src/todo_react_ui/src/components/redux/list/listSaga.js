@@ -1,10 +1,11 @@
-import { ADD_LIST_ARCHIVE_START, CREATE_LIST_START, DELETE_LIST_START, FETCH_LISTS_START, UPDATE_LIST_START } from "./listActionTypes";
+import { ADD_LIST_ARCHIVE_START, CREATE_LIST_START, DELETE_LIST_START, FETCH_LISTS_START, FETCH_LIST_ORDER_START, UPDATE_LIST_ORDER_START, UPDATE_LIST_START } from "./listActionTypes";
 
 import {takeLatest, call, put} from 'redux-saga/effects';
-import { archiveListAPI, createListAPI, deleteListAPI, getUserListsAPI, updateListAPI } from "../apis";
-import { addListToArchiveSucc, createListSucc, deleteListSucc, fethUserListsSucc, updateListSucc } from "./listActions";
+import { archiveListAPI, createListAPI, deleteListAPI, fetchListOrderAPI, getUserListsAPI, updateListAPI, updateListOrderAPI } from "../apis";
+import { addListToArchiveSucc, createListSucc, deleteListSucc, fetchListOrderSucc, fethUserListsSucc, updateListOrder, updateListOrderSucc, updateListSucc } from "./listActions";
 import { fetTaskList, updateTaskTodoList } from "../task/taskActions";
-import { handleAPIError } from "../../utils/GlobalFuns";
+import { createFilteredListOrderFromArry, getChangedListOrder, handleAPIError } from "../../utils/GlobalFuns";
+import { ACTION_ADD_ITEM, ACTION_REMOVE_ITEM } from "../todoActionTypes";
 
 export function* onFetchUserLists(){
     yield takeLatest(FETCH_LISTS_START, onFetchUserListsAsnc);
@@ -64,6 +65,38 @@ export function* onUpdateListAsync(payload){
     }
 }
 
+export function* onFetchListOrder(){
+    yield takeLatest(FETCH_LIST_ORDER_START, onFetchListOrderAsync);
+}
+
+export function* onFetchListOrderAsync(){
+    try {
+        const response = yield call(fetchListOrderAPI);
+        if(response.status===200){
+            yield put(fetchListOrderSucc(response.data));
+        }
+    } catch (error) {
+        console.log(error)
+        handleAPIError(error);
+    }
+}
+
+export function* onUpdateListOrder(){
+    yield takeLatest(UPDATE_LIST_ORDER_START, onUpdateListOrderAsync);
+}
+
+export function* onUpdateListOrderAsync(payload){
+    try {
+        const response = yield call(updateListOrderAPI,payload);
+        if(response.status===200){
+            yield put(updateListOrderSucc(response));
+        }
+    } catch (error) {
+        console.log(error)
+        handleAPIError(error);
+    }
+}
+
 export function* onDeleteList(){
     yield takeLatest(DELETE_LIST_START,onDeleteListAsync);
 }
@@ -87,9 +120,18 @@ export function* onAddListToArchive(){
 export function* onAddListToArchiveAsync(payload){
     try {
         const response = yield call(archiveListAPI,payload);
-        if(response.status===200){
+        if (response.status === 200) {
             const todoList = response.data.todoList;
             yield put(addListToArchiveSucc(todoList));
+            if (payload.listOrder !== undefined && payload.listOrder !== '') {
+                let tempListOrderArr;
+                if (todoList.groupName === "archived") {
+                    tempListOrderArr = getChangedListOrder(todoList, payload.listOrder, ACTION_REMOVE_ITEM);
+                } else {
+                    tempListOrderArr = getChangedListOrder(todoList, payload.listOrder, ACTION_ADD_ITEM);
+                }
+                yield put(updateListOrder(createFilteredListOrderFromArry(tempListOrderArr)))
+            }
         }
     } catch (error) {
         console.log(error)

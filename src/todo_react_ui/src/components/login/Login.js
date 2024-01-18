@@ -1,16 +1,20 @@
 import {React, useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-import {SignInDiv} from './SignInDiv.js';
-import {SignUpDiv} from './SignUpDiv.js';
-import {LSuccessDiv} from './LSuccessDiv.js';
-import {ResetPwdDiv} from './ResetPwdDiv.js';
-import {ChangePwdDiv} from './ChangePwdDiv.js';
-import {ResetPwdOtpDiv} from './ResetPwdOtpDiv.js';
+import { SignInDiv } from './SignInDiv.js';
+import { SignUpDiv } from './SignUpDiv.js';
+import { LSuccessDiv } from './LSuccessDiv.js';
+import { ResetPwdDiv } from './ResetPwdDiv.js';
+import { ChangePwdDiv } from './ChangePwdDiv.js';
+import { ResetPwdOtpDiv } from './ResetPwdOtpDiv.js';
 import { disableDiv, enableDiv, getAuth, getServiceURI } from '../utils/GlobalFuns.js';
 import { LoaderColored } from '../loader/loaderColored.js';
+import { setCookies } from '../utils/utils.js';
+import { useDispatch } from 'react-redux';
 
 export const Login = ({lError}) => {
-	
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [loginError,setLoginError] = useState("");
 	const [showLForm,setShowLForm] = useState("signin");
 	const [prevShowLForm,setPrevShowLForm] = useState("signin");
@@ -31,6 +35,7 @@ export const Login = ({lError}) => {
 		if(document.getElementById('body-signin')!==undefined){
 			document.getElementById('body-signin').style.height=window.innerHeight+'px';
 		}
+		
 	},[]);
 	
 	const validateReqFld = (elem) => {
@@ -48,7 +53,6 @@ export const Login = ({lError}) => {
 		setPrevShowLForm(showLForm);
 		setShowLForm(value);
 	}
-	document.cookie="jToken=;";
 	const authenticate = async() => {
 		setLoginError("");
 		document.cookie="jToken=;";
@@ -73,10 +77,12 @@ export const Login = ({lError}) => {
 		const response = await fetch(`${getServiceURI()}/todo/authenticate`,settings);
 		const data = await response.json();
 		if(data.jwt){
-			setTimeout(()=>{
-				document.cookie="jToken=Bearer "+data.jwt+"; path=/";
+				setCookies("jToken","Bearer "+data.jwt);
 				window.location.replace("/");
-			},1000)
+				// setTimeout(function(){
+				// 	dispatch(fetchHeaderLinks());
+				// 	navigate("/todo/");
+				// },3000);
 		}else{
 			setLoginError(data.error); 
 			setOpacity(1);
