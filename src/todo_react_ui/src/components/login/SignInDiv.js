@@ -1,11 +1,9 @@
 import { React } from 'react';
-import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai';
 import { PasswordField } from './PasswordField';
 
 export const SignInDiv = ({onAuthenticate, loginError, onSetShowLForm}) => {
 	return (
-		<div className="col-sm-5 middle-span">
-		<div className="signup-form">
+		<div className='slide-in-left signup-form'>
 			<h1 className="signup-header">Sign In</h1>
 			<div className="row row-label">
 				<label className="signup-label">User Name</label>
@@ -30,7 +28,6 @@ export const SignInDiv = ({onAuthenticate, loginError, onSetShowLForm}) => {
 					New user ? <span onClick={()=>onSetShowLForm("signup")} className='link-look'>sign up</span> here
 				</label>
 			</div>
-		</div>
 		</div>
 	);
 }

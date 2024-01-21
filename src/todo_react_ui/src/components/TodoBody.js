@@ -4,13 +4,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import { TodoList } from "./list/TodoList";
 import { TodoTask } from "./task/TodoTask";
 import { TaskDetails } from "./task-detail/TaskDetails";
-import { fetchListOrder, fethUserLists, setIsMobileDevice } from "./redux/list/listActions";
+import { fetchListOrder, fethUserLists, setIsMobileDevice, setShowLists } from "./redux/list/listActions";
 import { LOADING } from "./redux/todoActionTypes";
 
 import { disableDiv, isMobile } from "./utils/GlobalFuns";
 import { enableDiv } from "./utils/GlobalFuns";
 import { setShowTasks, setTaskDetailShow } from "./redux/task/taskActions";
-import { fetchHeaderLinks } from "./redux/common/commonActions";
+import { setIsNabarExpanded } from "./redux/common/commonActions";
 
 export const TodoBody = () => {
 
@@ -31,14 +31,15 @@ export const TodoBody = () => {
 
     useEffect(()=>{
         if(isMobile()){
+            dispatch(setShowLists(true))
             dispatch(setIsMobileDevice(true));
             dispatch(setShowTasks(false));
             dispatch(setTaskDetailShow(false));
             dispatch(fethUserLists(true));
+            dispatch(setIsNabarExpanded(false));
         }else{
             dispatch(fethUserLists(false));
         }
-        dispatch(fetchHeaderLinks());
         dispatch(fetchListOrder());
     },[dispatch]);
 

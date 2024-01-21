@@ -2,11 +2,11 @@ import { React } from 'react';
 
 import { PasswordField } from './PasswordField';
 import {BsArrowLeftSquare} from 'react-icons/bs';
+import { BackToSignIn } from './BackToSignIn';
 
 export const ResetPwdOtpDiv = ({ loginError, onSetShowLForm, onVerifyOtpAndResetPwd, prevShowLForm, checkPwdStrength }) => {
 	return (
-		<div className="col-sm-5 middle-span">
-		<div className="signup-form">
+		<div className="slide-in-left signup-form">
 			<BsArrowLeftSquare onClick={()=>onSetShowLForm(prevShowLForm)} className='login-back-arrow' />
 			<h1 className="signup-header">Reset Password</h1>
 			<div className="row row-label">
@@ -26,11 +26,7 @@ export const ResetPwdOtpDiv = ({ loginError, onSetShowLForm, onVerifyOtpAndReset
 			<div className="row row-btn">
 				<button type="button" className="btn-signup" onClick={onVerifyOtpAndResetPwd}>Verify</button>
 			</div>
-			<div className="row row-label" id="go-back-to-login">
-				<label className="signup-label">Go back to <span className='link-look' onClick={()=>onSetShowLForm("signin")}>Login</span>
-				</label>
-			</div>
-		</div>
+			<BackToSignIn />
 		</div>
 	);
 }

@@ -59,7 +59,7 @@ public class ListController {
 
 	@RequestMapping("/list/{listId}")
 	public TodoList getAllListById(@PathVariable String listId) {
-		return listService.getListById(Long.parseLong(listId));
+		return listService.findListById(Long.parseLong(listId));
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/list/{listId}")
@@ -89,7 +89,7 @@ public class ListController {
 	public TResponse deleteList(@PathVariable String listId) {
 		TResponse resp = new TResponse();
 		try {
-			TodoList list = listService.getListById(Long.parseLong(listId));
+			TodoList list = listService.findListById(Long.parseLong(listId));
 			listService.deleteList(Long.parseLong(listId));
 			resp.setTodoList(list);
 			resp.setStatus("success");

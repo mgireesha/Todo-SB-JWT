@@ -1,3 +1,4 @@
+import { EMAIL_FORMAT_REGEX, PASSWORD_STRENGTH_MAPPING } from "../redux/todoActionTypes";
 import { isMobile } from "./GlobalFuns";
 
 export const headerLinksSelectStyles = ({
@@ -71,4 +72,65 @@ export const getCookieValue = (name) => {
         }
     }))
     return cookieValue;
+}
+
+export const checkPasswordStrength = (event) => {
+  let target = event;
+  if(target.target){target = target.target};
+  target.setCustomValidity('');
+  const passwordValue = target.value;
+  let passwordStrength = 0;
+  let regex = [];
+  regex.push("[A-Z]"); //For Uppercase Alphabet
+  regex.push("[a-z]"); //For Lowercase Alphabet
+  regex.push("[0-9]"); //For Numeric Digits
+  regex.push("[$@$!%*#?&]"); //For Special Characters
+
+  regex.forEach(element => {
+    if(new RegExp(element).test(passwordValue)){
+      passwordStrength++;
+    }
+  });
+
+  if(passwordStrength>2 && passwordValue.length>8){
+    passwordStrength++;
+  }
+  
+  return {
+    passwordStrength,
+    error_obj : PASSWORD_STRENGTH_MAPPING[passwordStrength]
+  };
+}
+
+export const validateReqFld = (elem) => {
+  elem.setCustomValidity('');
+  if(!elem.checkValidity()){
+    elem.reportValidity();
+    return false;
+  }else{
+    return true;
+  }
+}
+
+export const validateEmail = (email) => {
+  return EMAIL_FORMAT_REGEX.test(email.value);
+}
+
+export const cReportValidity = (elem,error) => {
+  if(error!==null && error!==""){
+    elem.setCustomValidity(error);
+  }
+  elem.reportValidity();
+}
+
+export const clearFieldsById = (ids) => {
+  ids.forEach(id=>{
+    const elem = document.getElementById(id);
+    if(elem){
+      if(elem.type === "text" || elem.type === "password"){
+        elem.value = "";
+      }
+    }
+  })
+  
 }

@@ -10,6 +10,8 @@ public interface TodoMessageRepository extends CrudRepository<TodoMessage, Long>
 
     List<TodoMessage> getByType(String type);
 
-    TodoMessage getByName(String name);
+    TodoMessage findByName(String name);
+
+    TodoMessage findByNameAndType(String name, String type);
 
 }

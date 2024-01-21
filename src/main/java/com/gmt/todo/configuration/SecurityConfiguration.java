@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests(requests -> requests
 				.antMatchers("/", "/manifest.json", "/static/**", "/todo-logo-200.png", "/logo192.png",
 						"/todo/authenticate", "/todo/signup", "/todo/init-reset-pwd",
-						"/todo/reset-pwd", "/todo/change-pwd", "/todo/user/checkUsername/{userName}",
+						"/todo/reset-pwd", "/todo/user/password", "/todo/user/checkUsername/{userName}",
 						"/todo/accessDenied")
 				.permitAll()
 				.antMatchers("/todo/ManageUsers").hasRole("ADMIN")

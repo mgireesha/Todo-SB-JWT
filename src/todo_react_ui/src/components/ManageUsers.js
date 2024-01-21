@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-
 import {ConfirmPopup} from './ConfirmPopup.js';
-import { fetchHeaderLinks } from "./redux/common/commonActions.js";
 import { disableDiv, enableDiv, getAuth, getServiceURI } from "./utils/GlobalFuns.js";
 
 export const ManageUsers = () => {
-    const dispatch = useDispatch();
     const [users,setUsers] = useState([]);
 
     const [showConfirmPopup,setShowConfirmPopup] = useState(false);
@@ -32,7 +28,6 @@ export const ManageUsers = () => {
             setUsers(data);
         }
         fetchUsers();
-        dispatch(fetchHeaderLinks());
     },[]);
 
     const deleteUser = async(userId) => {
@@ -58,7 +53,7 @@ export const ManageUsers = () => {
 
 
     return(
-        <div className="container-fluid" style={{color:'beige'}}>
+        <div className="container-fluid manage-users" style={{color:'beige'}} >
             <h1><span style={{fontStyle:'italic'}}>Manage Users</span> 〉</h1>
             <div className="container-fluid user-table">
                 <div className="row user-table-header" id="user-table-header" style={{borderTop:'1px solid darkgray'}}>
@@ -77,12 +72,10 @@ export const ManageUsers = () => {
                         <label className="col-sm-2 user-table-elem">{user.roles}</label>
                         <label className="col-sm-2 user-table-elem">{user.passWord}</label>
                         <label className="col-sm-3 user-table-elem">
-                            <label className="col-sm-6">
-                                <button className="btn btn-outline-danger btn-sm user-table-btn" onClick={(event)=>onSetShowConfirmPopup(event,true,user.id)}>Delete</button>
-                            </label>
-                            <label className="col-sm-6">
-                                <button className="btn btn-outline-primary btn-sm user-table-btn">Update</button>
-                            </label>
+                            <div className="manage-users-btn-conatainer">
+                                <button className="t-btn sm red beige red1" onClick={(event)=>onSetShowConfirmPopup(event,true,user.id)}>Delete</button>
+                                <button className="t-btn sm info beige">Update</button>
+                            </div>
                         </label>
                     </div>
                 )}

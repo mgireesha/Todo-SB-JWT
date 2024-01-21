@@ -1,13 +1,7 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import * as XLSX from 'xlsx';
-import { fetchHeaderLinks } from "../redux/common/commonActions";
 
 export const ReadExcelFile = () => {
-    const dispatch = useDispatch();
-    useEffect(()=>{
-      dispatch(fetchHeaderLinks());
-    },[]);
     const onChange = (e) => {
         const [file] = e.target.files;
         const reader = new FileReader();

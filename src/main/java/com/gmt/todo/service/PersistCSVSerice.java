@@ -141,7 +141,7 @@ public class PersistCSVSerice {
 		List<TodoTask> taskList = new ArrayList<TodoTask>();
 		List<TodoTask> taskListRet = new ArrayList<TodoTask>();
 		for (User user : userList) {
-			tList = listService.getListByUserId(user.getUserName());
+			tList = listService.getListsByUserId(user.getUserName());
 			for (TodoList todoList : tList) {
 				taskList = taskService.getByListId(todoList.getListId());
 				for (TodoTask todoTask : taskList) {
@@ -159,7 +159,7 @@ public class PersistCSVSerice {
 		List<TodoList> tList = new ArrayList<TodoList>();
 		List<TodoList> tListRet = new ArrayList<TodoList>();
 		for (User user : userList) {
-			tList = listService.getListByUserId(user.getUserName());
+			tList = listService.getListsByUserId(user.getUserName());
 			for (TodoList todoList : tList) {
 				if ("common".equalsIgnoreCase(todoList.getGroupName())) {
 					todoList.setGroupId(2001);

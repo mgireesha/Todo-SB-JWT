@@ -1,47 +1,52 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { getAuth } from './utils/GlobalFuns';
-import Select from 'react-select';
-import { headerLinksSelectStyles } from './utils/utils';
-import { useState } from 'react';
-import { useSelector} from 'react-redux';
-import { headerLinksLabels } from './redux/todoActionTypes';
+import { useDispatch, useSelector} from 'react-redux';
+import { APP_NAME_LABEL, LOGOUT, headerLinksLabels, orderedHeaderLinks } from './redux/todoActionTypes';
+import {Nav, Navbar, NavDropdown} from 'react-bootstrap';
+import { setIsAuthenticated } from './redux/login/loginActions';
+import { fetchCurrentUser, fetchHeaderLinks, setIsNabarExpanded } from './redux/common/commonActions';
 export const Header = () => {
+	const dispatch = useDispatch();
 	const userListsKeys = useSelector(state => state.list.userListsKeys);
 	const headerLinks = useSelector(state => state.common.headerLinks);
-	
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const isNabarExpanded = useSelector(state => state.common.isNabarExpanded);
+	const isAuthenticated = useSelector(state => state.login.isAuthenticated);
+	const currentUser = useSelector(state => state.common.currentUser);
+
 	
 	useEffect(()=>{
-		setIsAuthenticated(getAuth()!==""?true:false);
+		dispatch(setIsAuthenticated(getAuth()!==""?true:false));
 	},[userListsKeys])
-	const handleChange = (selectedOption) => {
-		if(selectedOption.label === "Logout"){
-			document.cookie="jToken=;";
-			setIsAuthenticated(false);
-		}
-		window.location.replace(selectedOption.value);
-	}
-	/*const options = [
-		{ value: '/#/logout', label: 'Logout' },
-		{ value: '/#/todo/ManageUsers', label: 'Manage Users' },
-		{ value: '/#/todo/ReadExcel', label: 'Import / Export' },
-	  ];*/
 
-	  const headerLinksOptions = Object.keys(headerLinks).map(key => {
-		return {label:headerLinksLabels[key], value:headerLinks[key]}
-	  })
+    useEffect(() => {
+        if(isAuthenticated){
+			dispatch(fetchHeaderLinks());
+			dispatch(fetchCurrentUser());
+		}
+    }, [dispatch,isAuthenticated]);
 	  
 	return (
-		<div className="row" id="todo-header">
-			<a href="/" style={{marginLeft: 0.4+'em',color:'beige',width:40+'%'}}><h4 className="todo-header-label"><i>ToDo</i></h4></a>
-			{isAuthenticated && 
-				<Select styles={headerLinksSelectStyles} 
-					options={headerLinksOptions}
-					defaultValue = {{ value: '/#/logout', label: 'Logout' }}
-					onChange={handleChange}
-					classNamePrefix="header-links"
-				/>
-			}
+		<div className="row" id="todo-header" style={{height:'3.5em',marginBottom:'0.5em'}}>
+			<Navbar  expand="md" style={{backgroundColor:'beige'}} expanded={isNabarExpanded}>  
+				<Navbar.Brand href="#/todo" style={{marginLeft: 0.4+'em',width:40+'%', fontStyle:'italic', color:'#4491f5b8'}}>{APP_NAME_LABEL}</Navbar.Brand>  
+				<Navbar.Toggle aria-controls="basic-navbar-nav" onClick={()=>dispatch(setIsNabarExpanded(!isNabarExpanded))} />  
+				<Navbar.Collapse id="basic-navbar-nav">  
+					<Nav className="ms-auto me-3 pe-2">  
+						{isAuthenticated && 
+							<>
+								<NavDropdown title={`Hi ${currentUser.name}`} id="basic-nav-dropdown">
+									{headerLinks && orderedHeaderLinks.map((linkKey,i)=>
+										<>{linkKey!==LOGOUT && headerLinks[linkKey] && <NavDropdown.Item href={headerLinks[linkKey]} onClick={()=>dispatch(setIsNabarExpanded(!isNabarExpanded))}>{headerLinksLabels[linkKey]}</NavDropdown.Item>}</>
+									)}
+									<NavDropdown.Divider />  
+									<NavDropdown.Item href="/todo/#/logout">Logout</NavDropdown.Item>
+								</NavDropdown> 
+							</>
+						}
+					</Nav>
+				</Navbar.Collapse>  
+  			</Navbar> 
 		</div>
 	);
 }
