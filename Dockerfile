@@ -17,7 +17,7 @@ COPY target/*.jar app.jar
 EXPOSE 8087
 
 # Define the entry point for the container
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-Djdk.util.jar.enableMultiRelease=false","-jar","/app.jar"]
 #ENTRYPOINT ["/app/build/index.html"]
 
 
