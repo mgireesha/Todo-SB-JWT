@@ -7,6 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gmt.todo.service.JwtUtil;
+import com.gmt.todo.service.TodoRoleMappingService;
 import com.gmt.todo.model.AuthenticationRequest;
 import com.gmt.todo.model.AuthenticationResponse;
 import com.gmt.todo.model.TResponse;
+import com.gmt.todo.model.TodoRoleMapping;
 import com.gmt.todo.service.TodoUserDetailsService;
 import com.gmt.todo.service.UserService;
 
@@ -36,6 +39,9 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	TodoRoleMappingService roleMappingService;
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
@@ -63,6 +69,11 @@ public class HomeController {
 	@RequestMapping("/header-links")
 	public TResponse getHeaderLinks() {
 		return userService.getHeaderLinks();
+	}
+
+	@PostMapping("/role-mapping")
+	public TResponse createRoleMapping(@RequestBody TodoRoleMapping todoRoleMapping) {
+		return roleMappingService.createRoleMapping(todoRoleMapping);
 	}
 
 }

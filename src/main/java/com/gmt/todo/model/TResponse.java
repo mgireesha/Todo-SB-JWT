@@ -9,7 +9,9 @@ public class TResponse {
 	private TodoList todoList;
 	private User user;
 	private TodoMessage message;
+	private TodoRoleMapping roleMapping;
 	private Map<String, String> KVResponse;
+	private Object response;
 
 	public Map<String, String> getKVResponse() {
 		return KVResponse;
@@ -92,6 +94,22 @@ public class TResponse {
 
 	public void setMessage(TodoMessage message) {
 		this.message = message;
+	}
+
+	public Object getResponse() {
+		return response;
+	}
+
+	public void setResponse(Object response) {
+		this.response = response;
+	}
+
+	public TodoRoleMapping getRoleMapping() {
+		return roleMapping;
+	}
+
+	public void setRoleMapping(TodoRoleMapping roleMapping) {
+		this.roleMapping = roleMapping;
 	}
 
 }

@@ -34,8 +34,8 @@ public class ListService {
 		return (List<TodoList>) todolistRepository.findAll();
 	}
 
-	public TodoList getListById(Long listId) {
-		return todolistRepository.getByListId(listId);
+	public TodoList findListById(Long listId) {
+		return todolistRepository.findByListId(listId);
 	}
 
 	public TodoList getListByListNameAndUser(String listName, String userName) {
@@ -110,12 +110,12 @@ public class ListService {
 		return listRet;
 	}
 
-	public List<TodoList> getListByUserId(String userId) {
+	public List<TodoList> getListsByUserId(String userId) {
 		return todolistRepository.getByUserIdOrderByListId(userId);
 	}
 
 	public TodoList archiveList(Long listId) {
-		TodoList todoList = getListById(listId);
+		TodoList todoList = findListById(listId);
 		if (todoList.getGroupName().equals("archived")) {
 			todoList.setGroupName("common");
 			todoList.setGroupId(2001);

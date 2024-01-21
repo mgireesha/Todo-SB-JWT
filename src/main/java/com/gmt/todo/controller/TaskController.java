@@ -106,7 +106,7 @@ public class TaskController {
 	@RequestMapping("/task/getListsOfUsers/{taskId}")
 	public List<TodoList> getListsOfUser(@PathVariable String taskId) {
 		TodoTask task = taskService.getTaskByTaskId(Long.parseLong(taskId));
-		return listService.getListByUserId(task.getUserId());
+		return listService.getListsByUserId(task.getUserId());
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/task/moveTask/{taskId}/{listId}")
@@ -114,7 +114,7 @@ public class TaskController {
 		TResponse resp = new TResponse();
 		try {
 			TodoTask task = taskService.getTaskByTaskId(Long.parseLong(taskId));
-			TodoList todoList = listService.getListById(Long.parseLong(listId));
+			TodoList todoList = listService.findListById(Long.parseLong(listId));
 			task.setListId(todoList.getListId());
 			task.setListName(todoList.getListName());
 			taskService.save(task);

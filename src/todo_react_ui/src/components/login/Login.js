@@ -10,13 +10,18 @@ import { ResetPwdOtpDiv } from './ResetPwdOtpDiv.js';
 import { disableDiv, enableDiv, getAuth, getServiceURI } from '../utils/GlobalFuns.js';
 import { LoaderColored } from '../loader/loaderColored.js';
 import { setCookies } from '../utils/utils.js';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentLoginForm, setIsAuthenticated, setLoginError } from '../redux/login/loginActions.js';
+import { setHeaderLinks } from '../redux/common/commonActions.js';
 
 export const Login = ({lError}) => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const [loginError,setLoginError] = useState("");
-	const [showLForm,setShowLForm] = useState("signin");
+
+	const loginError = useSelector(state => state.login.loginError);
+	const currentLoginForm = useSelector(state => state.login.currentLoginForm);
+
+	//const [loginError,setLoginError] = useState("");
+	//const [currentLoginForm,setShowLForm] = useState("signin");
 	const [prevShowLForm,setPrevShowLForm] = useState("signin");
 	const [message,setMessage] = useState("");
 	const [emailS,setEmailS] = useState("");
@@ -33,8 +38,12 @@ export const Login = ({lError}) => {
 	
 	useEffect(()=>{
 		if(document.getElementById('body-signin')!==undefined){
-			document.getElementById('body-signin').style.height=window.innerHeight+'px';
+			document.getElementById('body-signin').style.height=(window.innerHeight-document.getElementById("todo-header").clientHeight-15)+'px';
 		}
+
+		setCookies("jToken","");
+		dispatch(setHeaderLinks(null));
+		dispatch(setIsAuthenticated(false))
 		
 	},[]);
 	
@@ -49,12 +58,12 @@ export const Login = ({lError}) => {
 	}
 	
 	const onSetShowLForm = (value) => {
-		setLoginError("");
-		setPrevShowLForm(showLForm);
-		setShowLForm(value);
+		dispatch(setLoginError(""));
+		setPrevShowLForm(currentLoginForm);
+		dispatch(setCurrentLoginForm(value));
 	}
 	const authenticate = async() => {
-		setLoginError("");
+		dispatch(setLoginError(""));
 		document.cookie="jToken=;";
 		const username= document.getElementById('username');
 		const password = document.getElementById('password');
@@ -107,16 +116,16 @@ export const Login = ({lError}) => {
 	
 	document.addEventListener("keyup",function(event){
 		if(event.key=== "Enter"){
-			if(showLForm==="signin")
+			if(currentLoginForm==="signin")
 				authenticate()
-			else if(showLForm==="signup")
+			else if(currentLoginForm==="signup")
 				register()
-			else if(showLForm==="reset")
+			else if(currentLoginForm==="reset")
 				sendOtp()
-			else if(showLForm==="verify-otp")
+			else if(currentLoginForm==="verify-otp")
 				verifyOtpAndResetPwd()
-			else if(showLForm==="change-pwd")
-				changePwd()
+			//else if(currentLoginForm==="change-pwd")
+			//	changePwd()
 		}
 	});
 	
@@ -173,8 +182,8 @@ export const Login = ({lError}) => {
 				setMessage(data.error);
 			}
 			setLoginError(data.status);
-			setPrevShowLForm(showLForm);
-			setShowLForm("lsuccess");
+			setPrevShowLForm(currentLoginForm);
+			dispatch(setCurrentLoginForm("lsuccess"));
 		}
 	}
 	
@@ -212,7 +221,7 @@ export const Login = ({lError}) => {
 	}
 
 	const sendOtp = async() => {
-		setLoginError("");
+		dispatch(setLoginError(""));
 		const userName = document.getElementById('username-resetP');
 		if(!validateReqFld(userName)){
 			return;
@@ -250,7 +259,7 @@ export const Login = ({lError}) => {
 	}
 	
 	const verifyOtpAndResetPwd = async() => {
-		setLoginError("");
+		dispatch(setLoginError(""));
 		const otpResetP = document.getElementById('otp-resetP');
 		const createPwd = document.getElementById('createPwd');
 		const confirmPwd = document.getElementById('confirmPwd');
@@ -286,64 +295,15 @@ export const Login = ({lError}) => {
 			if(data.status==="success"){
 				setLoginError(data.status);
 				setMessage("Password reset successful. Please sign in to continue.");
-				setPrevShowLForm(showLForm);
-				setShowLForm("lsuccess");
+				setPrevShowLForm(currentLoginForm);
+				dispatch(setCurrentLoginForm("lsuccess"));
 			}else{
 				setLoginError(data.error);
 			}
 		}
 	}
 	
-	const changePwd = async() => {
-		setLoginError("");
-		const currentPwd = document.getElementById('current-pwd');
-		const createPwd = document.getElementById('createPwd');
-		const confirmPwd = document.getElementById('confirmPwd');
-		const username = document.getElementById('username');
-		if(!validateReqFld(currentPwd) || !validateReqFld(username) ||
-			!validateReqFld(createPwd) || !validateReqFld(confirmPwd)){
-			return;
-		}
-		if(!validateEmail(username)){
-			cReportValidity(username,"Please provide valid email address")
-			return;
-		}
-		if(!passwordStrength(createPwd)){
-			return false;
-		}
-		if(createPwd.value!==confirmPwd.value){
-			confirmPwd.setCustomValidity("Passwords doesn't match");
-			confirmPwd.reportValidity();
-			return;
-		}
-		disableDiv();
-		setOpacity(0);
-		const changePPayload = {
-			currentPassword : currentPwd.value,
-			passWord : confirmPwd.value,
-			userName : username.value
-		}
-		const settings = {
-			method : 'POST',
-			headers : {
-				'Content-Type' : 'application/json; charset=UTF-8'
-			},
-			body : JSON.stringify(changePPayload)
-		}
-		const response = await fetch(`${getServiceURI()}/todo/change-pwd`,settings);
-		const data = await response.json();
-		enableDiv();setOpacity(1);
-		if(data.status){
-			if(data.status==="success"){
-				setLoginError(data.status);
-				setMessage("Password changed. Please sign in to continue.");
-				setPrevShowLForm(showLForm);
-				setShowLForm("lsuccess");
-			}else{
-				setLoginError(data.error);
-			}
-		}
-	}
+	
 	
 	const validateEmail = (email) => {
 		return emailReg.test(email.value);
@@ -433,14 +393,15 @@ export const Login = ({lError}) => {
 			<div className="container ">
 				<div className="row row-main">
 					<div className="col-sm-3"></div>
-					{/*<div className="col-sm-5 middle-span">*/}
-						{(showLForm==="signin" || showLForm==="") && <SignInDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onAuthenticate={authenticate} />}
-						{showLForm==="signup" && <SignUpDiv onSetShowLForm={onSetShowLForm} onRegister={register} prevShowLForm={prevShowLForm} checkPwdStrength={checkPwdStrength} checkUNameAvaiability={checkUNameAvaiability} />}
-						{showLForm==="lsuccess" && <LSuccessDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onSetLoginError={setLoginError} message={message} />}
-						{showLForm==="reset" && <ResetPwdDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onSendOtp={sendOtp} prevShowLForm={prevShowLForm} />}
-						{showLForm==="verify-otp" && <ResetPwdOtpDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onVerifyOtpAndResetPwd={verifyOtpAndResetPwd} prevShowLForm={prevShowLForm} checkPwdStrength={checkPwdStrength} />}
-						{showLForm==="change-pwd" && <ChangePwdDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onChangePwd={changePwd} prevShowLForm={prevShowLForm} checkPwdStrength={checkPwdStrength} />}
-					{/*</div>*/}
+					<div className="col-sm-5 middle-span">
+						{(currentLoginForm==="signin" || currentLoginForm==="") && <SignInDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onAuthenticate={authenticate} />}
+						{currentLoginForm==="signup" && <SignUpDiv onSetShowLForm={onSetShowLForm} onRegister={register} prevShowLForm={prevShowLForm} checkPwdStrength={checkPwdStrength} checkUNameAvaiability={checkUNameAvaiability} />}
+						{currentLoginForm==="lsuccess" && <LSuccessDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onSetLoginError={setLoginError} message={message} />}
+						{currentLoginForm==="reset" && <ResetPwdDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onSendOtp={sendOtp} prevShowLForm={prevShowLForm} />}
+						{currentLoginForm==="verify-otp" && <ResetPwdOtpDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onVerifyOtpAndResetPwd={verifyOtpAndResetPwd} prevShowLForm={prevShowLForm} checkPwdStrength={checkPwdStrength} />}
+						{currentLoginForm==="change-pwd" && <ChangePwdDiv onSetShowLForm={onSetShowLForm} prevShowLForm={prevShowLForm} />}
+					
+					</div>
 					<LoaderColored />
 					<div className="col-sm-3"></div>
 				</div>

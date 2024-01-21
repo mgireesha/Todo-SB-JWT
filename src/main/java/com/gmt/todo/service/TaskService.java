@@ -49,7 +49,7 @@ public class TaskService {
 		List<TodoTask> taskListT = null;
 		List<TodoList> todoList = new ArrayList<TodoList>();
 		Map<String, List> tasksMap = new HashMap<String, List>();
-		TodoList todoList2 = listService.getListById(listId);
+		TodoList todoList2 = listService.findListById(listId);
 		todoList2.setTaskCount(Long.valueOf(todoTaskRepository.getByListId(todoList2.getListId()).size()));
 		todoList.add(todoList2);
 		if (!todoList.isEmpty() && null != todoList.get(0).getListName()

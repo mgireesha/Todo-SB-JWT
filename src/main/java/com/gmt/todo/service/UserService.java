@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,8 +29,10 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.gmt.todo.model.TResponse;
+import com.gmt.todo.model.TaskStep;
 import com.gmt.todo.model.TodoList;
 import com.gmt.todo.model.TodoMessage;
+import com.gmt.todo.model.TodoRoleMapping;
 import com.gmt.todo.model.TodoTask;
 import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.model.User;
@@ -50,8 +53,15 @@ public class UserService {
 	@Autowired
 	private TaskService taskService;
 
+	@Lazy
+	@Autowired
+	private TaskStepService taskStepService;
+
 	@Autowired
 	private TodoMessageService todoMessageService;
+
+	@Autowired
+	private TodoRoleMappingService roleMappingService;
 
 	public List<User> getAllUsers() {
 		return (List<User>) userRepository.findAll();
@@ -190,6 +200,149 @@ public class UserService {
 		}
 
 		return response;
+	}
+
+	public User getUserById(long id) {
+		return userRepository.findById(id).get();
+	}
+
+	public TResponse exportTodoLists() {
+		TResponse resp = new TResponse();
+		StringBuilder respStr = new StringBuilder();
+		User user = getLoggedInUser();
+		List<TodoList> todoLists = listService.getListsByUserId(user.getUserName());
+		List<TodoTask> tasklist = null;
+		Map<Long, List<TodoTask>> todoTasks = new HashMap<Long, List<TodoTask>>();
+		List<TaskStep> taskSteplist = null;
+		Map<Long, List<TaskStep>> taskSteps = new HashMap<Long, List<TaskStep>>();
+		respStr.append("TODO_LIST");// append list table indicator
+		respStr.append("\nLIST_ID,LIST_NAME,GROUP_ID,GROUP_NAME,USER_ID,SORTED_TASKS,DATE_CREATED");// append list
+																									// header
+		for (TodoList todoList : todoLists) {
+			respStr.append("\n");
+			respStr.append(todoList.getListId()).append(TODO_CONSTANTS.DELIMETER)
+					.append(todoList.getListName()).append(TODO_CONSTANTS.DELIMETER)
+					.append(todoList.getGroupId()).append(TODO_CONSTANTS.DELIMETER)
+					.append(todoList.getGroupName()).append(TODO_CONSTANTS.DELIMETER)
+					.append(todoList.getUserId()).append(TODO_CONSTANTS.DELIMETER)
+					.append(todoList.getSortedtasks()).append(TODO_CONSTANTS.DELIMETER)
+					.append(todoList.getDateCreated());
+			tasklist = taskService.getByListId(todoList.getListId());
+			if (null != tasklist && tasklist.size() > 0) {
+				todoTasks.put(todoList.getListId(), tasklist);
+			}
+		}
+
+		respStr.append("TODO_TASK");// append task table indicator
+		respStr.append(
+				"\nTASK_ID,TASK_NAME,LIST_ID,LIST_NAME,IS_REPEAT,REMIND_ME,IS_IMPORTANT,DUE_DATE,NOTE,URI_REF,DATE_CREATED,DATE_COMPLETED,IS_COMPLETED,TASK_DESCRIPTION,USER_ID");// append
+																																													// task
+																																													// header
+		for (Long listId : todoTasks.keySet()) {
+			// tasklist = todoTasks.get(listId);
+			for (TodoTask todoTask : todoTasks.get(listId)) {
+				respStr.append("\n");
+				respStr.append(todoTask.getTaskId()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getTaskName()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getListId()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getListName()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.isRepeat()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.isRemindMe()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.isImportant()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getDueDate()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getNote()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getUriRef()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getDateCreated()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getDateCompleted()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.isCompleted()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getTaskDescription()).append(TODO_CONSTANTS.DELIMETER)
+						.append(todoTask.getUserId());
+				taskSteplist = taskStepService.getTaskStepsByTaskId(todoTask.getTaskId());
+				if (null != taskSteplist && taskSteplist.size() > 0) {
+					taskSteps.put(todoTask.getTaskId(), taskSteplist);
+				}
+
+			}
+		}
+
+		respStr.append("TASK_STEP");// append task step table indicator
+		respStr.append("\nSTEP_ID,STEP_NAME,TASK_ID,CREATED_BY,DATE_CREATED,DATE_COMPLETED,IS_COMPLETED");// append task
+																											// step
+																											// header
+		for (Long taskId : taskSteps.keySet()) {
+			for (TaskStep taskStep : taskSteps.get(taskId)) {
+				respStr.append("\n")
+						.append(taskStep.getStepId()).append(TODO_CONSTANTS.DELIMETER)
+						.append(taskStep.getStepName()).append(TODO_CONSTANTS.DELIMETER)
+						.append(taskStep.getTaskId()).append(TODO_CONSTANTS.DELIMETER)
+						.append(taskStep.getCreatedBy()).append(TODO_CONSTANTS.DELIMETER)
+						.append(taskStep.getDateCreated()).append(TODO_CONSTANTS.DELIMETER)
+						.append(taskStep.getDateCompleted()).append(TODO_CONSTANTS.DELIMETER)
+						.append(taskStep.isCompleted());
+
+			}
+		}
+		resp.setStatus(TODO_CONSTANTS.SUCCESS);
+		resp.setResponse(respStr.toString());
+		return resp;
+	}
+
+	protected User getLoggedInUser() {
+		TodoUserDetails userDetails = (TodoUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		return getUserByUserName(userDetails.getUsername()).get();
+	}
+
+	@SuppressWarnings("unchecked")
+	public TResponse getMyAccountLinks() {
+		TResponse resp = new TResponse();
+		List<TodoMessage> links = todoMessageService.getByType(TODO_CONSTANTS.MY_ACCOUNT);
+		List<TodoRoleMapping> roleMappings = roleMappingService.getRoleMappingsByEntityType(TODO_CONSTANTS.MY_ACCOUNT);
+		TodoRoleMapping roleMapping = null;
+		Map<String, String> myAccountLinks = new HashMap<String, String>();
+		List<GrantedAuthority> userRoles = (List<GrantedAuthority>) SecurityContextHolder.getContext()
+				.getAuthentication().getAuthorities();
+		String userType = getUserTypeFromAuthorities(userRoles);
+		String userRolesStr = getUserRolesString(userRoles);
+		for (TodoMessage link : links) {
+			if (userType.equals(TODO_CONSTANTS.ADMIN_USER)) {
+				myAccountLinks.put(link.getName(), link.getValue());
+			} else {
+				roleMapping = roleMappings.stream().filter(o -> o.getEntityName().equals(link.getName())).findFirst()
+						.orElse(null);
+				if (roleMapping != null) {
+					if (userRolesStr.contains(roleMapping.getRolesRequired())) {
+						myAccountLinks.put(link.getName(), link.getValue());
+					}
+				}
+			}
+		}
+		resp.setKVResponse(myAccountLinks);
+		return resp;
+	}
+
+	public String getUserTypeFromAuthorities(List<GrantedAuthority> userRoles) {
+		String userType = TODO_CONSTANTS.GUEST_USER;
+		for (GrantedAuthority role : userRoles) {
+			if (role.getAuthority().equals(TODO_CONSTANTS.ROLE_ADMIN)) {
+				userType = TODO_CONSTANTS.ADMIN_USER;
+				break;
+			} else if (role.getAuthority().equals(TODO_CONSTANTS.ROLE_USER)) {
+				userType = TODO_CONSTANTS.REDISTERED_USER;
+			}
+		}
+		return userType;
+	}
+
+	public String getUserRolesString(List<GrantedAuthority> userRoles) {
+		StringBuilder userRolesStr = new StringBuilder();
+		for (GrantedAuthority role : userRoles) {
+			if (!userRolesStr.toString().equals("")) {
+				userRolesStr.append(",");
+			}
+			userRolesStr.append(role.getAuthority());
+		}
+		return userRolesStr.toString();
 	}
 
 }

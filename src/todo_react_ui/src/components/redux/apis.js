@@ -80,3 +80,21 @@ export const archiveListAPI = (payload) => {
 export const fetchHeaderLinksAPI = () => {
     return iAxios.get(`/todo/header-links`).then(response => response);
 }
+
+export const fetchMyAccountLinksAPI = () => {
+    return iAxios.get(`/todo/user/my-account-links`).then(response => response);
+}
+
+export const fetchCurrentUserAPI = () => {
+    return iAxios.get(`/todo/user/@self`).then(response => response);
+}
+
+export const exportTodoListsAPI = () => {
+    return iAxios.get(`/todo/user/export-todo-lists`).then(response => response);
+}
+
+//Login / User apis - start
+export const changePasswordAPI = (payload) => {
+    return iAxios.put(`/todo/user/password`,payload)
+}
+//Login / User apis - end

@@ -18,9 +18,10 @@ public class TodoMessageService {
 
     public TResponse createMessage(TodoMessage message) {
         TResponse response = new TResponse();
-        TodoMessage existingMessage = todoMessageRepository.getByName(message.getName());
+        TodoMessage existingMessage = todoMessageRepository.findByNameAndType(message.getName(), message.getType());
         if (existingMessage != null) {
-            response.setError("Message name : " + message.getName() + " already exists!");
+            response.setError("Message with name and type : " + message.getName() + " , " + message.getType()
+                    + " already exists!");
             response.setStatus(TODO_CONSTANTS.FAILED);
             return response;
         }
@@ -32,7 +33,7 @@ public class TodoMessageService {
 
     public TResponse updateMessageByName(TodoMessage message) {
         TResponse response = new TResponse();
-        TodoMessage existingMessage = todoMessageRepository.getByName(message.getName());
+        TodoMessage existingMessage = todoMessageRepository.findByName(message.getName());
         if (existingMessage == null) {
             response.setError("Message : " + message.getName() + " not found!");
             response.setStatus(TODO_CONSTANTS.FAILED);
@@ -45,9 +46,9 @@ public class TodoMessageService {
         return response;
     }
 
-    public TodoMessage getByName(String messageName) {
+    public TodoMessage findByName(String messageName) {
         try {
-            return todoMessageRepository.getByName(messageName);
+            return todoMessageRepository.findByName(messageName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,13 +70,13 @@ public class TodoMessageService {
     }
 
     public void removeMessageName(String name) {
-        TodoMessage msg = todoMessageRepository.getByName(name);
+        TodoMessage msg = todoMessageRepository.findByName(name);
         if (msg != null)
             removeMessageById(msg.getMessageId());
     }
 
     public TodoMessage deleteByName(String name) {
-        TodoMessage message = todoMessageRepository.getByName(name);
+        TodoMessage message = todoMessageRepository.findByName(name);
         todoMessageRepository.deleteById(message.getMessageId());
         return message;
     }

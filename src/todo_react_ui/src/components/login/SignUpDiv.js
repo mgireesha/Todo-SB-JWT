@@ -5,8 +5,7 @@ import { PasswordField } from './PasswordField';
 
 export const SignUpDiv = ({ onRegister, onSetShowLForm, prevShowLForm, checkPwdStrength,checkUNameAvaiability}) => {
 	return (
-		<div className="col-sm-5 middle-span">
-		<div className="signup-form">
+		<div className='slide-in-left signup-form'>
 			<BsArrowLeftSquare onClick={()=>onSetShowLForm(prevShowLForm)} className='login-back-arrow' />
 			<h1 className="signup-header">Sign Up</h1>
 			<div className="row row-label">
@@ -35,7 +34,6 @@ export const SignUpDiv = ({ onRegister, onSetShowLForm, prevShowLForm, checkPwdS
 					Already a user ? <span onClick={()=>onSetShowLForm("signin")} className='link-look'>sign in</span>
 				</label>
 			</div>
-		</div>
 		</div>
 	);
 }

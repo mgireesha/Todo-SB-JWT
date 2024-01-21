@@ -5,15 +5,22 @@ import java.util.Optional;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.gmt.todo.model.TResponse;
+import com.gmt.todo.model.TodoUserDetails;
 import com.gmt.todo.model.User;
 import com.gmt.todo.service.UserService;
+import com.gmt.todo.utils.TODO_CONSTANTS;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/todo")
@@ -23,14 +30,28 @@ public class UserController {
 
 	private static final String SUCCESS = "success";
 
-	private static final String WRONG_PASSWORD = "WRONG_PASSWORD";
-
-	private static final String USER_EXISTS = "USER_EXISTS";
-
-	private static final String USER_AVAILABLE = "USER_AVAILABLE";
-
 	@Autowired
 	private UserService userService;
+
+	@GetMapping("/user/@self")
+	public TResponse getLoggedInUser() {
+		TResponse response = new TResponse(TODO_CONSTANTS.SUCCESS, (String) null);
+		TodoUserDetails userDetails = (TodoUserDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		Optional<User> userO = userService.getUserByUserName(userDetails.getUsername());
+		User user = userO.get();
+		user.setPassWord(null);
+		response.setUser(user);
+		return response;
+	}
+
+	@GetMapping("/user/id/{id}")
+	public TResponse getUserById(@RequestParam String id) {
+		TResponse response = new TResponse(TODO_CONSTANTS.SUCCESS, (String) null);
+		User user = userService.getUserById(Long.parseLong(id));
+		response.setUser(user);
+		return response;
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/signup")
 	public TResponse signup(@RequestBody User user) {
@@ -38,7 +59,7 @@ public class UserController {
 		try {
 			Optional<User> userOpt = userService.getUserByUserName(user.getUserName());
 			if (userOpt.isPresent()) {
-				resp.setStatus(USER_EXISTS);
+				resp.setStatus(TODO_CONSTANTS.USER_EXISTS);
 				resp.setError(user.getUserName());
 				return resp;
 			}
@@ -106,7 +127,7 @@ public class UserController {
 		return resp;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/change-pwd")
+	@PutMapping("/user/password")
 	public TResponse changePassword(@RequestBody User user) {
 		TResponse resp = new TResponse();
 		try {
@@ -115,16 +136,16 @@ public class UserController {
 			userOpt.orElseThrow(() -> new UsernameNotFoundException("User Not Found : " + userName));
 			User tempUser = userOpt.map(User::new).get();
 			if (tempUser.getPassWord().equals(user.getCurrentPassword())) {
-				tempUser.setPassWord(user.getPassWord());
+				// tempUser.setPassWord(user.getPassWord());
 				user = userService.save(tempUser);
-				resp.setStatus(SUCCESS);
+				resp.setStatus(TODO_CONSTANTS.SUCCESS);
 			} else {
-				resp.setStatus(WRONG_PASSWORD);
+				resp.setStatus(TODO_CONSTANTS.WRONG_PASSWORD);
 				resp.setError("Current password is worong, try again.");
 			}
 			resp.setUser(user);
 		} catch (Exception e) {
-			resp.setStatus(FAILED);
+			resp.setStatus(TODO_CONSTANTS.FAILED);
 			resp.setError(e.getMessage());
 			e.printStackTrace();
 		}
@@ -154,12 +175,23 @@ public class UserController {
 		TResponse resp = new TResponse();
 		Optional<User> userOp = userService.getUserByUserName(userName);
 		if (userOp.isPresent()) {
-			resp.setStatus(USER_EXISTS);
+			resp.setStatus(TODO_CONSTANTS.USER_EXISTS);
 			resp.setError(userName);
 		} else {
-			resp.setStatus(USER_AVAILABLE);
+			resp.setStatus(TODO_CONSTANTS.USER_AVAILABLE);
 			resp.setError(userName);
 		}
 		return resp;
 	}
+
+	@GetMapping("/user/export-todo-lists")
+	public TResponse exportTodoLists() {
+		return userService.exportTodoLists();
+	}
+
+	@GetMapping("/user/my-account-links")
+	public TResponse getMyAccountLinks() {
+		return userService.getMyAccountLinks();
+	}
+
 }
