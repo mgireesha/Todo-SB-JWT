@@ -40,7 +40,7 @@ export const Header = () => {
 										<>{linkKey!==LOGOUT && headerLinks[linkKey] && <NavDropdown.Item href={headerLinks[linkKey]} onClick={()=>dispatch(setIsNabarExpanded(!isNabarExpanded))}>{headerLinksLabels[linkKey]}</NavDropdown.Item>}</>
 									)}
 									<NavDropdown.Divider />  
-									<NavDropdown.Item href="/todo/#/logout">Logout</NavDropdown.Item>
+									<NavDropdown.Item href="/#/logout">Logout</NavDropdown.Item>
 								</NavDropdown> 
 							</>
 						}
