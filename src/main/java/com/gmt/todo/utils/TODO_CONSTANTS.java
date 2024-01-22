@@ -18,6 +18,8 @@ public class TODO_CONSTANTS {
     public static final String MANAGE_USERS = "MANAGE_USERS";
     public static final String MY_ACCOUNT = "MY_ACCOUNT";
 
+    public static final String PRODUCTION = "PRODUCTION";
+
     public static final String REDISTERED_USER = "REDISTERED_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_USER = "ROLE_USER";

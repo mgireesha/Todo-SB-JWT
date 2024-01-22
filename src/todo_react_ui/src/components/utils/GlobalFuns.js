@@ -6,7 +6,6 @@ export const monthsI = ['01','02','03','04','05','06','07','08','09','10','11','
 
 export function getServiceURI(){
     //return "http://localhost:8087";//COMMENT THIS BEFORE COMMITTING
-    return "http://192.168.0.102:8087";
     return "";
 } 
 
