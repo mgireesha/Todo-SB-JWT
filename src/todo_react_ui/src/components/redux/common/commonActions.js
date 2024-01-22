@@ -11,6 +11,7 @@ import {
   SET_COMMON_PHASE,
   SET_COMMON_POPUIP_OBJECT,
   SET_HEADER_LINKS,
+  SET_IS_MOBILE_DEVICE,
   SET_IS_NAVABAR_EXPANDED,
   SET_STATUS_MESSAGE,
 } from "./commonActionTypes";
@@ -80,3 +81,8 @@ export const setCommonPhase = (phase) => ({
   type: SET_COMMON_PHASE,
   phase,
 });
+
+export const setIsMobileDevice = (isMobileDevice) => ({
+  type: SET_IS_MOBILE_DEVICE,
+  isMobileDevice
+})

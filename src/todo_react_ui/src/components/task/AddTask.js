@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsMobileDevice, setShowListAdd } from '../redux/list/listActions';
+import { setShowListAdd } from '../redux/list/listActions';
 import { createTask, setShowTaskAdd } from '../redux/task/taskActions';
 import { TodoDatePicker } from '../TodoDatePicker';
 import { getDateFormat } from '../utils/GlobalFuns';
@@ -12,7 +12,7 @@ export const AddTask = ({todoList}) => {
 	const showListAdd = useSelector(state => state.list.showListAdd);
 	const showTaskAdd = useSelector(state => state.task.showTaskAdd);
 	const taskDetailShow = useSelector(state => state.task.taskDetailShow);
-	const isMobileDevice = useSelector(state => state.list.isMobileDevice);
+	const isMobileDevice = useSelector(state => state.common.isMobileDevice);
 	const [dueDate,setDueDate] = useState(null);
 	const TogglAddTaskField = (showTaskAdd) => {
 		if(showListAdd && showTaskAdd){

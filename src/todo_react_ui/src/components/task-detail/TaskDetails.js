@@ -38,7 +38,7 @@ export const TaskDetails = () => {
 	const [showMoveListSel, setShowMoveListSel] = useState(false);
 	const [showTaskUriRefTxt, setShowTaskUriRefTxt] = useState(false);
 	const [showConfirmPopup,setShowConfirmPopup] = useState(false);
-	const isMobileDevice = useSelector(state => state.list.isMobileDevice);
+	const isMobileDevice = useSelector(state => state.common.isMobileDevice);
 	const phase = useSelector(state => state.task.phase);
 	
 	const onMobileGoback = (listId) => {
@@ -300,11 +300,11 @@ export const TaskDetails = () => {
 				</div>
 				<TaskUriRef task={task} showTaskUriRefTxt={showTaskUriRefTxt} setShowTaskUriRefTxt={setShowTaskUriRefTxt} onUpdateTask={initUpdateTask} />
 			</div>
-			<div className="row task-detail-delete" id="task-detail-delete">
-				<div style={{ textAlign: 'center', marginTop: 0.7 + 'em', width:80+'%' }}>
+			<div className="task-detail-delete" id="task-detail-delete">
+				<div className='task-detail-delete-text'>
 					<label className="task-detail-crtd-lbl">Created on {convertDateT(task.dateCreated)}</label>
 				</div>
-				<div style={{ marginTop: 0.7 + 'em' , width:20+'%'}}>
+				<div>
 					<img alt="delete" className="task-detail-delete-label" id="task-delete-label" src={deleteRed2027}
 														onClick={(event)=>onSetShowConfirmPopup(event,true)} />
 				</div>

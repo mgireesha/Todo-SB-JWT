@@ -22,7 +22,7 @@ export const TodoTask = () => {
 	const taskIndexC = taskListKeys.findIndex(obj => obj==="taskListC");
 	const showTaskDetls = useSelector(state => state.task.taskDetailShow);
 	const showTaskAdd = useSelector(state => state.task.showTaskAdd);
-	const isMobileDevice = useSelector(state => state.list.isMobileDevice);
+	const isMobileDevice = useSelector(state => state.common.isMobileDevice);
 	const todoList = taskList[todoIndex]!==undefined?taskList[todoIndex][0]:undefined;
 	const [isShowCmptdTsks, setShowCmptdTsks] = useState(true);
 	const [showConfirmPopup,setShowConfirmPopup] = useState(false);

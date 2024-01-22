@@ -14,7 +14,6 @@ export const initialState = {
     showListAdd:false,
     showLists:true,
     listDivWidth:'',
-    isMobileDevice:false,
     listOrder:'',
     phase:INIT
 }
@@ -117,11 +116,6 @@ const listReducer = (state = initialState, action) => {
             return{
                 ...state,
                 userLists: updateListCounter([...state.userLists],[...state.userListsKeys],action)
-            }
-        case SET_MOBILE_DEVICE:
-            return{
-                ...state,
-                isMobileDevice:action.isMobileDevice
             }
         case SET_SHOW_LISTS:
             return{

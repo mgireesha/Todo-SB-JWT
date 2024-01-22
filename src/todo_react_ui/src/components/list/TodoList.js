@@ -28,7 +28,7 @@ export const TodoList = () => {
 	const todoList = taskList[todoIndex]!==undefined?taskList[todoIndex][0]:undefined;
 	const listPhase = useSelector(state => state.list.phase);
 	const taskPhase = useSelector(state => state.task.phase);
-	const isMobileDevice = useSelector(state => state.list.isMobileDevice);
+	const isMobileDevice = useSelector(state => state.common.isMobileDevice);
 	const listDivWidth = useSelector(state => state.list.listDivWidth);
 	const [showConfirmPopup,setShowConfirmPopup] = useState(false);
 	const [selctdList,setSelctdList] = useState(null);

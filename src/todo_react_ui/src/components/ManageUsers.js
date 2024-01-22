@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {ConfirmPopup} from './ConfirmPopup.js';
 import { disableDiv, enableDiv, getAuth, getServiceURI } from "./utils/GlobalFuns.js";
+import { FAILED, SUCCESS } from "./redux/todoActionTypes.js";
+import { useDispatch } from "react-redux";
+import { setStatusMessage } from "./redux/common/commonActions.js";
 
 export const ManageUsers = () => {
+    const dispatch = useDispatch();
     const [users,setUsers] = useState([]);
 
     const [showConfirmPopup,setShowConfirmPopup] = useState(false);
@@ -30,7 +34,8 @@ export const ManageUsers = () => {
         fetchUsers();
     },[]);
 
-    const deleteUser = async(userId) => {
+    const deleteUser = async(user) => {
+        const userId = user.id;
         const settings = {
             method:'DELETE',
             headers:{
@@ -40,12 +45,16 @@ export const ManageUsers = () => {
         disableDiv();
         const response = await fetch(`${getServiceURI()}/todo/user/${userId}`,settings);
         const data = await response.json();
-        if(data.status==='success'){
+        if(data.status===SUCCESS){
             let tempUsers = [...users];
             tempUsers = tempUsers.filter(function(user){
                 return user.id!==userId;
             });
             setUsers(tempUsers);
+            setShowConfirmPopup(false);
+            dispatch(setStatusMessage("User: "+user.name+" is deleted successfully!"))
+        }else if(data.status===FAILED){
+            dispatch(setStatusMessage(data?.error))
             setShowConfirmPopup(false);
         }
         enableDiv();
@@ -73,7 +82,7 @@ export const ManageUsers = () => {
                         <label className="col-sm-2 user-table-elem">{user.passWord}</label>
                         <label className="col-sm-3 user-table-elem">
                             <div className="manage-users-btn-conatainer">
-                                <button className="t-btn sm red beige red1" onClick={(event)=>onSetShowConfirmPopup(event,true,user.id)}>Delete</button>
+                                <button className="t-btn sm red beige red1" onClick={(event)=>onSetShowConfirmPopup(event,true,user)}>Delete</button>
                                 <button className="t-btn sm info beige">Update</button>
                             </div>
                         </label>

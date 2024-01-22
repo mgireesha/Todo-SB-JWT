@@ -4,13 +4,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import { TodoList } from "./list/TodoList";
 import { TodoTask } from "./task/TodoTask";
 import { TaskDetails } from "./task-detail/TaskDetails";
-import { fetchListOrder, fethUserLists, setIsMobileDevice, setShowLists } from "./redux/list/listActions";
+import { fetchListOrder, fethUserLists, setShowLists } from "./redux/list/listActions";
 import { LOADING } from "./redux/todoActionTypes";
 
 import { disableDiv, isMobile } from "./utils/GlobalFuns";
 import { enableDiv } from "./utils/GlobalFuns";
 import { setShowTasks, setTaskDetailShow } from "./redux/task/taskActions";
-import { setIsNabarExpanded } from "./redux/common/commonActions";
+import { setIsMobileDevice, setIsNabarExpanded } from "./redux/common/commonActions";
 
 export const TodoBody = () => {
 
