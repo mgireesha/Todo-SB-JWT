@@ -8,6 +8,7 @@ export const ACTION_REMOVE_ITEM = 'ACTION_REMOVE_ITEM';
 export const ACTION_MOVE_UP = 'ACTION_MOVE_UP';
 export const ACTION_MOVE_DOWN = 'ACTION_MOVE_DOWN';
 
+export const CHANGE_PASSWORD_LABEL = 'Change Password';
 export const COMMON_POPUP_ERROR_MSG = 'COMMON_POPUP_ERROR_MSG';
 export const COMMON_POPUP_PRIMARY_BTN = 'COMMON_POPUP_PRIMARY_BTN';
 export const COMPONENT = 'COMPONENT';
@@ -15,6 +16,8 @@ export const COMPONENT = 'COMPONENT';
 export const EXPORT_LABEL = 'Export';
 export const EXPORT_TODO_LISTS_LABEL = 'Export Todo lists';
 export const EXPORT_TODO_LISTS_QUESTION_LABEL = 'Export all Todo lists ?';
+
+export const FAILED = 'FAILED';
 
 export const HOME = 'HOME';
 
@@ -48,7 +51,7 @@ export const headerLinksLabels = {
 }
 
 export const myAccountLinksLabels = {
-    PASSWORD_AND_LOGIN : PASSWORD_AND_LOGIN_LABEL,
+    PASSWORD_AND_LOGIN : CHANGE_PASSWORD_LABEL,
     MANAGE_USERS : MANAGE_USERS_LABEL,
     IMPORT_OR_EXPORT : IMPORT_OR_EXPORT_LABEL,
     

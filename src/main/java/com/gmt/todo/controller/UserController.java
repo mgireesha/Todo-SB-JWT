@@ -136,13 +136,14 @@ public class UserController {
 			userOpt.orElseThrow(() -> new UsernameNotFoundException("User Not Found : " + userName));
 			User tempUser = userOpt.map(User::new).get();
 			if (tempUser.getPassWord().equals(user.getCurrentPassword())) {
-				// tempUser.setPassWord(user.getPassWord());
+				tempUser.setPassWord(user.getPassWord());
 				user = userService.save(tempUser);
 				resp.setStatus(TODO_CONSTANTS.SUCCESS);
 			} else {
 				resp.setStatus(TODO_CONSTANTS.WRONG_PASSWORD);
 				resp.setError("Current password is worong, try again.");
 			}
+			user.setPassWord(null);
 			resp.setUser(user);
 		} catch (Exception e) {
 			resp.setStatus(TODO_CONSTANTS.FAILED);
@@ -154,15 +155,7 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/user/{userId}")
 	public TResponse deleteUser(@PathVariable String userId) {
-		TResponse resp = new TResponse();
-		try {
-			userService.deleteUser(Long.parseLong(userId));
-			resp.setStatus("success");
-		} catch (Exception e) {
-			resp.setStatus("failed");
-			resp.setError(e.getMessage());
-		}
-		return resp;
+		return userService.deleteUser(Long.parseLong(userId));
 	}
 
 	@RequestMapping("/ManageUsers")

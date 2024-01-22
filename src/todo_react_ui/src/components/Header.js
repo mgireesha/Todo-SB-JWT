@@ -30,12 +30,9 @@ export const Header = () => {
 		<div className="row" id="todo-header" style={{height:'3.5em',marginBottom:'0.5em'}}>
 			<Navbar  expand="md" style={{backgroundColor:'beige'}} expanded={isNabarExpanded}>  
 				<Navbar.Brand href="#/todo" style={{marginLeft: 0.4+'em',width:40+'%', fontStyle:'italic', color:'#4491f5b8'}}>{APP_NAME_LABEL}</Navbar.Brand>  
-				<Navbar.Toggle aria-controls="basic-navbar-nav" onClick={()=>dispatch(setIsNabarExpanded(!isNabarExpanded))} />  
-				<Navbar.Collapse id="basic-navbar-nav">  
-					<Nav className="ms-auto me-3 pe-2">  
-						{isAuthenticated && 
+				{isAuthenticated && 
 							<>
-								<NavDropdown title={`Hi ${currentUser.name}`} id="basic-nav-dropdown">
+								<NavDropdown title={`Hi ${currentUser.name}`} id="basic-nav-dropdown" className='ms-auto me-2' style={{color:'#4491f5b8'}}>
 									{headerLinks && orderedHeaderLinks.map((linkKey,i)=>
 										<>{linkKey!==LOGOUT && headerLinks[linkKey] && <NavDropdown.Item href={headerLinks[linkKey]} onClick={()=>dispatch(setIsNabarExpanded(!isNabarExpanded))}>{headerLinksLabels[linkKey]}</NavDropdown.Item>}</>
 									)}
@@ -44,8 +41,13 @@ export const Header = () => {
 								</NavDropdown> 
 							</>
 						}
+
+				{/* <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={()=>dispatch(setIsNabarExpanded(!isNabarExpanded))} />  
+				<Navbar.Collapse id="basic-navbar-nav">  
+					<Nav className="ms-auto me-3 pe-2">  
+						
 					</Nav>
-				</Navbar.Collapse>  
+				</Navbar.Collapse>   */}
   			</Navbar> 
 		</div>
 	);

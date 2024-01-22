@@ -22,8 +22,8 @@ export const MyAccount = () => {
     return(
         <div className="my-account">
             <div className="my-account-header">
-                <h2>My Account</h2>
-                <h4>Hi {currentUser.name}</h4>
+                <h3>My Account&nbsp;&nbsp;〉</h3>
+                <h6>Hi {currentUser.name},</h6>
             </div>
             <div className="my-account-page">
                 <div className="options">

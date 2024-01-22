@@ -82,7 +82,7 @@ export const ChangePwdDiv = ({ onSetShowLForm, prevShowLForm, options }) => {
 		<div className={options?.className?options?.className:'change-password slide-in-left signup-form'} style={options?.styles}>
 			{!options?.hideBackArrow && <BsArrowLeftSquare onClick={()=>onSetShowLForm(prevShowLForm)} className='login-back-arrow' />}
 			{!options?.hideHeader && <h1 className="signup-header">Change Password</h1>}
-			<div className="row row-label">
+			<div className="row row-label" style={{display:options.fromPage===MY_ACCOUNT?'none':'block'}}>
 				<label className="signup-label">User Name</label>
 				<input className="form-control signup-input" type="text" name="username" id="username" placeholder="Your email" required defaultValue={currentUser?.userName} />
 			</div>

@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -63,6 +64,10 @@ public class UserService {
 	@Autowired
 	private TodoRoleMappingService roleMappingService;
 
+	@Lazy
+	@Autowired
+	private TodoUserDetailsService todoUserDetailsService;
+
 	public List<User> getAllUsers() {
 		return (List<User>) userRepository.findAll();
 	}
@@ -83,13 +88,27 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public void deleteUser(Long userId) {
+	@SuppressWarnings("unchecked")
+	public TResponse deleteUser(Long userId) {
+		TResponse resp = new TResponse();
 		try {
+			User user = getUserById(userId);
+			UserDetails userDetails = (TodoUserDetails) todoUserDetailsService.loadUserByUsername(user.getUserName());
+			String userType = getUserTypeFromAuthorities((List<GrantedAuthority>) userDetails.getAuthorities());
+			if (userType.equals(TODO_CONSTANTS.ADMIN_USER)) {
+				resp.setStatus(TODO_CONSTANTS.FAILED);
+				resp.setError("Admin user cannot be deleted using this functionality.");
+				return resp;
+			}
 			listService.deleteListsOfUser(userRepository.findById(userId).map(User::new).get());
 			userRepository.deleteById(userId);
+			resp.setStatus(TODO_CONSTANTS.SUCCESS);
 		} catch (Exception e) {
+			resp.setStatus(TODO_CONSTANTS.FAILED);
+			resp.setError(e.getMessage());
 			e.printStackTrace();
 		}
+		return resp;
 	}
 
 	public User resgisterUser(User user) {

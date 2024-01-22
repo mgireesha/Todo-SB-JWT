@@ -18,7 +18,7 @@ export const TaskItem = ({ taskObj, todoList, onSetShowConfirmPopup, revLst }) =
 	const dispatch = useDispatch();
 	const taskDetail = useSelector(state => state.task.taskDetail);
 	const showTaskDetls = useSelector(state => state.task.taskDetailShow);
-	const isMobileDevice = useSelector(state => state.list.isMobileDevice);
+	const isMobileDevice = useSelector(state => state.common.isMobileDevice);
 	const [comptdSteps, setComptdSteps] = useState([]);
 
 
