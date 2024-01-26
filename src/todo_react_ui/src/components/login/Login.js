@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {React, useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import { SignInDiv } from './SignInDiv.js';
 import { SignUpDiv } from './SignUpDiv.js';
@@ -9,16 +10,23 @@ import { ChangePwdDiv } from './ChangePwdDiv.js';
 import { ResetPwdOtpDiv } from './ResetPwdOtpDiv.js';
 import { disableDiv, enableDiv, getAuth, getServiceURI } from '../utils/GlobalFuns.js';
 import { LoaderColored } from '../loader/loaderColored.js';
-import { setCookies } from '../utils/utils.js';
+import { setCookies, validateLoginToken } from '../utils/utils.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentLoginForm, setIsAuthenticated, setLoginError } from '../redux/login/loginActions.js';
+import { authenticateUser, setCurrentLoginForm, setIsAuthenticated, setLoginError } from '../redux/login/loginActions.js';
 import { setHeaderLinks } from '../redux/common/commonActions.js';
+import { LOADING } from '../redux/todoActionTypes.js';
 
 export const Login = ({lError}) => {
 	const dispatch = useDispatch();
 
+	const navigate = useNavigate();
+	const locationL = useLocation();
+
 	const loginError = useSelector(state => state.login.loginError);
+	const loginPhase = useSelector(state => state.login.phase);
 	const currentLoginForm = useSelector(state => state.login.currentLoginForm);
+	const isAuthenticated = useSelector(state => state.login.isAuthenticated);
+
 
 	//const [loginError,setLoginError] = useState("");
 	//const [currentLoginForm,setShowLForm] = useState("signin");
@@ -28,6 +36,7 @@ export const Login = ({lError}) => {
 	const [pwdstgth,setPwdstgth] = useState(0);
 
 	const emailReg = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+	const environment =process.env.REACT_APP_TODO_ENV;
 
 	if((lError!==null || lError!=="") && window.location.pathname==="/"){
 		lError="";
@@ -35,17 +44,47 @@ export const Login = ({lError}) => {
 	useEffect(()=>{
 		setLoginError(lError);
 	},[lError]);
+
+	useEffect(()=>{
+		if(isAuthenticated){
+			navigate("/todo");
+		}else{
+			let tempIsAuthenticated = validateLoginToken(getAuth());
+			if(tempIsAuthenticated){
+				dispatch(setIsAuthenticated(tempIsAuthenticated));
+			}else{
+				processLogout();
+			}
+		}
+	},[isAuthenticated])
+
+	useEffect(()=>{
+		const uri = locationL.pathname;
+		const isLogout = uri.startsWith("/logout");
+		if(isLogout)processLogout();
+	},[locationL])
+
+	useEffect(()=>{
+		if(loginPhase === LOADING){
+			disableDiv();
+			setOpacity(0);
+		}else{
+			enableDiv();
+			setOpacity(1);
+		}
+	},[loginPhase])
 	
 	useEffect(()=>{
 		if(document.getElementById('body-signin')!==undefined){
 			document.getElementById('body-signin').style.height=(window.innerHeight-document.getElementById("todo-header").clientHeight-15)+'px';
 		}
+	},[]);
 
+	const processLogout = () => {
 		setCookies("jToken","");
 		dispatch(setHeaderLinks(null));
-		dispatch(setIsAuthenticated(false))
-		
-	},[]);
+		dispatch(setIsAuthenticated(false));
+	}
 	
 	const validateReqFld = (elem) => {
 		elem.setCustomValidity('');
@@ -62,42 +101,17 @@ export const Login = ({lError}) => {
 		setPrevShowLForm(currentLoginForm);
 		dispatch(setCurrentLoginForm(value));
 	}
-	const authenticate = async() => {
-		dispatch(setLoginError(""));
-		document.cookie="jToken=;";
+	const authenticate = () => {
 		const username= document.getElementById('username');
 		const password = document.getElementById('password');
 		if(!validateReqFld(username) || !validateReqFld(password)){
 			return;
 		}
-		disableDiv();
-		setOpacity(0,'Signing In..');
 		const  authPayLoad = {
 			username:username.value,
 			password:password.value
 		}
-		const settings = {
-			method : 'POST',
-			headers : {
-				'Content-Type' : 'application/json; charset=UTF-8'
-			},
-			body:JSON.stringify(authPayLoad)
-		}
-		const response = await fetch(`${getServiceURI()}/todo/authenticate`,settings);
-		const data = await response.json();
-		if(data.jwt){
-				setCookies("jToken","Bearer "+data.jwt);
-				window.location.replace("/");
-				// setTimeout(function(){
-				// 	dispatch(fetchHeaderLinks());
-				// 	navigate("/todo/");
-				// },3000);
-		}else{
-			setLoginError(data.error); 
-			setOpacity(1);
-		}
-		enableDiv();
-		//setOpacity(1);
+		dispatch(authenticateUser(authPayLoad))
 	}
 
 	const setOpacity = (op,txt) => {
@@ -251,9 +265,9 @@ export const Login = ({lError}) => {
 			onSetShowLForm("verify-otp");
 		}else{
 			if(data.error.indexOf("TOKEN_EXPIRED")!==-1){
-				setLoginError("Email service is down. Please contact system adminstrator");
+				dispatch(setLoginError("Email service is down. Please contact system adminstrator"));
 			}else{
-				setLoginError(data.error);
+				dispatch(setLoginError(data.error));
 			}
 		}
 	}

@@ -5,10 +5,11 @@ import java.util.Map;
 public class TResponse {
 	private String status;
 	private String error;
+	private String errorMessage;
 	private TodoTask todoTask;
 	private TodoList todoList;
 	private User user;
-	private TodoMessage message;
+	private TodoMessage message;// change variable name tp todoMessage
 	private TodoRoleMapping roleMapping;
 	private Map<String, String> KVResponse;
 	private Object response;
@@ -110,6 +111,14 @@ public class TResponse {
 
 	public void setRoleMapping(TodoRoleMapping roleMapping) {
 		this.roleMapping = roleMapping;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 
 }

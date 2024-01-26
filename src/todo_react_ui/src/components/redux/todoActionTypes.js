@@ -13,9 +13,15 @@ export const COMMON_POPUP_ERROR_MSG = 'COMMON_POPUP_ERROR_MSG';
 export const COMMON_POPUP_PRIMARY_BTN = 'COMMON_POPUP_PRIMARY_BTN';
 export const COMPONENT = 'COMPONENT';
 
+export const DEVELOPMENT = 'DEVELOPMENT';
+
 export const EXPORT_LABEL = 'Export';
 export const EXPORT_TODO_LISTS_LABEL = 'Export Todo lists';
 export const EXPORT_TODO_LISTS_QUESTION_LABEL = 'Export all Todo lists ?';
+export const ERR_NETWORK = 'ERR_NETWORK';
+export const ERROR = 'ERROR';
+export const ERROR_CODE = 'ERROR_CODE';
+export const ERROR_MESSAGE = 'ERROR_MESSAGE';
 
 export const FAILED = 'FAILED';
 
@@ -24,6 +30,7 @@ export const HOME = 'HOME';
 export const IMPORT_LABEL = 'Import';
 export const INIT = 'INIT';
 export const INPUT = 'INPUT';
+export const INVALID_URL = 'INVALID_URL';
 
 export const IMPORT_OR_EXPORT = 'IMPORT_OR_EXPORT';
 export const IMPORT_OR_EXPORT_LABEL = 'Import / Export';
@@ -39,7 +46,13 @@ export const NOT_YET_AVAIABLE_LABEL = 'Not yet available';
 export const PASSWORD_AND_LOGIN = 'PASSWORD_AND_LOGIN';
 export const PASSWORD_AND_LOGIN_LABEL = 'Passwords and Login';
 
+export const _ERR_SAME_CURRENT_AND_NEW_PASSWORDS = '_ERR_SAME_CURRENT_AND_NEW_PASSWORDS';
+export const _ERR_USER_NOT_FOUND = '_ERR_USER_NOT_FOUND';
+export const _ERR_UNKNOWN_EXCEPTION = '_ERR_UNKNOWN_EXCEPTION';
+export const _ERR_WRONG_CURRENT_PASSWORD = '_ERR_WRONG_CURRENT_PASSWORD';
+
 export const TEXT = 'TEXT';
+export const TOKEN_EXPIRED = 'TOKEN_EXPIRED';
 
 export const headerLinksLabels = {
     HOME:"Home",

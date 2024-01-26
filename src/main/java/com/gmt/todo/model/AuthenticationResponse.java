@@ -6,18 +6,25 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class AuthenticationResponse {
-	
+
 	private final String jwt;
 	private String status;
 	private String error;
-	
+	private String errorMessage;
+
 	public AuthenticationResponse() {
 		this.jwt = "";
-		
+
 	}
-	
-	public AuthenticationResponse(String jwt, String status, String error) {
+
+	public AuthenticationResponse(String status, String error) {
 		this.jwt = "";
+		this.status = status;
+		this.error = error;
+	}
+
+	public AuthenticationResponse(String jwt, String status, String error) {
+		this.jwt = jwt;
 		this.status = status;
 		this.error = error;
 	}
@@ -50,13 +57,28 @@ public class AuthenticationResponse {
 	public void setError(String error) {
 		this.error = error;
 	}
-	
-	public String convertToJson() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        return mapper.writeValueAsString(this);
-    }
-	
+	public String convertToJson() throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+		return mapper.writeValueAsString(this);
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	public AuthenticationResponse(String jwt, String status, String error, String errorMessage) {
+		this.jwt = jwt;
+		this.status = status;
+		this.error = error;
+		this.errorMessage = errorMessage;
+	}
+
 }

@@ -3,7 +3,8 @@ import { handleAPIError } from "../../utils/GlobalFuns";
 import { exportTodoListsAPI, fetchCurrentUserAPI, fetchHeaderLinksAPI, fetchMyAccountLinksAPI } from "../apis";
 import { exportTodoListsFail, exportTodoListsSucc, fetchCurrentUserSucc, fetchHeaderLinksSucc, fetchMyAccountLinksSucc } from "./commonActions";
 import { EXPORT_TODO_LISTS_START, FETCH_HEADER_LINKS_START, FETCH_LOGGED_IN_USER_DETAILS_START, FETCH_MY_ACCOUNT_LINKS_START } from "./commonActionTypes";
-import { SUCCESS } from "../todoActionTypes";
+import { SUCCESS, TOKEN_EXPIRED } from "../todoActionTypes";
+import { setIsAuthenticated } from "../login/loginActions";
 
 export function* onFetchHeaderLinks(){
     yield takeLatest(FETCH_HEADER_LINKS_START, onFetchHeaderLinksAsync)
@@ -72,4 +73,18 @@ export function* onExportTodoListsAsync(){
         handleAPIError(error);
         yield put(exportTodoListsFail(error));
     }
+}
+
+export function* processAPIErrorGen(error){//This generator function required to dispatch reducer event
+    const rError = handleAPIError(error);
+    if(rError.ERROR_CODE===TOKEN_EXPIRED){
+        document.cookie="jToken=;";
+        yield put(setIsAuthenticated(false));//Reducer event
+    }
+    return rError;
+}
+
+export function processAPIError(error){
+    console.log(processAPIErrorGen(error).next().value)
+    return processAPIErrorGen(error).next().value;
 }

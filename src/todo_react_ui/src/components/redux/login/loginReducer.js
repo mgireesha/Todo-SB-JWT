@@ -1,5 +1,5 @@
 import { INIT, LOADING, SUCCESS } from "../todoActionTypes";
-import { CHANGE_PASSWORD_FAIL, CHANGE_PASSWORD_START, CHANGE_PASSWORD_SUCCESS, SET_CURRENT_LOGIN_FORM, SET_IS_AUTHENTICATED, SET_LOGIN_ERROR } from "./loginActionTypes";
+import { AUTHENTICATION_USER_FAIL, AUTHENTICATION_USER_START, AUTHENTICATION_USER_SUCCESS, CHANGE_PASSWORD_FAIL, CHANGE_PASSWORD_START, CHANGE_PASSWORD_SUCCESS, SET_CURRENT_LOGIN_FORM, SET_IS_AUTHENTICATED, SET_LOGIN_ERROR } from "./loginActionTypes";
 
 export const initialState = {
     phase: INIT,
@@ -7,12 +7,29 @@ export const initialState = {
     currentLoginForm: 'signin',
     status:"",
     message:"",
-    isAuthenticated: false
-    //error:{}
+    isAuthenticated: false,
+    apiError:{}
 }
 
 export const loginReducer = (state = initialState, action) => {
     switch (action.type) {
+        case AUTHENTICATION_USER_START:
+            return{
+                ...state,
+                phase: LOADING
+            }
+        case AUTHENTICATION_USER_SUCCESS:
+            return{
+                ...state,
+                isAuthenticated: action.isAuthenticated,
+                phase: AUTHENTICATION_USER_SUCCESS
+            }
+        case AUTHENTICATION_USER_FAIL:
+            return{
+                ...state,
+                apiError:action.response,
+                phase: AUTHENTICATION_USER_FAIL
+            }
         case CHANGE_PASSWORD_START:
             return{
                 ...state,
@@ -31,8 +48,7 @@ export const loginReducer = (state = initialState, action) => {
             return{
                 ...state,
                 phase:CHANGE_PASSWORD_FAIL,
-                loginError:action.response.error,
-                status: action.response.status
+                apiError:{...action.response}
             }
         case SET_LOGIN_ERROR:
             return {

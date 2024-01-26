@@ -13,6 +13,19 @@ const iAxios = axios.create({
     timeout:120000
 });
 
+iAxios.interceptors.request.use(
+    (config) => {
+      // Modify the request configuration or add headers
+      if(getAuth()!=="")
+      config.headers.Authorization = getAuth();
+      return config;
+    },
+    (error) => {
+      // Handle request errors
+      return Promise.reject(error);
+    }
+  );
+
 export const getUserListsAPI = () =>{
     return iAxios.get('/todo/list/listAllByUser/').then(response => response);
 }
@@ -94,7 +107,11 @@ export const exportTodoListsAPI = () => {
 }
 
 //Login / User apis - start
-export const changePasswordAPI = (payload) => {
-    return iAxios.put(`/todo/user/password`,payload)
+export const authenticateUserAPI = (payload) => {
+    return iAxios.post(`/todo/user/authenticate`,payload)
+}
+
+export const changePasswordAPI = (authenticationRequest) => {
+    return iAxios.put(`/todo/user/password`,authenticationRequest)
 }
 //Login / User apis - end

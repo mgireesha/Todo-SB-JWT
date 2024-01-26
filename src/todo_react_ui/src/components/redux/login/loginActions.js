@@ -1,4 +1,19 @@
-import { CHANGE_PASSWORD_FAIL, CHANGE_PASSWORD_START, CHANGE_PASSWORD_SUCCESS, SET_CURRENT_LOGIN_FORM, SET_IS_AUTHENTICATED, SET_LOGIN_ERROR } from "./loginActionTypes";
+import { AUTHENTICATION_USER_FAIL, AUTHENTICATION_USER_START, AUTHENTICATION_USER_SUCCESS, CHANGE_PASSWORD_FAIL, CHANGE_PASSWORD_START, CHANGE_PASSWORD_SUCCESS, SET_CURRENT_LOGIN_FORM, SET_IS_AUTHENTICATED, SET_LOGIN_ERROR } from "./loginActionTypes";
+
+export const authenticateUser = (authenticationRequest) => ({
+    type: AUTHENTICATION_USER_START,
+    authenticationRequest
+})
+
+export const authenticateUserSucc = (isAuthenticated) => ({
+    type: AUTHENTICATION_USER_SUCCESS,
+    isAuthenticated
+})
+
+export const authenticateUserFail = (response) => ({
+    type: AUTHENTICATION_USER_FAIL,
+    response
+})
 
 export const changePassword = (payload) => ({
     type: CHANGE_PASSWORD_START,

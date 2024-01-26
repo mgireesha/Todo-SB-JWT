@@ -1,7 +1,18 @@
-import { React } from 'react';
+import { React, useEffect, useState } from 'react';
 import { PasswordField } from './PasswordField';
+import { useSelector } from 'react-redux';
+import { AUTHENTICATION_USER_FAIL } from '../redux/login/loginActionTypes';
+import { ERROR_MESSAGE } from '../redux/todoActionTypes';
 
-export const SignInDiv = ({onAuthenticate, loginError, onSetShowLForm}) => {
+export const SignInDiv = ({onAuthenticate, onSetShowLForm}) => {
+	const loginPhase = useSelector(state => state.login.phase);
+	const loginErrObj = useSelector(state => state.login.apiError);
+	const [loginError, setLoginError] = useState("");
+	useEffect(()=>{
+		if(loginPhase===AUTHENTICATION_USER_FAIL){
+			setLoginError(loginErrObj[ERROR_MESSAGE]);
+		}
+	},[loginPhase, loginErrObj]);
 	return (
 		<div className='slide-in-left signup-form'>
 			<h1 className="signup-header">Sign In</h1>
