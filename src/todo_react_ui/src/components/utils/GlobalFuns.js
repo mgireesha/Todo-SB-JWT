@@ -1,4 +1,4 @@
-import { ACTION_ADD_ITEM, ACTION_MOVE_DOWN, ACTION_MOVE_UP, ACTION_REMOVE_ITEM, DEVELOPMENT, ERR_NETWORK, FAILED, INVALID_URL, TOKEN_EXPIRED } from "../redux/todoActionTypes";
+import { ACTION_ADD_ITEM, ACTION_MOVE_DOWN, ACTION_MOVE_UP, ACTION_REMOVE_ITEM, DEVELOPMENT, ERR_BAD_REQUEST, ERR_NETWORK, FAILED, INVALID_URL, TOKEN_EXPIRED } from "../redux/todoActionTypes";
 
 export const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -96,12 +96,17 @@ export function handleAPIError(error){
     if(error?.code===ERR_NETWORK){
         rError.ERROR_CODE = error?.code;
         rError.ERROR_MESSAGE = error?.message + ", Please contact adminstrator.";
-    }else if(error?.response?.data?.status){
-        if(error.response.data.status===TOKEN_EXPIRED){
+    }else if(error?.response?.data?.status || error.code === ERR_BAD_REQUEST){
+        if(error?.response?.status === 403){
+            rError.ERROR_CODE = TOKEN_EXPIRED;
+            rError.ERROR_MESSAGE = "Unauthorized request. Please login again.";
+            //document.cookie="jToken=;";
+            //window.location.reload();
+        }
+        else if(error.response.data.status===TOKEN_EXPIRED){
             rError.ERROR_CODE = TOKEN_EXPIRED;
             rError.ERROR_MESSAGE = "Session expired. Please login again.";
-            // document.cookie="jToken=;";
-            // window.location.reload();
+            
         }
     }else if(error?.data?.status){
         if(error.data.status===FAILED){

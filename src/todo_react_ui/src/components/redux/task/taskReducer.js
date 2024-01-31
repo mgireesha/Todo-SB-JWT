@@ -1,6 +1,7 @@
+import { SET_API_ERROR } from "../common/commonActionTypes"
 import { INIT, LOADING } from "../todoActionTypes"
 import { addListToTaskList, addTaskToTaskList, getUpdatedTaskList, removeTask } from "./taskActions"
-import { CREATE_TASK_START, CREATE_TASK_STEP_START, CREATE_TASK_STEP_SUCCESS, CREATE_TASK_SUCCESS, DELETE_TASK_START, DELETE_TASK_STEP_START, DELETE_TASK_STEP_SUCCESS, DELETE_TASK_SUCCESS, FETCH_TASK_LIST_START, FETCH_TASK_LIST_SUCCESS, FETCH_TASK_START, FETCH_TASK_SUCCESS, MOVE_TASK_START, MOVE_TASK_SUCCESS, SET_SHOW_TASKS, SET_SHOW_TASK_ADD, SET_TASK_DETAIL_SHOW, UPDATE_TASK_LIST_SUCCESS, UPDATE_TASK_START, UPDATE_TASK_STEP_START, UPDATE_TASK_STEP_SUCCESS, UPDATE_TASK_SUCCESS, UPDATE_TASK_TODO_LIST } from "./taskActionTypes"
+import { CREATE_TASK_START, CREATE_TASK_STEP_START, CREATE_TASK_STEP_SUCCESS, CREATE_TASK_SUCCESS, DELETE_TASK_START, DELETE_TASK_STEP_START, DELETE_TASK_STEP_SUCCESS, DELETE_TASK_SUCCESS, FETCH_TASK_FAILURE, FETCH_TASK_LIST_FAILURE, FETCH_TASK_LIST_START, FETCH_TASK_LIST_SUCCESS, FETCH_TASK_START, FETCH_TASK_SUCCESS, MOVE_TASK_START, MOVE_TASK_SUCCESS, SET_SHOW_TASKS, SET_SHOW_TASK_ADD, SET_TASK_DETAIL_SHOW, UPDATE_TASK_LIST_SUCCESS, UPDATE_TASK_START, UPDATE_TASK_STEP_START, UPDATE_TASK_STEP_SUCCESS, UPDATE_TASK_SUCCESS, UPDATE_TASK_TODO_LIST } from "./taskActionTypes"
 
 export const initialState = {
     taskList:[],
@@ -9,6 +10,7 @@ export const initialState = {
     taskDetailShow: false,
     showTaskAdd:false,
     showTasks:true,
+    apiError:{},
     phase:INIT
 }
 
@@ -25,6 +27,11 @@ export const taskReducer = (state = initialState, action) => {
                 taskList:action.taskList,
                 taskListKeys:action.taskListKeys,
                 phase:FETCH_TASK_LIST_SUCCESS
+            }
+        case FETCH_TASK_LIST_FAILURE:
+            return{
+                ...state,
+                apiError: action.error
             }
         case UPDATE_TASK_LIST_SUCCESS:
             return{
@@ -48,6 +55,11 @@ export const taskReducer = (state = initialState, action) => {
                 taskDetail:action.task,
                 taskDetailShow:true,
                 phase:FETCH_TASK_SUCCESS
+            }
+        case FETCH_TASK_FAILURE:
+            return{
+                ...state,
+                apiError: action.error
             }
         case CREATE_TASK_START:
             return{
@@ -144,6 +156,11 @@ export const taskReducer = (state = initialState, action) => {
             return{
                 ...state,
                 showTasks:action.showTasks
+            }
+        case SET_API_ERROR:
+            return{
+                ...state,
+                apiError:action.error
             }
         default:
             return {

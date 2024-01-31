@@ -16,6 +16,7 @@ const iAxios = axios.create({
 iAxios.interceptors.request.use(
     (config) => {
       // Modify the request configuration or add headers
+      config.headers.Authorization = "_";
       if(getAuth()!=="")
       config.headers.Authorization = getAuth();
       return config;
@@ -107,11 +108,19 @@ export const exportTodoListsAPI = () => {
 }
 
 //Login / User apis - start
+export const registerUserAPI = (payload) => {
+    return iAxios.post(`/todo/user/register`,payload).then(response => response);
+}
+
+export const checkUNameAvaiabilityAPI = (userName) => {
+    return iAxios.post(`/todo/user/username/availability/${userName}`).then(response => response);
+}
+
 export const authenticateUserAPI = (payload) => {
-    return iAxios.post(`/todo/user/authenticate`,payload)
+    return iAxios.post(`/todo/user/authenticate`,payload).then(response => response);
 }
 
 export const changePasswordAPI = (authenticationRequest) => {
-    return iAxios.put(`/todo/user/password`,authenticationRequest)
+    return iAxios.put(`/todo/user/password`,authenticationRequest).then(response => response);
 }
 //Login / User apis - end

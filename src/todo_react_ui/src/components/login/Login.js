@@ -12,9 +12,9 @@ import { disableDiv, enableDiv, getAuth, getServiceURI } from '../utils/GlobalFu
 import { LoaderColored } from '../loader/loaderColored.js';
 import { setCookies, validateLoginToken } from '../utils/utils.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { authenticateUser, setCurrentLoginForm, setIsAuthenticated, setLoginError } from '../redux/login/loginActions.js';
+import { authenticateUser, setCurrentLoginForm, setIsAuthenticated, setLoginError, setStatusAndMessage } from '../redux/login/loginActions.js';
 import { setHeaderLinks } from '../redux/common/commonActions.js';
-import { LOADING } from '../redux/todoActionTypes.js';
+import { CHANGE_PASSWORD, LOADING, L_SUCCESS, RESET_PASSWORD, RESET_PASSWORD_OTP, SIGN_IN, SIGN_UP, SUCCESS } from '../redux/todoActionTypes.js';
 
 export const Login = ({lError}) => {
 	const dispatch = useDispatch();
@@ -26,11 +26,12 @@ export const Login = ({lError}) => {
 	const loginPhase = useSelector(state => state.login.phase);
 	const currentLoginForm = useSelector(state => state.login.currentLoginForm);
 	const isAuthenticated = useSelector(state => state.login.isAuthenticated);
+	const prevLoginForm = useSelector(state => state.login.prevLoginForm);
 
 
 	//const [loginError,setLoginError] = useState("");
 	//const [currentLoginForm,setShowLForm] = useState("signin");
-	const [prevShowLForm,setPrevShowLForm] = useState("signin");
+	//const [prevShowLForm,setPrevShowLForm] = useState("signin");
 	const [message,setMessage] = useState("");
 	const [emailS,setEmailS] = useState("");
 	const [pwdstgth,setPwdstgth] = useState(0);
@@ -98,21 +99,10 @@ export const Login = ({lError}) => {
 	
 	const onSetShowLForm = (value) => {
 		dispatch(setLoginError(""));
-		setPrevShowLForm(currentLoginForm);
+		//setPrevShowLForm(currentLoginForm);
 		dispatch(setCurrentLoginForm(value));
 	}
-	const authenticate = () => {
-		const username= document.getElementById('username');
-		const password = document.getElementById('password');
-		if(!validateReqFld(username) || !validateReqFld(password)){
-			return;
-		}
-		const  authPayLoad = {
-			username:username.value,
-			password:password.value
-		}
-		dispatch(authenticateUser(authPayLoad))
-	}
+	
 
 	const setOpacity = (op,txt) => {
 		document.querySelectorAll('.signup-form').forEach(form=>{
@@ -130,13 +120,14 @@ export const Login = ({lError}) => {
 	
 	document.addEventListener("keyup",function(event){
 		if(event.key=== "Enter"){
-			if(currentLoginForm==="signin")
-				authenticate()
-			else if(currentLoginForm==="signup")
+			// if(currentLoginForm==="signin")
+			// 	authenticate()
+			// else
+			 if(currentLoginForm===SIGN_UP)
 				register()
-			else if(currentLoginForm==="reset")
+			else if(currentLoginForm===RESET_PASSWORD)
 				sendOtp()
-			else if(currentLoginForm==="verify-otp")
+			else if(currentLoginForm===RESET_PASSWORD_OTP)
 				verifyOtpAndResetPwd()
 			//else if(currentLoginForm==="change-pwd")
 			//	changePwd()
@@ -185,7 +176,8 @@ export const Login = ({lError}) => {
 		enableDiv();setOpacity(1);
 		if(data.status){
 			if(data.status==="success"){
-				setMessage("You have registered successfully. Please sign in to continue.");
+				//setMessage("You have registered successfully. Please sign in to continue.");
+				dispatch(setStatusAndMessage(SUCCESS,"You have registered successfully. Please sign in to continue."))
 			}else if(data.status==='USER_EXISTS'){
 				emailAvailality.innerHTML = 'User name already exists';
 				emailAvailality.style.color = '#c9300d';
@@ -196,8 +188,8 @@ export const Login = ({lError}) => {
 				setMessage(data.error);
 			}
 			setLoginError(data.status);
-			setPrevShowLForm(currentLoginForm);
-			dispatch(setCurrentLoginForm("lsuccess"));
+			//setPrevShowLForm(currentLoginForm);
+			dispatch(setCurrentLoginForm(L_SUCCESS));
 		}
 	}
 	
@@ -262,7 +254,7 @@ export const Login = ({lError}) => {
 		const data = await response.json();
 		enableDiv();setOpacity(1);
 		if(data.status==="MESSAGE_SENT"){
-			onSetShowLForm("verify-otp");
+			onSetShowLForm(RESET_PASSWORD_OTP);
 		}else{
 			if(data.error.indexOf("TOKEN_EXPIRED")!==-1){
 				dispatch(setLoginError("Email service is down. Please contact system adminstrator"));
@@ -309,8 +301,8 @@ export const Login = ({lError}) => {
 			if(data.status==="success"){
 				setLoginError(data.status);
 				setMessage("Password reset successful. Please sign in to continue.");
-				setPrevShowLForm(currentLoginForm);
-				dispatch(setCurrentLoginForm("lsuccess"));
+				//setPrevShowLForm(currentLoginForm);
+				dispatch(setCurrentLoginForm(L_SUCCESS));
 			}else{
 				setLoginError(data.error);
 			}
@@ -402,20 +394,31 @@ export const Login = ({lError}) => {
 
 	}
 
+	const getLoginForm = (currentLoginForm) => {
+		switch (currentLoginForm) {
+			case SIGN_IN:
+				return <SignInDiv key={currentLoginForm} />
+			case SIGN_UP:
+				return <SignUpDiv key={currentLoginForm} />
+			case L_SUCCESS:
+				return <LSuccessDiv key={currentLoginForm} />
+			case RESET_PASSWORD:
+				return <ResetPwdDiv loginError={loginError} onSendOtp={sendOtp} key={currentLoginForm} />
+			case RESET_PASSWORD_OTP:
+				return <ResetPwdOtpDiv loginError={loginError} onVerifyOtpAndResetPwd={verifyOtpAndResetPwd}  checkPwdStrength={checkPwdStrength} key={currentLoginForm} />
+			case CHANGE_PASSWORD:
+				return <ChangePwdDiv key={currentLoginForm} />
+			default:
+				return <SignInDiv key={currentLoginForm} />
+		}
+	}
+
 	return (
 		<div className="body-signin" id="body-signin">
 			<div className="container ">
 				<div className="row row-main">
 					<div className="col-sm-3"></div>
-					<div className="col-sm-5 middle-span">
-						{(currentLoginForm==="signin" || currentLoginForm==="") && <SignInDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onAuthenticate={authenticate} />}
-						{currentLoginForm==="signup" && <SignUpDiv onSetShowLForm={onSetShowLForm} onRegister={register} prevShowLForm={prevShowLForm} checkPwdStrength={checkPwdStrength} checkUNameAvaiability={checkUNameAvaiability} />}
-						{currentLoginForm==="lsuccess" && <LSuccessDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onSetLoginError={setLoginError} message={message} />}
-						{currentLoginForm==="reset" && <ResetPwdDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onSendOtp={sendOtp} prevShowLForm={prevShowLForm} />}
-						{currentLoginForm==="verify-otp" && <ResetPwdOtpDiv loginError={loginError} onSetShowLForm={onSetShowLForm} onVerifyOtpAndResetPwd={verifyOtpAndResetPwd} prevShowLForm={prevShowLForm} checkPwdStrength={checkPwdStrength} />}
-						{currentLoginForm==="change-pwd" && <ChangePwdDiv onSetShowLForm={onSetShowLForm} prevShowLForm={prevShowLForm} />}
-					
-					</div>
+					<div className="col-sm-5 middle-span">{getLoginForm(currentLoginForm)}</div>
 					<LoaderColored />
 					<div className="col-sm-3"></div>
 				</div>

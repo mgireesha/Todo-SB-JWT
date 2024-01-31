@@ -8,6 +8,7 @@ import {
   FETCH_LOGGED_IN_USER_DETAILS_SUCCESS,
   FETCH_MY_ACCOUNT_LINKS_START,
   FETCH_MY_ACCOUNT_LINKS_SUCCESS,
+  SET_API_ERROR,
   SET_COMMON_PHASE,
   SET_COMMON_POPUIP_OBJECT,
   SET_HEADER_LINKS,
@@ -85,4 +86,9 @@ export const setCommonPhase = (phase) => ({
 export const setIsMobileDevice = (isMobileDevice) => ({
   type: SET_IS_MOBILE_DEVICE,
   isMobileDevice
+})
+
+export const setApiErr = (error) => ({
+  type: SET_API_ERROR,
+  error
 })

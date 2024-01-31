@@ -1,4 +1,34 @@
-import { AUTHENTICATION_USER_FAIL, AUTHENTICATION_USER_START, AUTHENTICATION_USER_SUCCESS, CHANGE_PASSWORD_FAIL, CHANGE_PASSWORD_START, CHANGE_PASSWORD_SUCCESS, SET_CURRENT_LOGIN_FORM, SET_IS_AUTHENTICATED, SET_LOGIN_ERROR } from "./loginActionTypes";
+import { AUTHENTICATION_USER_FAIL, AUTHENTICATION_USER_START, AUTHENTICATION_USER_SUCCESS, CHANGE_PASSWORD_FAIL, CHANGE_PASSWORD_START, CHANGE_PASSWORD_SUCCESS, CHECK_USERNAME_AVAILABILITY_FAIL, CHECK_USERNAME_AVAILABILITY_START, CHECK_USERNAME_AVAILABILITY_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_START, REGISTER_USER_SUCCESS, SET_CURRENT_LOGIN_FORM, SET_IS_AUTHENTICATED, SET_LOGIN_ERROR, SET_STATUS_AND_MESSAGE } from "./loginActionTypes";
+
+export const registerUser = (registerPayload) => ({
+    type: REGISTER_USER_START,
+    registerPayload
+})
+
+export const registerUserSucc = (response) => ({
+    type: REGISTER_USER_SUCCESS,
+    response
+})
+
+export const registerUserFail = (error) => ({
+    type: REGISTER_USER_FAIL,
+    error
+})
+
+export const checkUNameAvaiability = (userName) => ({
+    type: CHECK_USERNAME_AVAILABILITY_START,
+    userName
+})
+
+export const checkUNameAvaiabilitySucc = (response) => ({
+    type: CHECK_USERNAME_AVAILABILITY_SUCCESS,
+    response
+})
+
+export const checkUNameAvaiabilityFail = (error) => ({
+    type: CHECK_USERNAME_AVAILABILITY_FAIL,
+    error
+})
 
 export const authenticateUser = (authenticationRequest) => ({
     type: AUTHENTICATION_USER_START,
@@ -41,7 +71,20 @@ export const setCurrentLoginForm = (currentLoginForm) => ({
     currentLoginForm
 })
 
-export const setIsAuthenticated = (isAuthenticated) => ({
+export const setIsAuthenticated = (isAuthenticated, loginError) => ({
     type: SET_IS_AUTHENTICATED,
-    isAuthenticated
+    isAuthenticated,
+    loginError
+})
+
+export const setStatusAndMessage = (status, message) => ({
+    type: SET_STATUS_AND_MESSAGE,
+    status,
+    message
+})
+
+export const resetStatusAndMessage = () => ({
+    type: SET_STATUS_AND_MESSAGE,
+    status:"",
+    message:""
 })

@@ -10,6 +10,7 @@ public class TODO_CONSTANTS {
     public static final String _ERR_USER_NOT_FOUND = "_ERR_USER_NOT_FOUND";
     public static final String _ERR_UNKNOWN_EXCEPTION = "_ERR_UNKNOWN_EXCEPTION";
     public static final String _ERR_WRONG_CURRENT_PASSWORD = "_ERR_WRONG_CURRENT_PASSWORD";
+    public static final String _ERR_USER_EXISTS = "_ERR_USER_EXISTS";
 
     public static final String FAILED = "FAILED";
 
@@ -32,7 +33,8 @@ public class TODO_CONSTANTS {
 
     public static final String SUCCESS = "SUCCESS";
 
-    public static final String USER_AVAILABLE = "USER_AVAILABLE";
+    public static final String USERNAME_AVAILABLE = "USERNAME_AVAILABLE";
+    public static final String USERNAME_NOT_AVAILABLE = "USERNAME_NOT_AVAILABLE";
     public static final String USER_EXISTS = "USER_EXISTS";
 
     public static final String DELIMETER = ",";

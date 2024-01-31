@@ -85,6 +85,6 @@ export function* processAPIErrorGen(error){//This generator function required to
 }
 
 export function processAPIError(error){
-    console.log(processAPIErrorGen(error).next().value)
+    //console.log(processAPIErrorGen(error).next().value)
     return processAPIErrorGen(error).next().value;
 }

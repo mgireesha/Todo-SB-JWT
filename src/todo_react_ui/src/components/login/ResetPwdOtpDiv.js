@@ -3,11 +3,15 @@ import { React } from 'react';
 import { PasswordField } from './PasswordField';
 import {BsArrowLeftSquare} from 'react-icons/bs';
 import { BackToSignIn } from './BackToSignIn';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentLoginForm } from '../redux/login/loginActions';
 
-export const ResetPwdOtpDiv = ({ loginError, onSetShowLForm, onVerifyOtpAndResetPwd, prevShowLForm, checkPwdStrength }) => {
+export const ResetPwdOtpDiv = ({ loginError, onVerifyOtpAndResetPwd, checkPwdStrength }) => {
+	const dispatch = useDispatch();
+	const prevLoginForm = useSelector(state => state.login.prevLoginForm);
 	return (
 		<div className="slide-in-left signup-form">
-			<BsArrowLeftSquare onClick={()=>onSetShowLForm(prevShowLForm)} className='login-back-arrow' />
+			<BsArrowLeftSquare onClick={()=>dispatch(setCurrentLoginForm(prevLoginForm))} className='login-back-arrow' />
 			<h1 className="signup-header">Reset Password</h1>
 			<div className="row row-label">
 				<label className="signup-label">OTP</label>

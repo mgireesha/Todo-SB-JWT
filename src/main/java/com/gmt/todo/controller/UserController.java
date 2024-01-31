@@ -52,6 +52,32 @@ public class UserController {
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 
+	@RequestMapping(method = RequestMethod.POST, value = "/user/register")
+	public TResponse signup(@RequestBody User user) {
+		TResponse resp = new TResponse();
+		try {
+			Optional<User> userOpt = userService.getUserByUserName(user.getUserName());
+			if (userOpt.isPresent()) {
+				resp.setStatus(TODO_CONSTANTS.FAILED);
+				resp.setError(TODO_CONSTANTS._ERR_USER_EXISTS);
+				resp.setErrorMessage("User: " + user.getUserName() + " is already exists.");
+				return resp;
+			}
+			user = userService.resgisterUser(user);
+			if (null != user) {
+				resp.setStatus(TODO_CONSTANTS.SUCCESS);
+				user.setPassWord(null);
+				resp.setResponse("User registration successful");
+				resp.setUser(user);
+			}
+		} catch (Exception e) {
+			resp.setStatus(TODO_CONSTANTS.FAILED);
+			resp.setError(TODO_CONSTANTS._ERR_UNKNOWN_EXCEPTION);
+			resp.setErrorMessage(e.getMessage());
+		}
+		return resp;
+	}
+
 	@RequestMapping(value = "/user/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
 			throws Exception {
@@ -88,30 +114,6 @@ public class UserController {
 		User user = userService.getUserById(Long.parseLong(id));
 		response.setUser(user);
 		return response;
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/signup")
-	public TResponse signup(@RequestBody User user) {
-		TResponse resp = new TResponse();
-		try {
-			Optional<User> userOpt = userService.getUserByUserName(user.getUserName());
-			if (userOpt.isPresent()) {
-				resp.setStatus(TODO_CONSTANTS.USER_EXISTS);
-				resp.setError(user.getUserName());
-				return resp;
-			}
-			user = userService.resgisterUser(user);
-			if (null != user) {
-				resp.setStatus(SUCCESS);
-				resp.setError(null);
-				user.setPassWord(null);
-				resp.setUser(user);
-			}
-		} catch (Exception e) {
-			resp.setStatus(FAILED);
-			resp.setError(e.getMessage());
-		}
-		return resp;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/init-reset-pwd")
@@ -213,16 +215,17 @@ public class UserController {
 		return userService.getAllUsers();
 	}
 
-	@RequestMapping("/user/checkUsername/{userName}")
+	@RequestMapping("/user/username/availability/{userName}")
 	public TResponse checkUserName(@PathVariable String userName) {
 		TResponse resp = new TResponse();
 		Optional<User> userOp = userService.getUserByUserName(userName);
 		if (userOp.isPresent()) {
-			resp.setStatus(TODO_CONSTANTS.USER_EXISTS);
-			resp.setError(userName);
+			resp.setStatus(TODO_CONSTANTS.USERNAME_NOT_AVAILABLE);
+			resp.setError(TODO_CONSTANTS._ERR_USER_EXISTS);
+			resp.setErrorMessage("User id already exists");
 		} else {
-			resp.setStatus(TODO_CONSTANTS.USER_AVAILABLE);
-			resp.setError(userName);
+			resp.setStatus(TODO_CONSTANTS.USERNAME_AVAILABLE);
+			resp.setResponse("User id available");
 		}
 		return resp;
 	}
