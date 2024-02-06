@@ -5,7 +5,8 @@ import { archiveListAPI, createListAPI, deleteListAPI, fetchListOrderAPI, getUse
 import { addListToArchiveSucc, createListSucc, deleteListSucc, fetchListOrderSucc, fethUserListsSucc, updateListOrder, updateListOrderSucc, updateListSucc } from "./listActions";
 import { fetTaskList, updateTaskTodoList } from "../task/taskActions";
 import { createFilteredListOrderFromArry, getChangedListOrder, handleAPIError } from "../../utils/GlobalFuns";
-import { ACTION_ADD_ITEM, ACTION_REMOVE_ITEM } from "../todoActionTypes";
+import { ACTION_ADD_ITEM, ACTION_REMOVE_ITEM, TOKEN_EXPIRED } from "../todoActionTypes";
+import { setIsAuthenticated } from "../login/loginActions";
 
 export function* onFetchUserLists(){
     yield takeLatest(FETCH_LISTS_START, onFetchUserListsAsnc);
@@ -137,4 +138,13 @@ export function* onAddListToArchiveAsync(payload){
         console.log(error)
         handleAPIError(error);
     }
+}
+
+export function* processAPIError(error){
+    const rError = handleAPIError(error);
+    if(rError.ERROR_CODE===TOKEN_EXPIRED){
+        document.cookie="jToken=;";
+        yield put(setIsAuthenticated(false));
+    }
+    return rError;
 }

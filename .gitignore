@@ -62,3 +62,6 @@ build/
 
 ### React App ###
 **/node_modules/
+
+###env
+.env

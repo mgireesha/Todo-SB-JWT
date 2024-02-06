@@ -134,3 +134,20 @@ export const clearFieldsById = (ids) => {
   })
   
 }
+
+export const validateLoginToken = (token) =>{
+  if(token === "")return false;
+  const tokenObj = parseJwt(token);
+  const expiry = tokenObj.exp;
+  const currentTimeInSecs = Date.now()/1000;
+  return (expiry - currentTimeInSecs) > 0; 
+}
+
+export const parseJwt = (token) => {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+  return JSON.parse(jsonPayload);
+}

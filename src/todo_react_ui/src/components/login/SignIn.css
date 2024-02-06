@@ -87,3 +87,8 @@
     top: 10px;
     cursor: pointer;
 }
+
+.login-error{
+	color: #e34e4e;
+	padding: 0;
+}

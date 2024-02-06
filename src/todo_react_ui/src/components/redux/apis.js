@@ -13,6 +13,20 @@ const iAxios = axios.create({
     timeout:120000
 });
 
+iAxios.interceptors.request.use(
+    (config) => {
+      // Modify the request configuration or add headers
+      config.headers.Authorization = "_";
+      if(getAuth()!=="")
+      config.headers.Authorization = getAuth();
+      return config;
+    },
+    (error) => {
+      // Handle request errors
+      return Promise.reject(error);
+    }
+  );
+
 export const getUserListsAPI = () =>{
     return iAxios.get('/todo/list/listAllByUser/').then(response => response);
 }
@@ -94,7 +108,27 @@ export const exportTodoListsAPI = () => {
 }
 
 //Login / User apis - start
-export const changePasswordAPI = (payload) => {
-    return iAxios.put(`/todo/user/password`,payload)
+export const registerUserAPI = (payload) => {
+    return iAxios.post(`/todo/user/register`,payload).then(response => response);
+}
+
+export const checkUNameAvaiabilityAPI = (userName) => {
+    return iAxios.post(`/todo/user/username/availability/${userName}`).then(response => response);
+}
+
+export const authenticateUserAPI = (payload) => {
+    return iAxios.post(`/todo/user/authenticate`,payload).then(response => response);
+}
+
+export const changePasswordAPI = (authenticationRequest) => {
+    return iAxios.put(`/todo/user/password`,authenticationRequest).then(response => response);
+}
+
+export const passwordResetSendOTPAPI = (payload) => {
+    return iAxios.post(`/todo/user/init-reset-pwd`,payload).then(response => response);
+}
+
+export const passwordResetAPI = (payload) => {
+    return iAxios.post(`/todo/user/reset-password`,payload).then(response => response);
 }
 //Login / User apis - end

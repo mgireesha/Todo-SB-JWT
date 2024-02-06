@@ -2,7 +2,7 @@ import { CREATE_TASK_START, CREATE_TASK_SUCCESS,CREATE_TASK_STEP_START,CREATE_TA
             FETCH_TASK_LIST_START, FETCH_TASK_LIST_SUCCESS, FETCH_TASK_START, FETCH_TASK_SUCCESS,
             UPDATE_TASK_LIST_SUCCESS, UPDATE_TASK_START, UPDATE_TASK_SUCCESS, UPDATE_TASK_TODO_LIST,
             DELETE_TASK_START, DELETE_TASK_SUCCESS, 
-            MOVE_TASK_START, MOVE_TASK_SUCCESS, SET_SHOW_TASKS, SET_SHOW_TASK_ADD, SET_TASK_DETAIL_SHOW, UPDATE_TASK_STEP_START, UPDATE_TASK_STEP_SUCCESS, DELETE_TASK_STEP_START, DELETE_TASK_STEP_SUCCESS, 
+            MOVE_TASK_START, MOVE_TASK_SUCCESS, SET_SHOW_TASKS, SET_SHOW_TASK_ADD, SET_TASK_DETAIL_SHOW, UPDATE_TASK_STEP_START, UPDATE_TASK_STEP_SUCCESS, DELETE_TASK_STEP_START, DELETE_TASK_STEP_SUCCESS, FETCH_TASK_LIST_FAILURE, FETCH_TASK_FAILURE, 
         } from "./taskActionTypes";
 
 export const fetTaskList = (listId) => ({
@@ -16,6 +16,11 @@ export const fetTaskListSucc = (taskList,taskListKeys) => ({
     taskListKeys
 })
 
+export const fetTaskListFail = (error) => ({
+    type:FETCH_TASK_LIST_FAILURE,
+    error
+})
+
 export const fetchTask = (taskId) => ({
     type:FETCH_TASK_START,
     taskId
@@ -24,6 +29,11 @@ export const fetchTask = (taskId) => ({
 export const fetchTaskSucc = (task) => ({
     type:FETCH_TASK_SUCCESS,
     task
+})
+
+export const fetchTaskFail = (error) => ({
+    type:FETCH_TASK_FAILURE,
+    error
 })
 
 export const createTask = (task,todoList) => ({

@@ -175,10 +175,17 @@ public class UserService {
 			responseObj = new JSONObject(response.getBody().toString());
 			// System.out.println(responseObj.toString());
 			user.setOtp(null);
+		} catch (UsernameNotFoundException unfe) {
+			responseObj = new JSONObject();
+			responseObj.put("sendStatus", TODO_CONSTANTS.FAILED);
+			responseObj.put("sendError", unfe.getMessage());
+			responseObj.put("sendErrorCode", TODO_CONSTANTS._ERR_USER_NOT_FOUND);
+			unfe.printStackTrace();
 		} catch (Exception e) {
 			responseObj = new JSONObject();
 			responseObj.put("sendStatus", "FAILED");
 			responseObj.put("sendError", e.getMessage());
+			responseObj.put("sendErrorCode", TODO_CONSTANTS._ERR_UNKNOWN_EXCEPTION);
 			e.printStackTrace();
 		}
 		return responseObj;

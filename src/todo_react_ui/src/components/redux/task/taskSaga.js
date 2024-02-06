@@ -2,7 +2,7 @@ import { CREATE_TASK_START, CREATE_TASK_STEP_START, DELETE_TASK_START, DELETE_TA
 
 import {takeLatest, call, put} from 'redux-saga/effects';
 import { createTaskAPI, createTaskStepAPI, deleteTaskAPI, deleteTaskStepAPI, getTaskByTaskIdAPI, getTaskListAPI, moveTaskAPI, updateTaskAPI, updateTaskStepAPI } from "../apis";
-import { addNextStepSucc, createTaskSucc, deleteTaskSucc, fetchTaskSucc, fetTaskList, fetTaskListSucc, moveTaskSucc, setShowTasks, setTaskDetailShow, updateTaskListSucc, updatetaskStepSucc, updateTaskSucc } from "./taskActions";
+import { addNextStepSucc, createTaskSucc, deleteTaskSucc, fetchTaskFail, fetchTaskSucc, fetTaskList, fetTaskListFail, fetTaskListSucc, moveTaskSucc, setShowTasks, setTaskDetailShow, updateTaskListSucc, updatetaskStepSucc, updateTaskSucc } from "./taskActions";
 import { handleAPIError, isMobile } from "../../utils/GlobalFuns";
 import { setListCounter, updateList } from "../list/listActions";
 
@@ -20,8 +20,7 @@ export function* onFetchTaskListAsync(payload){
             yield put(fetTaskListSucc(taskList,taskListKeys));
         }
     } catch (error) {
-        console.log(error);
-        handleAPIError(error);
+        yield put(fetTaskListFail(handleAPIError(error)));
     }
 }
 
@@ -36,8 +35,7 @@ export function* onFetchTaskAsync(payload){
             yield put(fetchTaskSucc(response.data));
         }
     } catch (error) {
-        console.log(error);
-        handleAPIError(error);
+        yield put(fetchTaskFail(handleAPIError(error)));
     }
 }
 
