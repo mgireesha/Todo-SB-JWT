@@ -14,7 +14,7 @@ export const LSuccessDiv = () => {
 	} 
 
 	return(
-		<div className='slide-in-left signup-form flexbox-center' style={{width:'100%'}}>
+		<div className='slide-in-left signup-form' style={{width:'100%'}}>
 			<h1 className="signup-header" style={{color:status===SUCCESS?"green":"red", textTransform:'capitalize'}}>{status}!</h1>
 			<div className="row row-label">
 				{status===SUCCESS &&<h4 id="message">{message}</h4>}

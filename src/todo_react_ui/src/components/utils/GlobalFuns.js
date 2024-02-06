@@ -107,6 +107,10 @@ export function handleAPIError(error){
             rError.ERROR_CODE = TOKEN_EXPIRED;
             rError.ERROR_MESSAGE = "Session expired. Please login again.";
             
+        }if(error?.response?.status === 405){
+            rError.ERROR_CODE = error?.response?.status;
+            rError.ERROR_MESSAGE = error?.response?.status+", Please contact adminstrator.";
+            rError.ERROR = error?.data?.error;
         }
     }else if(error?.data?.status){
         if(error.data.status===FAILED){

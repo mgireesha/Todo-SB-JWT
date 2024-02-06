@@ -20,6 +20,17 @@ export const SignUpDiv = () => {
 	const [pwdStrengthErr, setPwdStrengthErr] = useState({});
 
 	useEffect(()=>{
+		const handleKeyUp = (event) => {
+			if(event.key=== "Enter"){
+				initRegisterUser();
+			}
+		}
+		window.addEventListener("keyup", handleKeyUp);
+		return () => {window.removeEventListener("keyup", handleKeyUp)}
+
+	},[]);
+
+	useEffect(()=>{
 		if(loginPhase === REGISTER_USER_SUCCESS){
 			dispatch(setCurrentLoginForm(L_SUCCESS));
 		}

@@ -2,12 +2,14 @@ import {all} from 'redux-saga/effects'
 import { onExportTodoLists, onFetchCurrentUser, onFetchHeaderLinks, onFetchMyAccountLinks } from './common/commonSaga';
 import { onAddListToArchive, onCreateList, onDeleteList, onFetchListOrder, onFetchUserLists, onUpdateList, onUpdateListOrder } from './list/listSaga';
 import { onCreateTask, onCreateTaskStep, onDeleteTask, onDeleteTaskStep, onFetchTask, onFetchTaskList, onMoveTask, onUpdateTask, onUpdateTaskStep } from './task/taskSaga';
-import { onAuthenticateUser, onCheckUserNameAvailability, onPasswordChange, onRegisterUser } from './login/loginSaga';
+import { onAuthenticateUser, onCheckUserNameAvailability, onPasswordChange, onPasswordReset, onPasswordResetSendOTP, onRegisterUser } from './login/loginSaga';
 
 export function* todoSaga() {
      yield all([
          onRegisterUser(),
          onCheckUserNameAvailability(),
+         onPasswordResetSendOTP(),
+         onPasswordReset(),
          onFetchUserLists(),
          onCreateList(),
          onUpdateList(),

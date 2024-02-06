@@ -1,9 +1,9 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { AUTHENTICATION_USER_START, CHANGE_PASSWORD_START, CHECK_USERNAME_AVAILABILITY_START, REGISTER_USER_START } from "./loginActionTypes";
+import { AUTHENTICATION_USER_START, CHANGE_PASSWORD_START, CHECK_USERNAME_AVAILABILITY_START, PASSWORD_RESET_SEND_OTP_START, PASSWORD_RESET_START, REGISTER_USER_START } from "./loginActionTypes";
 import { days, handleAPIError, months } from "../../utils/GlobalFuns";
-import { authenticateUserAPI, changePasswordAPI, checkUNameAvaiabilityAPI, registerUserAPI } from "../apis";
-import { MY_ACCOUNT, SUCCESS } from "../todoActionTypes";
-import { authenticateUserFail, authenticateUserSucc, changePasswordFail, changePasswordSucc, checkUNameAvaiabilityFail, checkUNameAvaiabilitySucc, registerUserFail, registerUserSucc } from "./loginActions";
+import { authenticateUserAPI, changePasswordAPI, checkUNameAvaiabilityAPI, passwordResetAPI, passwordResetSendOTPAPI, registerUserAPI } from "../apis";
+import { MESSAGE_SENT, MY_ACCOUNT, SUCCESS } from "../todoActionTypes";
+import { authenticateUserFail, authenticateUserSucc, changePasswordFail, changePasswordSucc, checkUNameAvaiabilityFail, checkUNameAvaiabilitySucc, passwordResetFail, passwordResetSendOTPFail, passwordResetSendOTPSucc, passwordResetSucc, registerUserFail, registerUserSucc } from "./loginActions";
 import { setStatusMessage } from "../common/commonActions";
 import { setCookies } from "../../utils/utils";
 import { processAPIError } from "../common/commonSaga";
@@ -88,6 +88,46 @@ export function* onPasswordChangeAsync(payload){
         }
     } catch (error) {
         yield put (changePasswordFail(processAPIError(error)));
+    }
+}
+
+export function* onPasswordResetSendOTP () {
+    yield takeLatest(PASSWORD_RESET_SEND_OTP_START,onPasswordResetSendOTPAsync);
+}
+
+export function* onPasswordResetSendOTPAsync(payload){
+    try {
+        const response = yield call(passwordResetSendOTPAPI, payload.payload);
+        if(response.status === 200){
+            const data = response.data;
+            if(data.status === MESSAGE_SENT){
+                yield put(passwordResetSendOTPSucc(data));
+            }else{
+                yield put(passwordResetSendOTPFail(handleAPIError(data)));
+            }
+        }
+    } catch (error) {
+        yield put(passwordResetSendOTPFail(handleAPIError(error)));
+    }
+}
+
+export function* onPasswordReset () {
+    yield takeLatest(PASSWORD_RESET_START,onPasswordResetAsync);
+}
+
+export function* onPasswordResetAsync(payload){
+    try {
+        const response = yield call(passwordResetAPI, payload.payload);
+        if(response.status === 200){
+            const data = response.data;
+            if(data.status === SUCCESS){
+                yield put(passwordResetSucc(data));
+            }else{
+                yield put(passwordResetFail(handleAPIError(data)));
+            }
+        }
+    } catch (error) {
+        yield put(passwordResetFail(handleAPIError(error)));
     }
 }
 

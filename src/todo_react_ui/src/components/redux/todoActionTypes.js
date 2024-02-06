@@ -42,6 +42,7 @@ export const L_SUCCESS = 'L_SUCCESS';
 
 export const MANAGE_USERS = 'MANAGE_USERS';
 export const MANAGE_USERS_LABEL = 'Manage users';
+export const MESSAGE_SENT = 'MESSAGE_SENT';
 export const MY_ACCOUNT = 'MY_ACCOUNT';
 
 export const NOT_YET_AVAIABLE_LABEL = 'Not yet available';
@@ -51,6 +52,7 @@ export const PASSWORD_AND_LOGIN_LABEL = 'Passwords and Login';
 
 export const _ERR_SAME_CURRENT_AND_NEW_PASSWORDS = '_ERR_SAME_CURRENT_AND_NEW_PASSWORDS';
 export const _ERR_USER_NOT_FOUND = '_ERR_USER_NOT_FOUND';
+export const _ERR_OTP_NOT_FOUND = '_ERR_OTP_NOT_FOUND';
 export const _ERR_UNKNOWN_EXCEPTION = '_ERR_UNKNOWN_EXCEPTION';
 export const _ERR_WRONG_CURRENT_PASSWORD = '_ERR_WRONG_CURRENT_PASSWORD';
 export const _ERR_USER_EXISTS = '_ERR_USER_EXISTS';

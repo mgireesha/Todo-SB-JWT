@@ -40,8 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests(requests -> requests
 				.antMatchers("/", "/manifest.json", "/static/**", "/todo-logo-200.png", "/logo192.png",
-						"/todo/authenticate", "/todo/user/register", "/todo/init-reset-pwd",
-						"/todo/reset-pwd", "/todo/user/password", "/todo/user/username/availability/{userName}",
+						"/todo/authenticate", "/todo/user/register", "/todo/user/init-reset-pwd",
+						"/todo/user/reset-password", "/todo/user/password",
+						"/todo/user/username/availability/{userName}",
 						"/todo/accessDenied", "/todo/user/authenticate")
 				.permitAll()
 				.antMatchers("/todo/ManageUsers").hasRole("ADMIN")

@@ -7,6 +7,7 @@ public class TODO_CONSTANTS {
 
     public static final String _ERR_INCORRECT_USERNAME_PASSWORD = "_ERR_INVALID_USERNAME_PASSWORD";
     public static final String _ERR_SAME_CURRENT_AND_NEW_PASSWORDS = "_ERR_SAME_CURRENT_AND_NEW_PASSWORDS";
+    public static final String _ERR_OTP_NOT_FOUND = "_ERR_OTP_NOT_FOUND";
     public static final String _ERR_USER_NOT_FOUND = "_ERR_USER_NOT_FOUND";
     public static final String _ERR_UNKNOWN_EXCEPTION = "_ERR_UNKNOWN_EXCEPTION";
     public static final String _ERR_WRONG_CURRENT_PASSWORD = "_ERR_WRONG_CURRENT_PASSWORD";

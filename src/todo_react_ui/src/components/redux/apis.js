@@ -123,4 +123,12 @@ export const authenticateUserAPI = (payload) => {
 export const changePasswordAPI = (authenticationRequest) => {
     return iAxios.put(`/todo/user/password`,authenticationRequest).then(response => response);
 }
+
+export const passwordResetSendOTPAPI = (payload) => {
+    return iAxios.post(`/todo/user/init-reset-pwd`,payload).then(response => response);
+}
+
+export const passwordResetAPI = (payload) => {
+    return iAxios.post(`/todo/user/reset-password`,payload).then(response => response);
+}
 //Login / User apis - end

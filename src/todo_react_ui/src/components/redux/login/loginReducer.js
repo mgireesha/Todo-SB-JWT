@@ -1,5 +1,27 @@
 import { INIT, LOADING, SIGN_IN } from "../todoActionTypes";
-import { AUTHENTICATION_USER_FAIL, AUTHENTICATION_USER_START, AUTHENTICATION_USER_SUCCESS, CHANGE_PASSWORD_FAIL, CHANGE_PASSWORD_START, CHANGE_PASSWORD_SUCCESS, CHECK_USERNAME_AVAILABILITY_FAIL, CHECK_USERNAME_AVAILABILITY_START, CHECK_USERNAME_AVAILABILITY_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_START, REGISTER_USER_SUCCESS, SET_CURRENT_LOGIN_FORM, SET_IS_AUTHENTICATED, SET_LOGIN_ERROR, SET_STATUS_AND_MESSAGE } from "./loginActionTypes";
+import {
+  AUTHENTICATION_USER_FAIL,
+  AUTHENTICATION_USER_START,
+  AUTHENTICATION_USER_SUCCESS,
+  CHANGE_PASSWORD_FAIL,
+  CHANGE_PASSWORD_START,
+  CHANGE_PASSWORD_SUCCESS,
+  CHECK_USERNAME_AVAILABILITY_FAIL,
+  CHECK_USERNAME_AVAILABILITY_SUCCESS,
+  PASSWORD_RESET_FAIL,
+  PASSWORD_RESET_SEND_OTP_FAIL,
+  PASSWORD_RESET_SEND_OTP_START,
+  PASSWORD_RESET_SEND_OTP_SUCESS,
+  PASSWORD_RESET_START,
+  PASSWORD_RESET_SUCESS,
+  REGISTER_USER_FAIL,
+  REGISTER_USER_START,
+  REGISTER_USER_SUCCESS,
+  SET_CURRENT_LOGIN_FORM,
+  SET_IS_AUTHENTICATED,
+  SET_LOGIN_ERROR,
+  SET_STATUS_AND_MESSAGE,
+} from "./loginActionTypes";
 
 export const initialState = {
     phase: INIT,
@@ -10,7 +32,8 @@ export const initialState = {
     message:"",
     isAuthenticated: false,
     apiError:{},
-    userNameAvailableObj:{}
+    apiResponse:{},
+    userNameAvailableObj:{},
 }
 
 export const loginReducer = (state = initialState, action) => {
@@ -33,11 +56,6 @@ export const loginReducer = (state = initialState, action) => {
                 phase: REGISTER_USER_FAIL,
                 apiError: action.error
             }
-        // case CHECK_USERNAME_AVAILABILITY_START:
-        //     return{
-        //         ...state,
-        //         phase:LOADING
-        //     }
         case CHECK_USERNAME_AVAILABILITY_SUCCESS:
             return{
                 ...state,
@@ -86,6 +104,40 @@ export const loginReducer = (state = initialState, action) => {
                 ...state,
                 phase:CHANGE_PASSWORD_FAIL,
                 apiError:{...action.response}
+            }
+        case PASSWORD_RESET_SEND_OTP_START:
+            return{
+                ...state,
+                phase: LOADING
+            }
+        case PASSWORD_RESET_SEND_OTP_SUCESS:
+            return{
+                ...state,
+                phase: PASSWORD_RESET_SEND_OTP_SUCESS,
+                apiResponse: action.response
+            }
+        case PASSWORD_RESET_SEND_OTP_FAIL:
+            return{
+                ...state,
+                phase: PASSWORD_RESET_SEND_OTP_FAIL,
+                apiError: action.error
+            }
+        case PASSWORD_RESET_START:
+            return{
+                ...state,
+                phase: LOADING
+            }
+        case PASSWORD_RESET_SUCESS:
+            return{
+                ...state,
+                phase: PASSWORD_RESET_SUCESS,
+                apiResponse: action.response
+            }
+        case PASSWORD_RESET_FAIL:
+            return{
+                ...state,
+                phase: PASSWORD_RESET_FAIL,
+                apiError: action.error
             }
         case SET_LOGIN_ERROR:
             return {

@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +36,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/todo")
 public class UserController {
-
-	private static final String FAILED = "failed";
-
-	private static final String SUCCESS = "success";
 
 	@Autowired
 	private UserService userService;
@@ -116,8 +113,8 @@ public class UserController {
 		return response;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/init-reset-pwd")
-	public TResponse initRPD(@RequestBody User user) {
+	@PostMapping("/user/init-reset-pwd")
+	public TResponse initResetPassworD(@RequestBody User user) {
 		TResponse resp = new TResponse();
 		JSONObject respObj = new JSONObject();
 		try {
@@ -125,9 +122,10 @@ public class UserController {
 			resp.setStatus((String) respObj.get("sendStatus"));
 			resp.setUser(user);
 			try {
-				resp.setError(respObj.get("sendError").toString());
+				resp.setErrorMessage(respObj.get("sendError").toString());
+				resp.setError(respObj.get("sendErrorCode").toString());
 			} catch (Exception e) {
-				resp.setError(e.getMessage());
+				resp.setErrorMessage(e.getMessage());
 			}
 		} catch (Exception e) {
 			try {
@@ -141,7 +139,7 @@ public class UserController {
 		return resp;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/reset-pwd")
+	@PostMapping("/user/reset-password")
 	public TResponse resetPassword(@RequestBody User user) {
 		TResponse resp = new TResponse();
 		try {
@@ -152,15 +150,18 @@ public class UserController {
 			if (tempUser.getOtp().equals(user.getOtp())) {
 				tempUser.setPassWord(user.getPassWord());
 				user = userService.save(tempUser);
-				resp.setStatus(SUCCESS);
+				resp.setStatus(TODO_CONSTANTS.SUCCESS);
+				resp.setResponse("Password reset successful. Please sign in to continue.");
 			} else {
-				resp.setStatus("otpNotFound");
-				resp.setError("Unable to reset password. Verify otp again.");
+				resp.setStatus(TODO_CONSTANTS.FAILED);
+				resp.setError(TODO_CONSTANTS._ERR_OTP_NOT_FOUND);
+				resp.setErrorMessage("Password reset failed. Verify otp again.");
 			}
 			resp.setUser(user);
 		} catch (Exception e) {
-			resp.setStatus(FAILED);
-			resp.setError(e.getMessage());
+			resp.setStatus(TODO_CONSTANTS.FAILED);
+			resp.setErrorMessage(e.getMessage());
+			resp.setError(TODO_CONSTANTS._ERR_UNKNOWN_EXCEPTION);
 			e.printStackTrace();
 		}
 		return resp;
